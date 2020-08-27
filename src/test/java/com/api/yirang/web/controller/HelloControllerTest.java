@@ -19,7 +19,7 @@ public class HelloControllerTest {
 
     @Test
     public void hello가_리턴된다() throws Exception{
-        String hello = "Yirang Hello world!";
+        String hello = "Yirangs Hello world!";
 
         mvc.perform(MockMvcRequestBuilders.get("/hello_world"))
            .andExpect(status().isOk())
