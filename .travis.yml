@@ -32,10 +32,10 @@ deploy:
 
     bucket: yirang-api-spring-boot
     region: ap-northeast-2
-    skip_cleanup: true
+    cleanup: true
     acl: private
     local_dir: deploy
-    wait-until-deployed: true
+    wait_until_deployed: true
 
   - provider: codedeploy
     access_key_id: $AWS_ACCESS_KEY
@@ -44,4 +44,4 @@ deploy:
     application: yirang-springboot-api
     deployment_group: yirang-springboot-api-group
     region: ap-northeast-2
-    wait-until-deployed: true
+    wait_until_deployed: true
