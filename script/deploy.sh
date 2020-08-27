@@ -4,7 +4,7 @@ REPOSITORY=/home/ec2-user/app/step2
 PROJECT_NAME=yirang-springboot-restfulservice
 
 # 현재 구동중인 애플리케이션
-CURRENT_PID=$(pgrep -fl yirang-springboot-restfulservice | grep jar | awk '{print $1}')
+CURRENT_PID=$(lsof -t -i:8080)
 
 echo "> Build 파일 복사"
 cp $REPOSITORY/zip/*.jar $REPOSITORY

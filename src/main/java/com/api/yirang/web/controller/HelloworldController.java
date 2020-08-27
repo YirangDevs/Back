@@ -12,6 +12,10 @@ public class HelloworldController {
     }
     @GetMapping("/please")
     public String pleaseTest(){
-        return "Please I want YOU!";
+        return "Please I want to go home!";
+    }
+    @GetMapping("/complete")
+    public String complete(){
+        return "It is miracle!!";
     }
 }
