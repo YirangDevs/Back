@@ -19,20 +19,14 @@ cache:
   directories:
     - '$HOME/.m2/repository'
 
-notifications:
-  email:
-    recipients:
-      - likemin0142@gmail.com
-
 # Deploy
 deploy:
   - provider: s3
     access_key_id: $AWS_ACCESS_KEY # Travis repo setting
     secret_access_key: $AWS_SECRET_KEY # Travis repo setting
-
     bucket: yirang-api-spring-boot
     region: ap-northeast-2
-    cleanup: true
+    skip_cleanup: true
     acl: private
     local_dir: deploy
     wait_until_deployed: true
@@ -41,7 +35,15 @@ deploy:
     access_key_id: $AWS_ACCESS_KEY
     secret_access_key: $AWS_SECRET_KEY
     bucket: yirang-api-spring-boot
+    key: yirang-springboot-api.zip
+    bundle_type: zip
     application: yirang-springboot-api
     deployment_group: yirang-springboot-api-group
     region: ap-northeast-2
     wait_until_deployed: true
+
+# CI 완료시 메일 알람
+notifications:
+  email:
+    recipients:
+      - likemin0142@gmail.com
