@@ -1,0 +1,19 @@
+language: java
+jdk:
+  - openjdk8
+
+branches:
+  only:
+    - master
+
+before_install:
+  - chmod +x mvnw
+
+cache:
+  directories:
+    - '$HOME/.m2/repository'
+
+notifications:
+  email:
+    recipients:
+      - likemin0142@gmail.com
