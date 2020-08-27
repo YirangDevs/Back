@@ -47,7 +47,7 @@ deploy:
     wait_until_deployed: true
 
 # CI 완료시 메일 알람
-notifications:
-  email:
-    recipients:
-      - likemin0142@gmail.com
+# notifications:
+#  email:
+#    recipients:
+#      - likemin0142@gmail.com
