@@ -20,6 +20,7 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
+        <start-class>com.api.yirang.YirangApplication</start-class>
         <webapp.lib>${basedir}/src/lib</webapp.lib>
     </properties>
 
