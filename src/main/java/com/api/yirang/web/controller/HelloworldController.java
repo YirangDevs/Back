@@ -4,10 +4,14 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-public class helloworldController {
+public class HelloworldController {
 
     @GetMapping("/hello_world")
     public String helloTest(){
-        return "Yirange Hello world!";
+        return "Yirang Hello world!";
+    }
+    @GetMapping("/please")
+    public String pleaseTest(){
+        return "Please I want YOU!";
     }
 }
