@@ -9,6 +9,12 @@ branches:
 before_install:
   - chmod +x mvnw
 
+before_deploy:
+  - zip -r yirang-springboot-api *
+  - mkdir -p deploy
+  - mv yirang-springboot-api.zip deploy/yirang-springboot-api.zip
+
+# Travis CI 서버 Home
 cache:
   directories:
     - '$HOME/.m2/repository'
@@ -17,3 +23,25 @@ notifications:
   email:
     recipients:
       - likemin0142@gmail.com
+
+# Deploy
+deploy:
+  - provider: s3
+    access_key_id: $AWS_ACCESS_KEY # Travis repo setting
+    secret_access_key: $AWS_SECRET_KEY # Travis repo setting
+
+    bucket: yirang-api-spring-boot
+    region: ap-northeast-2
+    skip_cleanup: true
+    acl: private
+    local_dir: deploy
+    wait-until-deployed: true
+
+  - provider: codedeploy
+    access_key_id: $AWS_ACCESS_KEY
+    secret_access_key: $AWS_SECRET_KEY
+    bucket: yirang-api-spring-boot
+    application: yirang-springboot-api
+    deployment_group: yirang-springboot-api-group
+    region: ap-northeast-2
+    wait-until-deployed: true
