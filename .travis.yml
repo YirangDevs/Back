@@ -14,7 +14,7 @@ before_deploy:
   - cp script/*.sh before-deploy/
   - cp appspec.yml before-deploy/
   - cp target/*.jar before-deploy/
-  - cd before-deploy && zip -r before-deploy
+  - cd before-deploy && zip -r before-deploy * #Before-deploy로 이동 후 전체 압축
   - cd ../ && mkdir -p deploy
   - mv before-deploy/before-deploy.zip deploy/yirang-springboot-api.zip
 
