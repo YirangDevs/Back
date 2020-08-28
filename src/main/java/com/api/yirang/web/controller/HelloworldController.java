@@ -18,4 +18,8 @@ public class HelloworldController {
     public String complete(){
         return "It is miracle!!";
     }
+    @GetMapping("/yeonu")
+    public String getYeonu(){
+        return "I'm CUTE!";
+    }
 }
