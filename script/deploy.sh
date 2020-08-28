@@ -18,8 +18,12 @@ if [ -z "$CURRENT_PID" ]; then
 else
   echo "> kill - 15 $CURRENT_PID"
   kill -15 "$CURRENT_PID"
-  sleep 5
 fi
+
+while [ -z "$(lsof -t -i:8080)" ]
+do
+  sleep 1
+done
 
 echo "> 새 애플리케이션 배포"
 
@@ -39,5 +43,3 @@ nohup java -jar \
 #  classpath:/application-real.properties,/home/ec2-user/app/application-oauth.properties\
 #  ,/home/ec2-user/app/application-real-db.properties\
 #  -Dspring.profiles.active=real \
-
-
