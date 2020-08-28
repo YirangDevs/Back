@@ -19,7 +19,7 @@ public class HelloworldController {
         return "It is miracle!!";
     }
     @GetMapping("/yeonu")
-    public String getYeonu(){
-        return "나는 여뉴다!!!! 완전 귀엽지? 옼께에에에에";
+    public String Yeonu(){
+        return "I'm very very adorable!!!!";
     }
 }
