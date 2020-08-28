@@ -20,6 +20,6 @@ public class HelloworldController {
     }
     @GetMapping("/yeonu")
     public String getYeonu(){
-        return "I'm CUTE!";
+        return "나는 여뉴다!!!! 완전 귀엽지? 옼께에에에에";
     }
 }
