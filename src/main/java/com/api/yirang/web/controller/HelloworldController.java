@@ -22,4 +22,9 @@ public class HelloworldController {
     public String Yeonu(){
         return "I'm very very adorable!!!!";
     }
+    @GetMapping("/test")
+    public String test(){
+        return "TESTING";
+    }
+
 }
