@@ -1,12 +1,15 @@
 package com.api.yirang.web.controller;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 
 import java.io.Serializable;
 
 @Getter
-@RequiredArgsConstructor
+@NoArgsConstructor
+@AllArgsConstructor
 public class ResponseDto implements Serializable {
-    private final String nickname;
+    private String nickname;
 }
