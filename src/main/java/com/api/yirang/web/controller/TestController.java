@@ -20,8 +20,10 @@ import java.util.Map;
 public class TestController {
 
     @CrossOrigin
-    @PostMapping("/auth/test")
+    @PostMapping(value = "/auth/test", consumes = "application/json")
     public ResponseDto authTest(@RequestBody RequestDto requestDto) throws IOException, InterruptedException {
+
+        System.out.println("requestDto: " + requestDto);
 
         HttpClient httpClient = HttpClient.newBuilder()
                                           .version(HttpClient.Version.HTTP_1_1)
