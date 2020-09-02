@@ -1,10 +1,7 @@
 package com.api.yirang.web.controller;
 
 import com.google.gson.Gson;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.net.URI;
@@ -23,7 +20,7 @@ import java.util.Map;
 public class TestController {
 
     @CrossOrigin
-    @GetMapping("/auth/test")
+    @PostMapping("/auth/test")
     public ResponseDto authTest(@RequestBody RequestDto requestDto) throws IOException, InterruptedException {
 
         HttpClient httpClient = HttpClient.newBuilder()
