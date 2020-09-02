@@ -23,5 +23,5 @@ public class HelloworldController {
         return "빨리 Deploy 하란 말이야!";
     }
     @GetMapping("/gohome")
-    public String goHome(){return "집가자";}
+    public String goHome(){return "집못감";}
 }
