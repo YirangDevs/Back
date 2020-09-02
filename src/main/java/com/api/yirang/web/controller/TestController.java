@@ -29,7 +29,7 @@ public class TestController {
                                           .version(HttpClient.Version.HTTP_1_1)
                                           .build();
 
-        String kakaoAccessToken = requestDto.getAccessToken();
+        String kakaoAccessToken = requestDto.getAccess_token();
 
         List myList = new ArrayList<String>();
         myList.add("properties.nickname");

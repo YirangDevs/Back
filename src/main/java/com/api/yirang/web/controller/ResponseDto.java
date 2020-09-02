@@ -12,4 +12,11 @@ import java.io.Serializable;
 @AllArgsConstructor
 public class ResponseDto implements Serializable {
     private String nickname;
+
+    @Override
+    public String toString() {
+        return "ResponseDto{" +
+               "nickname='" + nickname + '\'' +
+               '}';
+    }
 }
