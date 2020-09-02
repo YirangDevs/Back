@@ -20,7 +20,6 @@ else
   kill -15 "$CURRENT_PID"
 fi
 
-# shellcheck disable=SC2236
 while [ -n "$(lsof -t -i:8080)" ]
 do
   sleep 1
