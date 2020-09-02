@@ -23,7 +23,7 @@ public class TestController {
     @PostMapping(value = "/auth/test", consumes = "application/json")
     public ResponseDto authTest(@RequestBody RequestDto requestDto) throws IOException, InterruptedException {
 
-        System.out.println("requestDto1: " + requestDto);
+        System.out.println("requestDto2: " + requestDto);
 
         HttpClient httpClient = HttpClient.newBuilder()
                                           .version(HttpClient.Version.HTTP_1_1)
