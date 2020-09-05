@@ -1,4 +1,4 @@
-POST http://localhost:8080/auth/test
+POST http://ec2-3-35-99-114.ap-northeast-2.compute.amazonaws.com:8080/auth/test
 Content-Type: application/json
 
 {
