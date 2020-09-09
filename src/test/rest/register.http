@@ -1,0 +1,10 @@
+POST http://localhost:8080/v1/apis/register/admin
+Content-Type: application/json
+
+{
+  "userId": 1468416139,
+  "username": "jeongminYoo",
+  "fileUrl": "unknown",
+  "sex": "male",
+  "email": "likemin0142@gmail.com"
+}
