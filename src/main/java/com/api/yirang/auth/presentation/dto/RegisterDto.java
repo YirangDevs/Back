@@ -4,11 +4,10 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.io.Serializable;
 
 @Getter
 @NoArgsConstructor
-public class RegisterDto implements Serializable {
+public class RegisterDto{
 
     private Long userId;
     private String username;

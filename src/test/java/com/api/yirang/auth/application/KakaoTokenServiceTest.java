@@ -1,6 +1,7 @@
 package com.api.yirang.auth.application;
 
 import com.api.yirang.auth.application.basicService.KakaoTokenService;
+import com.api.yirang.auth.domain.kakaoToken.dto.KakaoUserInfo;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +18,7 @@ public class KakaoTokenServiceTest {
     KakaoTokenService kakaoTokenService;
 
     // Mock variables
-    String kakaoAccessToken = "qAONiOQRU_CVHBNLQcDwjZhegCnDtxpi1wxs9Ao9dRoAAAF0cWr7hQ";
+    String kakaoAccessToken = "LboVsNsQ8Zr4KSuSq_OWiWevabmArYZ2RPMUjAo9dZsAAAF0c4wmog";
     long userId = 1468416139;
     String kakaoRefreshToken = "refreshToken Test";
     long kakaoExpiredTime = 13454;
@@ -31,6 +32,12 @@ public class KakaoTokenServiceTest {
     public void 유저아이디_가져오기(){
         Long kakaoUserId = kakaoTokenService.getUserIdByToken(kakaoAccessToken);
         assertThat(kakaoUserId).isEqualTo(userId);
+    }
+
+    @Test
+    public void 유저_정보_들고오기(){
+        KakaoUserInfo kakaoUserInfo = kakaoTokenService.getUserInfoByToken(kakaoAccessToken);
+        System.out.println("kakaoUserInfo: " + kakaoUserInfo);
     }
 
 

@@ -1,0 +1,5 @@
+POST http://localhost:8080/v1/apis/auth/signin
+Content-Type: application/json
+
+{
+}
