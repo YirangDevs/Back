@@ -8,6 +8,7 @@ public class HelloworldController {
 
     @GetMapping("/hello_world")
     public String helloTest(){
+        System.out.println("HelloTEst executing");
         return "Yirang Hello world! Don't give up! 우린 한!";
     }
     @GetMapping("/please")
@@ -16,6 +17,7 @@ public class HelloworldController {
     }
     @GetMapping("/complete")
     public String complete(){
+        System.out.println("completeTEst executing");
         return "It is miracle!!";
     }
     @GetMapping("/yongwon")
