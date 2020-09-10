@@ -1,13 +1,17 @@
 package com.api.yirang.auth.application.basicService;
 
 
+import com.api.yirang.auth.domain.jwt.JwtParser;
 import com.api.yirang.auth.domain.user.exceptions.UserNullException;
 import com.api.yirang.auth.domain.user.model.User;
 import com.api.yirang.auth.presentation.dto.RegisterDto;
+import com.api.yirang.auth.presentation.dto.UserInfoResponseDto;
 import com.api.yirang.auth.repository.persistence.maria.UserDao;
 import com.api.yirang.auth.support.type.Authority;
+import com.api.yirang.auth.support.utils.ParsingHelper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -15,6 +19,9 @@ public class UserService {
 
     // DI dao
     private final UserDao userDao;
+
+    // DI jwtUtils
+    private final JwtParser jwtParser;
 
     public Authority getAuthorityByUserId(Long userId) {
         User user = userDao.findByUserId(userId).orElse(null);
@@ -46,4 +53,17 @@ public class UserService {
         return userDao.findByUserId(userId).orElseThrow(UserNullException::new);
     }
 
+    @Transactional
+    public UserInfoResponseDto findUserInfoByUserId(Long userId) {
+        User foundedUser = userDao.findByUserId(userId).orElse(null);
+
+        System.out.println("User를 찾았습니다. " + foundedUser);
+
+        return UserInfoResponseDto.builder()
+                                  .username(foundedUser.getUsername())
+                                  .imageUrl(foundedUser.getFileUrl())
+                                  .sex(foundedUser.getSex())
+                                  .email(foundedUser.getEmail())
+                                  .build();
+    }
 }

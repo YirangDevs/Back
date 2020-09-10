@@ -20,7 +20,7 @@ public class User {
     private Long userId;
 
     @Column
-    private String username;
+    private String username; // Base64로 인코딩 한 값
 
     @Column(columnDefinition = "VARCHAR(512) CHARACTER SET 'ascii' COLLATE 'ascii_general_ci'")
     private String fileUrl;

@@ -75,14 +75,20 @@ public class AuthService {
 
             // for debugging
             System.out.println("유저: " + user);
-            // TO-DO 유정 종보 저장하기
+            System.out.println("유저 정보 저장합니다.");
+            // TO-DO 유정 정보 저장하기
+            userService.saveUser(user);
         }
         System.out.println("authority 판단합니다.");
         // User의 authority 판단 하기
         Authority authority = userService.getAuthorityByUserId(userId);
 
+        System.out.println("User의 authority는: " + authority);
+
         // 얻은 정보로 YAT(yirang access Token 생성)
         String yat = jwtProvider.generateJwtToken(userId, authority);
+
+        System.out.println("Yat가 만들어졌습니다: " + yat);
 
         return SignInResponseVO.builder()
                                .yirangAccessToken(yat)

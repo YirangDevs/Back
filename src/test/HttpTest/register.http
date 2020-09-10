@@ -2,9 +2,9 @@ POST http://localhost:8080/v1/apis/register/admin
 Content-Type: application/json
 
 {
-  "userId": 1468416139,
-  "username": "jeongminYoo",
+  "userId": 1467656807,
+  "username": "최용원",
   "fileUrl": "unknown",
   "sex": "male",
-  "email": "likemin0142@gmail.com"
+  "email": "yongwon0824@naver.com"
 }

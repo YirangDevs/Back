@@ -23,7 +23,6 @@ public class KakaoTokenService {
     private final KakaoTokenDao kakaoTokenDao;
 
 
-
     public void isValidAccessToken(String kakaoAccessToken){
         kakaoTokenAPI.isValidKakaoAccessToken(kakaoAccessToken);
     }
