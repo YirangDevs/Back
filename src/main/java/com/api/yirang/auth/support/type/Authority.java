@@ -11,4 +11,9 @@ public enum Authority {
         this.autohrity = autohrity;
         this.description = description;
     }
+
+    @Override
+    public String toString() {
+        return autohrity;
+    }
 }

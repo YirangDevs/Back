@@ -44,4 +44,5 @@ public class UserService {
     public User findUserByUserId(Long userId){
         return userDao.findByUserId(userId).orElseThrow(UserNullException::new);
     }
+
 }

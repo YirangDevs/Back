@@ -3,11 +3,13 @@ package com.api.yirang.auth.domain.kakaoToken.model;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Getter
+@ToString
 @NoArgsConstructor
 @Entity
 public class KakaoToken {
@@ -36,15 +38,5 @@ public class KakaoToken {
         this.kakaoRefreshExpiredTime = kakaoRefreshExpiredTime;
     }
 
-    @Override
-    public String toString() {
-        return "KakaoToken{" +
-               "id=" + id +
-               ", userId=" + userId +
-               ", kakaoAccessToken='" + kakaoAccessToken + '\'' +
-               ", kakaoRefreshToken='" + kakaoRefreshToken + '\'' +
-               ", kakaoRefreshExpiredTime=" + kakaoRefreshExpiredTime +
-               '}';
-    }
 
 }

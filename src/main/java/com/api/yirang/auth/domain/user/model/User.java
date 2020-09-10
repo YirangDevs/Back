@@ -22,7 +22,7 @@ public class User {
     @Column
     private String username;
 
-    @Column
+    @Column(columnDefinition = "VARCHAR(512) CHARACTER SET 'ascii' COLLATE 'ascii_general_ci'")
     private String fileUrl;
 
     @Column(columnDefinition = "VARCHAR(255) default 'unknown'")
