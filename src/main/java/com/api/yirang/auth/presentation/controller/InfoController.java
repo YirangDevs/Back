@@ -13,11 +13,11 @@ import org.springframework.web.bind.annotation.*;
 public class InfoController {
 
     // Serivces DI
-    private UserService userService;
+    private final UserService userService;
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping(value="/users/{userId}", produces = "application/json")
-    public UserInfoResponseDto getUserInfo(@PathVariable Long userId){
-        return userService.findUserInfoByUserId(userId);
+    public UserInfoResponseDto getUserInfo(@PathVariable("userId") String userId){
+        return userService.findUserInfoByUserId(Long.parseLong(userId));
     }
 }
