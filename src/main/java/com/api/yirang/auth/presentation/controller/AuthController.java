@@ -26,13 +26,12 @@ public class AuthController {
         response.addHeader("Authorization", "Bearer " + signInResponseVO.getYirangAccessToken());
     }
 
+    @CrossOrigin
     @ResponseStatus(HttpStatus.OK)
     @PostMapping(value = "/refresh")
     public void refreshYat(@RequestHeader(value = "Authorization") String authorizationHeader, HttpServletResponse response){
-        //TO-DO 갱신
         RefreshYatResponseVO refreshYatResponseVO = authService.refreshYat(authorizationHeader);
         response.addHeader("Authorization", "Bearer " + refreshYatResponseVO.getYirangAccessToken());
-        return;
     }
 
 }

@@ -2,6 +2,7 @@ package com.api.yirang.auth.application.basicService;
 
 
 import com.api.yirang.auth.domain.jwt.JwtParser;
+import com.api.yirang.auth.domain.user.converter.UserConverter;
 import com.api.yirang.auth.domain.user.exceptions.UserNullException;
 import com.api.yirang.auth.domain.user.model.User;
 import com.api.yirang.auth.presentation.dto.RegisterDto;
@@ -23,47 +24,48 @@ public class UserService {
     // DI jwtUtils
     private final JwtParser jwtParser;
 
+    /*-------------------------------------*/
+    // Methods
+
+    // Methods For get or find
     public Authority getAuthorityByUserId(Long userId) {
         User user = userDao.findByUserId(userId).orElse(null);
         return (user == null) ? Authority.ROLE_USER: user.getAuthority();
     }
 
-    public void registerAdmin(RegisterDto registerDto){
-        // RegisterDto -> User
-        User user = User.builder()
-                        .userId(registerDto.getUserId())
-                        .fileUrl(registerDto.getFileUrl())
-                        .username(registerDto.getUsername())
-                        .sex(registerDto.getSex())
-                        .email(registerDto.getEmail())
-                        .authority(Authority.ROLE_ADMIN)
-                        .build();
-        userDao.save(user);
-    }
-
-    public void saveUser(User user){
-        userDao.save(user);
-    }
-
-    public boolean isRegisteredUserByUserId(Long userId){
-        return userDao.existsUserByUserId(userId);
-    }
-
-    public User findUserByUserId(Long userId){
-        return userDao.findByUserId(userId).orElseThrow(UserNullException::new);
+    public User findUserByUserId(Long userId) {
+        return userDao.findByUserId(userId)
+                      .orElseThrow(UserNullException::new);
     }
 
     @Transactional
     public UserInfoResponseDto findUserInfoByUserId(Long userId) {
-        User foundedUser = userDao.findByUserId(userId).orElse(null);
+        User foundedUser = findUserByUserId(userId);
 
+        // for debugging
         System.out.println("User를 찾았습니다. " + foundedUser);
 
-        return UserInfoResponseDto.builder()
-                                  .username(foundedUser.getUsername())
-                                  .imageUrl(foundedUser.getFileUrl())
-                                  .sex(foundedUser.getSex())
-                                  .email(foundedUser.getEmail())
-                                  .build();
+        return UserConverter.toUserInfoResponseDto(foundedUser);
     }
+
+
+    // Methods For Register or Save
+    public void saveUser(User user){
+        userDao.save(user);
+    }
+
+    public void registerAdmin(RegisterDto registerDto){
+        User newUser = UserConverter.fromRegisterDto(registerDto, Authority.ROLE_ADMIN);
+        userDao.save(newUser);
+    }
+    public void registerUser(RegisterDto registerDto){
+        User newUser = UserConverter.fromRegisterDto(registerDto, Authority.ROLE_USER);
+        userDao.save(newUser);
+    }
+
+    // Methods for chekcking existence
+    public boolean isRegisteredUserByUserId(Long userId){
+        return userDao.existsUserByUserId(userId);
+    }
+
 }

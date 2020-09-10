@@ -1,7 +1,6 @@
 package com.api.yirang.auth.presentation.controller;
 
 import com.api.yirang.auth.application.basicService.UserService;
-import com.api.yirang.auth.domain.user.model.User;
 import com.api.yirang.auth.presentation.dto.RegisterDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -15,9 +14,17 @@ public class RegisterController {
 
     private final UserService userService;
 
+    @CrossOrigin
     @PostMapping(value="/admin")
     @ResponseStatus(HttpStatus.CREATED)
     public void registerAdmin(@RequestBody RegisterDto registerDto){
         userService.registerAdmin(registerDto);
+    }
+
+    @CrossOrigin
+    @PostMapping(value="/user")
+    @ResponseStatus(HttpStatus.CREATED)
+    public void registerUser(@RequestBody RegisterDto registerDto){
+        userService.registerUser(registerDto);
     }
 }
