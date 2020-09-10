@@ -17,7 +17,8 @@ public class UserService {
     private final UserDao userDao;
 
     public Authority getAuthorityByUserId(Long userId) {
-        return userDao.findByUserId(userId).get().getAuthority();
+        User user = userDao.findByUserId(userId).orElse(null);
+        return (user == null) ? Authority.ROLE_USER: user.getAuthority();
     }
 
     public void registerAdmin(RegisterDto registerDto){

@@ -75,7 +75,7 @@ public class AuthService {
 
             // for debugging
             System.out.println("유저: " + user);
-            //userService.saveUser(user);
+            // TO-DO 유정 종보 저장하기
         }
         System.out.println("authority 판단합니다.");
         // User의 authority 판단 하기
