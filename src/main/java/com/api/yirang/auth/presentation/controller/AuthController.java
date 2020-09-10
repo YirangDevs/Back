@@ -18,6 +18,7 @@ public class AuthController {
     // Service DI
     private final AuthService authService;
 
+    @CrossOrigin
     @ResponseStatus(HttpStatus.OK)
     @PostMapping(value = "/signin", consumes = "application/json")
     public void signIn(@RequestBody SignInRequestDto signInRequestDto, HttpServletResponse response){
