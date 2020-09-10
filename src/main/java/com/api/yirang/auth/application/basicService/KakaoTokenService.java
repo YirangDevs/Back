@@ -3,6 +3,7 @@ package com.api.yirang.auth.application.basicService;
 import com.api.yirang.auth.domain.kakaoToken.converter.KakaoTokenConverter;
 import com.api.yirang.auth.domain.kakaoToken.dto.KakaoUserInfo;
 import com.api.yirang.auth.domain.kakaoToken.dto.KakaoUserInfoDto;
+import com.api.yirang.auth.domain.kakaoToken.exceptions.KakaoTokenNullException;
 import com.api.yirang.auth.domain.kakaoToken.model.KakaoToken;
 import com.api.yirang.auth.repository.api.KakaoInfoAPI;
 import com.api.yirang.auth.repository.api.KakaoTokenAPI;
@@ -40,7 +41,7 @@ public class KakaoTokenService {
     }
 
     public KakaoToken findKakaoTokenByUserId(Long userId){
-        return kakaoTokenDao.findByUserId(userId);
+        return kakaoTokenDao.findByUserId(userId).orElseThrow(KakaoTokenNullException::new);
     }
 
     public KakaoUserInfo getUserInfoByToken(String kakaoAccessToken) {

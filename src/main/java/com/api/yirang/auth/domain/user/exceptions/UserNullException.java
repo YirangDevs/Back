@@ -8,7 +8,7 @@ import java.util.function.Supplier;
 public class UserNullException extends ApiException implements Supplier<User> {
     // TO-DO
     public UserNullException() {
-        super("010", "User를 찾을 수 없음");
+        super("005", "User Not Found");
     }
 
     @Override
