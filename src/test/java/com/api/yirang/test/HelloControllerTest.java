@@ -1,4 +1,4 @@
-package com.api.yirang.web.controller;
+package com.api.yirang.test;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

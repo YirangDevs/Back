@@ -1,5 +1,6 @@
 package com.api.yirang.auth.repository;
 
+import com.api.yirang.auth.domain.kakaoToken.exceptions.KakaoTokenNullException;
 import com.api.yirang.auth.domain.kakaoToken.model.KakaoToken;
 import com.api.yirang.auth.repository.persistence.h2.KakaoTokenDao;
 import org.junit.After;
@@ -44,7 +45,7 @@ public class KakaoTokenDaoTest {
                           .build()
         );
 
-        KakaoToken kakaoToken = kakaoTokenDao.findByUserId(userId);
+        KakaoToken kakaoToken = kakaoTokenDao.findByUserId(userId).orElseThrow(KakaoTokenNullException::new);
 
         // for dubugging
         System.out.println("KakaoToken: " + kakaoToken);

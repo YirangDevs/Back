@@ -1,6 +1,0 @@
-POST http://ec2-3-35-99-114.ap-northeast-2.compute.amazonaws.com:8080/auth/test
-Content-Type: application/json
-
-{
-  "access_token": "Rb3zWd62Kt82C-1S0w7pfe-_Fq7IE2wgazvqhgorDKcAAAF0T-QcHA"
-}

@@ -1,4 +1,4 @@
-package com.api.yirang.web.controller;
+package com.api.yirang.test;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
