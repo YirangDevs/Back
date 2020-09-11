@@ -58,11 +58,14 @@ public class KakaoTokenService {
     public void saveKakaoToken(KakaoToken kakaoToken){
         // 정보가 없으면 추가, 아니면 지우고 다시 추가
         Long userId = kakaoToken.getUserId();
-        if(kakaoTokenDao.existsKakaoTokenByUserId(userId)){
+        if(kakaoTokenDao.existsByUserId(userId)){
+            System.out.println("[kakaoTokenService] 기존에 userId가 등록이 되어있습니다!");
             // 삭제
             kakaoTokenDao.deleteByUserId(userId);
+            System.out.println("[kakaoTokenService] 기존에 등록되어 있는 KakaoToken들을 지웠습니다!");
         }
         kakaoTokenDao.save(kakaoToken);
+        System.out.println("[kakaoTokenService] kakoToken을 저장하겠습니다.!");
     }
 
 }

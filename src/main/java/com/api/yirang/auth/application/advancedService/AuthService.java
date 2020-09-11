@@ -90,7 +90,6 @@ public class AuthService {
         // Header Parsing
         String oldYat = ParsingHelper.parseHeader(authorizationHeader);
 
-
         // Debugging
         System.out.println("oldYat는 이렇습니다.: " + oldYat);
 
@@ -109,6 +108,7 @@ public class AuthService {
             // User Id 와 role을 바탕으로 만들기
             String newYat = jwtProvider.generateJwtToken(userId, authority);
 
+            System.out.println("[AuthService] YAT를 만들어서 반환하겠습니다.");
             return RefreshYatResponseVO.builder()
                                        .yirangAccessToken(newYat)
                                        .build();
