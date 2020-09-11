@@ -31,6 +31,9 @@ public class KakaoTokenService {
         return true;
     }
     public boolean isValidKakaoRefreshToken(Long userId) {
+        // Checking 카카오 토큰을 찾습니다.
+        System.out.println("checking KakaoToken for userID: " + userId);
+
         KakaoToken kakaoToken = findKakaoTokenByUserId(userId);
         return kakaoToken.getKakaoRefreshExpiredTime().isAfter(LocalDateTime.now());
     }

@@ -90,12 +90,22 @@ public class AuthService {
         // Header Parsing
         String oldYat = ParsingHelper.parseHeader(authorizationHeader);
 
+
+        // Debugging
+        System.out.println("oldYat는 이렇습니다.: " + oldYat);
+
         // OldYat에서 유저 정보와 role 가져오기
         Long userId = jwtParser.getUserIdFromJwt(oldYat);
         Authority authority = jwtParser.getRoleFromJwt(oldYat);
 
+        System.out.println("userId: " + userId);
+        System.out.println("authority: " + authority);
+
         // KRT의 유효기간을 확인해서 유효하면 아래 과정을 수행하기
         if ( kakaoTokenService.isValidKakaoRefreshToken(userId) ){
+
+            System.out.println("Refresh토큰의 유효기간이 남아있습니다.");
+
             // User Id 와 role을 바탕으로 만들기
             String newYat = jwtProvider.generateJwtToken(userId, authority);
 
@@ -104,6 +114,7 @@ public class AuthService {
                                        .build();
         }
         else{
+            System.out.println("Refresh 토큰의 유효기간이 만료되었습니다.");
             throw new AlreadyExpiredKakaoRefreshTokenException();
         }
     }
