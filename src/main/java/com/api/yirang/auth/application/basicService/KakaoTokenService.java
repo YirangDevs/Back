@@ -10,6 +10,7 @@ import com.api.yirang.auth.repository.api.KakaoTokenAPI;
 import com.api.yirang.auth.repository.persistence.h2.KakaoTokenDao;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 
@@ -53,7 +54,14 @@ public class KakaoTokenService {
     }
 
     // save
+    @Transactional
     public void saveKakaoToken(KakaoToken kakaoToken){
+        // 정보가 없으면 추가, 아니면 지우고 다시 추가
+        Long userId = kakaoToken.getUserId();
+        if(kakaoTokenDao.existsKakaoTokenByUserId(userId)){
+            // 삭제
+            kakaoTokenDao.deleteByUserId(userId);
+        }
         kakaoTokenDao.save(kakaoToken);
     }
 
