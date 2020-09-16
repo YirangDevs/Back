@@ -1,7 +1,7 @@
 package com.api.yirang.auth.application.basicService;
 
 
-import com.api.yirang.auth.domain.jwt.JwtParser;
+import com.api.yirang.auth.domain.jwt.components.JwtParser;
 import com.api.yirang.auth.domain.user.converter.UserConverter;
 import com.api.yirang.auth.domain.user.exceptions.UserNullException;
 import com.api.yirang.auth.domain.user.model.User;
@@ -9,7 +9,6 @@ import com.api.yirang.auth.presentation.dto.RegisterDto;
 import com.api.yirang.auth.presentation.dto.UserInfoResponseDto;
 import com.api.yirang.auth.repository.persistence.maria.UserDao;
 import com.api.yirang.auth.support.type.Authority;
-import com.api.yirang.auth.support.utils.ParsingHelper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

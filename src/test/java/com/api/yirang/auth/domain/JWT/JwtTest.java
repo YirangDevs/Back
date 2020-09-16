@@ -1,8 +1,8 @@
 package com.api.yirang.auth.domain.JWT;
 
 
-import com.api.yirang.auth.domain.jwt.JwtParser;
-import com.api.yirang.auth.domain.jwt.JwtProvider;
+import com.api.yirang.auth.domain.jwt.components.JwtParser;
+import com.api.yirang.auth.domain.jwt.components.JwtProvider;
 import com.api.yirang.auth.support.type.Authority;
 import org.junit.Test;
 import org.junit.runner.RunWith;

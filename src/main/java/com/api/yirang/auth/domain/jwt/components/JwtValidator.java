@@ -1,4 +1,4 @@
-package com.api.yirang.auth.domain.jwt;
+package com.api.yirang.auth.domain.jwt.components;
 
 import io.jsonwebtoken.Jwts;
 import org.springframework.beans.factory.annotation.Value;

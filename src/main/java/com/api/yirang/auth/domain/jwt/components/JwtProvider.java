@@ -1,4 +1,4 @@
-package com.api.yirang.auth.domain.jwt;
+package com.api.yirang.auth.domain.jwt.components;
 
 import com.api.yirang.auth.support.type.Authority;
 import io.jsonwebtoken.Jwts;

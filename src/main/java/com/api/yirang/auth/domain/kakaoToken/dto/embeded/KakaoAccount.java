@@ -8,26 +8,34 @@ import lombok.ToString;
 
 @Getter
 @ToString
-@NoArgsConstructor
 public class KakaoAccount {
     @SerializedName("has_email")
-    private boolean hasEmail;
+    private final boolean hasEmail;
     @SerializedName("email_needs_agreement")
-    private boolean emailNeedsAgreement;
+    private final boolean emailNeedsAgreement;
     @SerializedName("is_email_valid")
-    private boolean isEmailValid;
+    private final boolean isEmailValid;
     @SerializedName("is_email_verified")
-    private boolean isEmailVerified;
-    //!!
-    private String email;
+    private final boolean isEmailVerified;
+
+    private final String email;
 
     @SerializedName("has_gender")
-    private boolean hasGender;
+    private final boolean hasGender;
 
     @SerializedName("gender_needs_agreement")
-    private boolean genderNeedsAgreement;
+    private final boolean genderNeedsAgreement;
 
-    private String gender;
+    private final String gender;
 
-
+    public KakaoAccount() {
+        this.hasEmail = false;
+        this.emailNeedsAgreement = false;
+        this.isEmailValid = false;
+        this.isEmailVerified = false;
+        this.email = null;
+        this.hasGender = false;
+        this.genderNeedsAgreement = false;
+        this.gender = null;
+    }
 }

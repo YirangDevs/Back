@@ -6,14 +6,13 @@ import lombok.NoArgsConstructor;
 
 
 @Getter
-@NoArgsConstructor
 public class RegisterDto{
 
-    private Long userId;
-    private String username;
-    private String fileUrl;
-    private String sex;
-    private String email;
+    private final Long userId;
+    private final String username;
+    private final String fileUrl;
+    private final String sex;
+    private final String email;
 
     @Builder
     public RegisterDto(Long userId, String username, String fileUrl,
@@ -23,5 +22,13 @@ public class RegisterDto{
         this.fileUrl = fileUrl;
         this.sex = sex;
         this.email = email;
+    }
+
+    public RegisterDto() {
+        this.userId = null;
+        this.username = null;
+        this.fileUrl = null;
+        this.sex = null;
+        this.email = null;
     }
 }

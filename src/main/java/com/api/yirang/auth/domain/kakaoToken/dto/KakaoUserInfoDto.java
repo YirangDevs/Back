@@ -10,16 +10,22 @@ import lombok.ToString;
 
 @Getter
 @ToString
-@NoArgsConstructor
 public class KakaoUserInfoDto {
 
-    private Long id;
+    private final Long id;
 
     @SerializedName("connected_at")
-    private String connectAt;
+    private final String connectAt;
 
-    private Properties properties;
+    private final Properties properties;
 
     @SerializedName("kakao_account")
-    private KakaoAccount kakaoAccount;
+    private final KakaoAccount kakaoAccount;
+
+    public KakaoUserInfoDto() {
+        this.id = null;
+        this.connectAt = null;
+        this.properties = null;
+        this.kakaoAccount = null;
+    }
 }

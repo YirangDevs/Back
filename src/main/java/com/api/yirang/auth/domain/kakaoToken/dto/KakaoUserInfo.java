@@ -11,20 +11,19 @@ import lombok.ToString;
 
 @Getter
 @ToString
-@NoArgsConstructor
 public class KakaoUserInfo{
 
     @NotNull
-    private String username;
+    private final String username;
 
     @Nullable
-    private String fileUrl;
+    private final String fileUrl;
 
     @Nullable
-    private String sex;
+    private final String sex;
 
     @Nullable
-    private String email;
+    private final String email;
 
     @Builder
     public KakaoUserInfo(String username, String fileUrl, String sex, String email) {
@@ -32,5 +31,12 @@ public class KakaoUserInfo{
         this.fileUrl = fileUrl;
         this.sex = sex;
         this.email = email;
+    }
+
+    public KakaoUserInfo() {
+        this.username = null;
+        this.fileUrl = null;
+        this.sex = null;
+        this.email = null;
     }
 }

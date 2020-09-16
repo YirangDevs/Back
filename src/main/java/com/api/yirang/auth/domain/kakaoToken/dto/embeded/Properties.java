@@ -7,11 +7,14 @@ import lombok.ToString;
 
 @Getter
 @ToString
-@NoArgsConstructor
 public class Properties {
-    private String nickname;
+    private final String nickname;
 
     @SerializedName("profile_image")
-    private String fileUrl;
+    private final String fileUrl;
 
+    public Properties() {
+        this.nickname = null;
+        this.fileUrl = null;
+    }
 }
