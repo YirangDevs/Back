@@ -11,4 +11,9 @@ public class MyLocalTime {
         LocalDateTime now = LocalDateTime.now();
         return now.plusSeconds(plusTime).format(FORMATTER);
     }
+
+    public static String makeCurrentTimeString(){
+        LocalDateTime now = LocalDateTime.now();
+        return now.format(FORMATTER);
+    }
 }

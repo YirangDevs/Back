@@ -42,7 +42,7 @@ public class UserService {
         User foundedUser = findUserByUserId(userId);
 
         // for debugging
-        System.out.println("User를 찾았습니다. " + foundedUser);
+        System.out.println("[UserService] User를 찾았습니다: " + foundedUser);
 
         return UserConverter.toUserInfoResponseDto(foundedUser);
     }
