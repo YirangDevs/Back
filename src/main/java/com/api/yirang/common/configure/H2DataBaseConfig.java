@@ -23,7 +23,7 @@ import java.util.Properties;
 @EnableJpaRepositories(
         entityManagerFactoryRef = "h2EntityManager",
         transactionManagerRef = "h2TransactionManager",
-        basePackages = "com.api.yirang.auth.repository.persistence.h2"
+        basePackages = {"com.api.yirang.auth.repository.persistence.h2"}
 )
 @PropertySource("classpath:properties/application-db.properties")
 public class H2DataBaseConfig {

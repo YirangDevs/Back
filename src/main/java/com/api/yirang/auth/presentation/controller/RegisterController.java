@@ -14,14 +14,12 @@ public class RegisterController {
 
     private final UserService userService;
 
-    @CrossOrigin
     @PostMapping(value="/admin")
     @ResponseStatus(HttpStatus.CREATED)
     public void registerAdmin(@RequestBody RegisterDto registerDto){
         userService.registerAdmin(registerDto);
     }
 
-    @CrossOrigin
     @PostMapping(value="/user")
     @ResponseStatus(HttpStatus.CREATED)
     public void registerUser(@RequestBody RegisterDto registerDto){

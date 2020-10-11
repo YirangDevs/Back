@@ -38,5 +38,4 @@ public class KakaoToken {
         this.kakaoRefreshExpiredTime = kakaoRefreshExpiredTime;
     }
 
-
 }

@@ -15,11 +15,10 @@ public class InfoController {
     // Serivces DI
     private final UserService userService;
 
-    @CrossOrigin
     @ResponseStatus(HttpStatus.OK)
     @GetMapping(value="/users/{userId}", produces = "application/json")
     public UserInfoResponseDto getUserInfo(@PathVariable("userId") String userId){
-        System.out.println("User정보 요청 왔습니다.");
+        System.out.println("[InfoController] User정보 요청 왔습니다.");
         return userService.findUserInfoByUserId(Long.parseLong(userId));
     }
 }

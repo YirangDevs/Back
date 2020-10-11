@@ -18,7 +18,6 @@ public class AuthController {
     // Service DI
     private final AuthService authService;
 
-    @CrossOrigin
     @ResponseStatus(HttpStatus.OK)
     @PostMapping(value = "/signin", consumes = "application/json")
     public void signIn(@RequestBody SignInRequestDto signInRequestDto, HttpServletResponse response){
@@ -26,7 +25,6 @@ public class AuthController {
         response.addHeader("Authorization", "Bearer " + signInResponseVO.getYirangAccessToken());
     }
 
-    @CrossOrigin
     @ResponseStatus(HttpStatus.OK)
     @PostMapping(value = "/refresh")
     public void refreshYat(@RequestHeader(value = "Authorization") String authorizationHeader, HttpServletResponse response){
