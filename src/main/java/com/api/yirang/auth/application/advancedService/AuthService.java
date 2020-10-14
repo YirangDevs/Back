@@ -43,8 +43,6 @@ public class AuthService {
         String username = kakaoUserInfo.getUsername();
         String imageUrl = kakaoUserInfo.getUsername();
 
-        String test = "";
-
         // 이전에 등록한 User인지 확인
         if (!userService.isRegisteredUserByUserId(userId)){
             System.out.println("처음 등록한 유저입니다.");
