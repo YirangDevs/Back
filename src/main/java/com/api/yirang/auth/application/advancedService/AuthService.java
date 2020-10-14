@@ -1,20 +1,14 @@
 package com.api.yirang.auth.application.advancedService;
 
 import com.api.yirang.auth.application.basicService.KakaoTokenService;
-import com.api.yirang.auth.application.basicService.UserService;
-import com.api.yirang.auth.domain.jwt.components.JwtParser;
+import com.api.yirang.auth.application.intermediateService.UserService;
 import com.api.yirang.auth.domain.jwt.components.JwtProvider;
-import com.api.yirang.auth.domain.kakaoToken.converter.KakaoTokenConverter;
 import com.api.yirang.auth.domain.kakaoToken.dto.KakaoUserInfo;
-import com.api.yirang.auth.domain.kakaoToken.exceptions.AlreadyExpiredKakaoRefreshTokenException;
-import com.api.yirang.auth.domain.kakaoToken.model.KakaoToken;
 import com.api.yirang.auth.domain.user.converter.UserConverter;
 import com.api.yirang.auth.domain.user.model.User;
-import com.api.yirang.auth.presentation.VO.RefreshYatResponseVO;
 import com.api.yirang.auth.presentation.VO.SignInResponseVO;
 import com.api.yirang.auth.presentation.dto.SignInRequestDto;
 import com.api.yirang.auth.support.type.Authority;
-import com.api.yirang.auth.support.utils.ParsingHelper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,7 +22,6 @@ public class AuthService {
     private final UserService userService;
 
     // JWT DI
-    private final JwtParser jwtParser;
     private final JwtProvider jwtProvider;
 
     @Transactional
@@ -41,20 +34,19 @@ public class AuthService {
         // SignInRequest의 아이디 얻기
         Long userId = kakaoTokenService.getUserIdByToken(kakaoAccessToken);
 
-        // kakaoToken 정보 저장하기
-        KakaoToken kakaoToken = KakaoTokenConverter.fromSignInRequestDto(userId, signInRequestDto);
-
-        // For debugging
-        System.out.println("kakaoToken: " + kakaoToken);
-
-        kakaoTokenService.saveKakaoToken(kakaoToken);
-
         System.out.println("유저 확인 합니다");
+
+        // KakaoUserInfo 얻기
+        KakaoUserInfo kakaoUserInfo = kakaoTokenService.getUserInfoByToken(kakaoAccessToken);
+
+        // userName이랑 imageUrl 얻기
+        String username = kakaoUserInfo.getUsername();
+        String imageUrl = kakaoUserInfo.getUsername();
+
         // 이전에 등록한 User인지 확인
         if (!userService.isRegisteredUserByUserId(userId)){
             System.out.println("처음 등록한 유저입니다.");
 
-            KakaoUserInfo kakaoUserInfo = kakaoTokenService.getUserInfoByToken(kakaoAccessToken);
             User user = UserConverter.fromKakaoUserInfo(userId, kakaoUserInfo, Authority.ROLE_USER);
             // for debugging
             System.out.println("유저: " + user);
@@ -71,7 +63,7 @@ public class AuthService {
 
         System.out.println("User의 authority는: " + authority);
 
-        String yat = jwtProvider.generateJwtToken(userId, authority);
+        String yat = jwtProvider.generateJwtToken(username, imageUrl, userId, authority);
 
         System.out.println("Yat가 성공적으로 만들어졌습니다!" );
         System.out.println("Yat를 보내겠습니다." );
@@ -81,38 +73,4 @@ public class AuthService {
                                .build();
     }
 
-    @Transactional
-    public RefreshYatResponseVO refreshYat(String authorizationHeader){
-
-        // Header Parsing
-        String oldYat = ParsingHelper.parseHeader(authorizationHeader);
-
-        // Debugging
-        System.out.println("oldYat는 이렇습니다.: " + oldYat);
-
-        // OldYat에서 유저 정보와 role 가져오기
-        Long userId = jwtParser.getUserIdFromJwt(oldYat);
-        Authority authority = jwtParser.getRoleFromJwt(oldYat);
-
-        System.out.println("userId: " + userId);
-        System.out.println("authority: " + authority);
-
-        // KRT의 유효기간을 확인해서 유효하면 아래 과정을 수행하기
-        if ( kakaoTokenService.isValidKakaoRefreshToken(userId) ){
-
-            System.out.println("Refresh토큰의 유효기간이 남아있습니다.");
-
-            // User Id 와 role을 바탕으로 만들기
-            String newYat = jwtProvider.generateJwtToken(userId, authority);
-
-            System.out.println("[AuthService] YAT를 만들어서 반환하겠습니다.");
-            return RefreshYatResponseVO.builder()
-                                       .yirangAccessToken(newYat)
-                                       .build();
-        }
-        else{
-            System.out.println("Refresh 토큰의 유효기간이 만료되었습니다.");
-            throw new AlreadyExpiredKakaoRefreshTokenException();
-        }
-    }
 }
