@@ -13,7 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-@Service("AuthService")
+@Service
 @RequiredArgsConstructor
 public class AuthService {
 
@@ -45,23 +45,23 @@ public class AuthService {
 
         // 이전에 등록한 User인지 확인
         if (!userService.isRegisteredUserByUserId(userId)){
-            System.out.println("처음 등록한 유저입니다.");
+            System.out.println("처음 등록한 봉사자입니다.");
 
-            User user = UserConverter.fromKakaoUserInfo(userId, kakaoUserInfo, Authority.ROLE_USER);
+            User user = UserConverter.fromKakaoUserInfo(userId, kakaoUserInfo, Authority.ROLE_VOLUNTEER);
             // for debugging
-            System.out.println("유저: " + user);
-            System.out.println("유저 정보 저장합니다.");
+            System.out.println("봉사자: " + user);
+            System.out.println("봉사자 정보 저장합니다.");
             userService.saveUser(user);
         }
         else{
-            System.out.println("이전에 등록했던 유저입니다.");
+            System.out.println("이전에 등록했던 봉사자입니다.");
         }
 
         System.out.println("authority 판단합니다.");
 
         Authority authority = userService.getAuthorityByUserId(userId);
 
-        System.out.println("User의 authority는: " + authority);
+        System.out.println("봉사자의 authority는: " + authority);
 
         String yat = jwtProvider.generateJwtToken(username, imageUrl, userId, authority);
 
