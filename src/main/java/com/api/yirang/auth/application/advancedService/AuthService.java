@@ -2,13 +2,17 @@ package com.api.yirang.auth.application.advancedService;
 
 import com.api.yirang.auth.application.basicService.KakaoTokenService;
 import com.api.yirang.auth.application.intermediateService.UserService;
+import com.api.yirang.auth.domain.jwt.components.JwtParser;
 import com.api.yirang.auth.domain.jwt.components.JwtProvider;
+import com.api.yirang.auth.domain.jwt.components.JwtValidator;
 import com.api.yirang.auth.domain.kakaoToken.dto.KakaoUserInfo;
 import com.api.yirang.auth.domain.user.converter.UserConverter;
 import com.api.yirang.auth.domain.user.model.User;
+import com.api.yirang.auth.presentation.VO.RefreshResponseVO;
 import com.api.yirang.auth.presentation.VO.SignInResponseVO;
 import com.api.yirang.auth.presentation.dto.SignInRequestDto;
 import com.api.yirang.auth.support.type.Authority;
+import com.api.yirang.auth.support.utils.ParsingHelper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,6 +27,8 @@ public class AuthService {
 
     // JWT DI
     private final JwtProvider jwtProvider;
+    private final JwtValidator jwtValidator;
+    private final JwtParser jwtParser;
 
     @Transactional
     public SignInResponseVO signin(SignInRequestDto signInRequestDto) {
@@ -71,6 +77,27 @@ public class AuthService {
         return SignInResponseVO.builder()
                                .yirangAccessToken(yat)
                                .build();
+    }
+
+    @Transactional
+    public RefreshResponseVO refresh(String header){
+        String YAT = ParsingHelper.parseHeader(header);
+
+        System.out.println("[AuthService]: YAT를 받았습니다: " + YAT);
+
+        // 임시로
+        jwtValidator.isValidJwt(YAT);
+
+        String username = jwtParser.getUsernameFromJwt(YAT);
+        String imageUrl = jwtParser.getImageUrlFromJwt(YAT);
+        Long userId = jwtParser.getUserIdFromJwt(YAT);
+        Authority authority = jwtParser.getRoleFromJwt(YAT);
+
+        String newYAT = jwtProvider.generateJwtToken(username, imageUrl, userId, authority);
+        return RefreshResponseVO.builder()
+                                .yirangAccessToken(newYAT)
+                                .build();
+
     }
 
 }
