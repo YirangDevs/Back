@@ -83,10 +83,10 @@ public class AuthService {
     public RefreshResponseVO refresh(String header){
         String YAT = ParsingHelper.parseHeader(header);
 
-        System.out.println("[AuthService]: YAT를 받았습니다: " + YAT);
+        System.out.println("[AuthService]: YAT를 받았습니다.: " + YAT);
 
         // 임시로
-        jwtValidator.isValidJwt(YAT);
+//        jwtValidator.isValidJwt(YAT);
 
         String username = jwtParser.getUsernameFromJwt(YAT);
         String imageUrl = jwtParser.getImageUrlFromJwt(YAT);
@@ -94,6 +94,9 @@ public class AuthService {
         Authority authority = jwtParser.getRoleFromJwt(YAT);
 
         String newYAT = jwtProvider.generateJwtToken(username, imageUrl, userId, authority);
+
+        System.out.println("[AuthService]: 새로운 YAT를 보내겠습니다.: " + newYAT);
+
         return RefreshResponseVO.builder()
                                 .yirangAccessToken(newYAT)
                                 .build();
