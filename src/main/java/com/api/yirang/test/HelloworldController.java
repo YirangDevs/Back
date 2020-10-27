@@ -1,15 +1,17 @@
 package com.api.yirang.test;
 
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
+@RequestMapping("/v1/apis/test")
 public class HelloworldController {
 
     @GetMapping("/hello_world")
     public String helloTest(){
         System.out.println("HelloTEst executing");
-        return "Yirang Hello world! Don't give up! 우린 한!";
+        return "Yirang Hello world! Don't give up!";
     }
     @GetMapping("/please")
     public String pleaseTest(){

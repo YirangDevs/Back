@@ -1,4 +1,4 @@
-package com.api.yirang.seniors.domain.senior;
+package com.api.yirang.seniors.domain.senior.model;
 
 
 import com.api.yirang.notices.domain.activity.model.Activity;
@@ -17,7 +17,7 @@ import javax.persistence.*;
 public class VolunteerService {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "volunteer_service_id")
     private Long volunteerServiceId;
 

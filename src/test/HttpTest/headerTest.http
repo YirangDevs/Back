@@ -2,10 +2,12 @@ POST http://localhost:8080/v1/apis/auth/signin
 Content-Type: application/json
 
 {
- "accessToken": "9-Ns3MIKIfyp-edwVSlLx_k6tRjIfPHNdX-mnQo9dBEAAAF0sX_Lvw",
-  "refreshToken": "Refresh",
+ "accessToken": "NzeeWLOJ6FmbKLH4oYJrgXl2i3cBQ-MQENgCxQopb9QAAAF1UQuAPQ",
+ "refreshToken": "Refresh",
   "refreshTokenExpiredTime": 1000
 }
+###
+
 ###
 POST http://ec2-3-35-99-114.ap-northeast-2.compute.amazonaws.com:8080/v1/apis/auth/signin
 Content-Type: application/json
@@ -15,3 +17,5 @@ Content-Type: application/json
   "refreshToken": "Refresh",
   "refreshTokenExpiredTime": 1000
 }
+
+

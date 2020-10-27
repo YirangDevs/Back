@@ -1,4 +1,4 @@
-package com.api.yirang.seniors.domain.senior;
+package com.api.yirang.seniors.domain.senior.model;
 
 
 import com.api.yirang.common.domain.region.model.Region;
@@ -15,7 +15,7 @@ import javax.persistence.*;
 public class Senior {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "senior_id")
     private Long seniorId;
 

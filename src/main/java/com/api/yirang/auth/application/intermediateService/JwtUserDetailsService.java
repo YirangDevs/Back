@@ -13,27 +13,29 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
-public class JwtUserDetailsServiceImpl implements UserDetailsService {
+public class JwtUserDetailsService implements UserDetailsService {
 
     // DI jwt
-    private final JwtValidator jwtValidator;
     private final JwtParser jwtParser;
 
     @Override
     @Transactional
     public UserDetails loadUserByUsername(String YAT) throws UsernameNotFoundException {
-        jwtValidator.isValidJwt(YAT);
 
         Long userId = jwtParser.getUserIdFromJwt(YAT);
         String username = jwtParser.getUsernameFromJwt(YAT);
         String password = "1234";
         Authority authority = jwtParser.getRoleFromJwt(YAT);
 
-        return UserDetailsVO.builder()
-                            .userId(userId)
-                            .username(username)
-                            .password(password)
-                            .authority(authority)
-                            .build();
+        UserDetailsVO userDetailsVO =   UserDetailsVO.builder()
+                                        .userId(userId)
+                                        .username(username)
+                                        .password(password)
+                                        .authority(authority)
+                                        .build();
+
+        System.out.println("[UserDetailService]: UserDetail 생성: " + userDetailsVO);
+
+        return userDetailsVO;
     }
 }

@@ -1,0 +1,6 @@
+POST http://localhost:8080/v1/apis/region
+Content-Type: application/json
+
+{
+  "regionName": "중구",
+}

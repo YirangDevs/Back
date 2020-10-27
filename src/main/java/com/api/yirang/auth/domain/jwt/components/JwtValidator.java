@@ -1,5 +1,7 @@
 package com.api.yirang.auth.domain.jwt.components;
 
+import com.api.yirang.auth.domain.jwt.exceptions.InvalidJwtException;
+import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
@@ -23,7 +25,7 @@ public class JwtValidator {
             return true;
         }
         catch (Exception e){
-            return false;
+            throw new InvalidJwtException();
         }
     }
 }

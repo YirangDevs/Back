@@ -1,7 +1,7 @@
 package com.api.yirang.auth.support.type;
 
 public enum Authority {
-    ROLE_USER("USER", "Has No Permission"),
+    ROLE_VOLUNTEER("VOLUNTEER", "Has No Permission"),
     ROLE_ADMIN("ADMIN", "HAS All Permissions");
 
     private final String autohrity;
@@ -16,4 +16,5 @@ public enum Authority {
     public String toString() {
         return autohrity;
     }
+
 }

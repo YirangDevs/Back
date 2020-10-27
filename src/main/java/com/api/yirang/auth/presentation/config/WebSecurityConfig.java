@@ -1,37 +1,82 @@
 package com.api.yirang.auth.presentation.config;
 
-import com.api.yirang.auth.presentation.filter.RestAuthenticationEntryPoint;
+import com.api.yirang.auth.application.intermediateService.JwtUserDetailsService;
+import com.api.yirang.auth.domain.jwt.components.JwtValidator;
+import com.api.yirang.auth.presentation.errorEntryPoint.RestAuthorizationEntryPoint;
+import com.api.yirang.auth.presentation.filter.JwtAuthenticationFilter;
+import com.api.yirang.auth.presentation.errorEntryPoint.RestAuthenticationEntryPoint;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
+
+    // DI EntryPoint
     @Autowired
     RestAuthenticationEntryPoint restAuthenticationEntryPoint;
+    @Autowired
+    RestAuthorizationEntryPoint restAuthorizationEntryPoint;
 
+    // DI UserDetailService
+    @Autowired
+    JwtUserDetailsService jwtUserDetailsService;
+
+    // DI jwt
+    @Autowired
+    JwtValidator jwtValidator;
+
+    @Bean
+    public JwtAuthenticationFilter authenticationFilter(){
+        return new JwtAuthenticationFilter(jwtUserDetailsService, jwtValidator);
+    }
 
     @Override
-    protected void configure(HttpSecurity http) throws Exception{
-        http.cors()
-            .and()
+    public void configure(AuthenticationManagerBuilder authenticationManagerBuilder) throws Exception {
+        authenticationManagerBuilder.userDetailsService(jwtUserDetailsService).passwordEncoder(passwordEncoder());
+    }
+
+    @Bean
+    @Override
+    public AuthenticationManager authenticationManagerBean() throws Exception{
+        return super.authenticationManagerBean();
+    }
+
+    @Bean
+    public PasswordEncoder passwordEncoder(){
+        return new BCryptPasswordEncoder();
+    }
+
+    @Override
+    protected void configure(HttpSecurity httpSecurity) throws Exception{
+
+        httpSecurity
+            .cors().and()
             .csrf().disable()
-            .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-            .and()
-            .exceptionHandling().authenticationEntryPoint(restAuthenticationEntryPoint)
-            .and()
             .authorizeRequests()
-            .antMatchers("/hello_world", "/complete").permitAll()
-            .antMatchers("/v1/apis/register/**").permitAll()
-            .antMatchers("/v1/apis/info/**").permitAll()
             .antMatchers("/v1/apis/auth/signin").permitAll()
-            .antMatchers("/v1/apis/auth/refresh").permitAll()
-            .anyRequest().authenticated();
+            .antMatchers("/v1/apis/test/**").permitAll()
+            .antMatchers("/v1/apis/admin/**").permitAll()
+            .antMatchers("/v1/apis/auth/refresh").hasAnyAuthority("VOLUNTEER", "ADMIN")
+            .anyRequest().authenticated()
+            .and()
+            .exceptionHandling()
+            .authenticationEntryPoint(restAuthenticationEntryPoint)
+            .accessDeniedHandler(restAuthorizationEntryPoint)
+            .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+
+        httpSecurity.addFilterBefore(authenticationFilter(), UsernamePasswordAuthenticationFilter.class);
+
     }
 }
