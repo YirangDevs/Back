@@ -1,6 +1,7 @@
 package com.api.yirang.auth.presentation.errorhandler;
 
 import com.api.yirang.auth.domain.jwt.exceptions.InvalidJwtException;
+import com.api.yirang.auth.domain.jwt.exceptions.JwtTokenMissingException;
 import com.api.yirang.common.exceptions.ApiException;
 import com.api.yirang.common.exceptions.Dto.ErrorDto;
 import org.springframework.http.HttpStatus;
@@ -14,6 +15,12 @@ public class JwtErrorHandler {
     @ExceptionHandler(value = {InvalidJwtException.class})
     @ResponseStatus(HttpStatus.FORBIDDEN)
     public final ErrorDto handleInvalidJwtException(ApiException apiException){
+        return apiException.buildErrorDto();
+    }
+
+    @ExceptionHandler(value = {JwtTokenMissingException.class})
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    public final ErrorDto handleJwtTokenMissingException(ApiException apiException){
         return apiException.buildErrorDto();
     }
 }

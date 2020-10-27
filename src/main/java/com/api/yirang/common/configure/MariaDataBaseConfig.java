@@ -17,6 +17,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
+import java.util.List;
 import java.util.Properties;
 
 
@@ -25,7 +26,9 @@ import java.util.Properties;
 @EnableJpaRepositories(
         entityManagerFactoryRef = "mariaEntityManager",
         transactionManagerRef = "mariaTransactionManager",
-        basePackages = "com.api.yirang.auth.repository.persistence.maria"
+        basePackages = {"com.api.yirang.auth.repository.persistence.maria",
+                        "com.api.yirang.common.repository.persistence.maria"
+        }
 )
 @PropertySource("classpath:properties/application-db.properties")
 public class MariaDataBaseConfig {
@@ -48,6 +51,9 @@ public class MariaDataBaseConfig {
     @Value("${spring.mariadb.hibernate.dialect}")
     private String DIALECT;
 
+    @Value("#{${spring.mariadb.datasource.models}}")
+    private List<String> LIST_OF_MODELS;
+
     @Primary
     @Bean
     public DataSource mariaDataSource(){
@@ -61,7 +67,11 @@ public class MariaDataBaseConfig {
     public LocalContainerEntityManagerFactoryBean entityManagerFactory(){
         LocalContainerEntityManagerFactoryBean em = new LocalContainerEntityManagerFactoryBean();
         em.setDataSource(mariaDataSource());
-        em.setPackagesToScan(new String[] {"com.api.yirang.auth.domain.user.model"});
+        em.setPackagesToScan("com.api.yirang.auth.domain.user.model",
+                             "com.api.yirang.common.domain.region.model",
+                             "com.api.yirang.notices.domain.activity.model",
+                             "com.api.yirang.notices.domain.notice.model",
+                             "com.api.yirang.seniors.domain.senior.model");
         JpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
         em.setJpaVendorAdapter(vendorAdapter);
         em.setJpaProperties(hibernateProperties());

@@ -24,9 +24,12 @@ public class JwtProvider {
         this.JWT_EXPIRATION_MS = JWT_EXPIRATION_MS;
     }
 
-    public String generateJwtToken(Long userId, Authority authority){
+    public String generateJwtToken(String username, String imgUrl, Long userId, Authority authority){
         // 예상 되는 문제 Date 와 LocalDateTime 호완성
         return Jwts.builder()
+                   // 원래 이거 없었음
+                   .claim("username", username)
+                   .claim("imgUrl", imgUrl)
                    .claim("userId", userId.toString())
                    .claim("role", authority.toString())
                    .setIssuedAt(new Date() )

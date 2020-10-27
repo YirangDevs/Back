@@ -1,7 +1,7 @@
 package com.api.yirang.auth.presentation.controller;
 
 
-import com.api.yirang.auth.application.basicService.UserService;
+import com.api.yirang.auth.application.intermediateService.UserService;
 import com.api.yirang.auth.presentation.dto.UserInfoResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

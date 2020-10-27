@@ -24,12 +24,6 @@ public class KakaoErrorHandler {
         return otherServerException.buildErrorDto();
     }
 
-    @ExceptionHandler(value = {AlreadyExpiredKakaoRefreshTokenException.class})
-    @ResponseStatus(HttpStatus.UNAUTHORIZED)
-    public final ErrorDto handleKakaoRefreshToken(ApiException apiException){
-        return apiException.buildErrorDto();
-    }
-
     @ExceptionHandler(value = {KakaoTokenNullException.class})
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public final ErrorDto handleKakaoTokenNull(ApiException apiException){

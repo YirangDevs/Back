@@ -1,4 +1,4 @@
-package com.api.yirang.auth.presentation.filter;
+package com.api.yirang.auth.presentation.errorEntryPoint;
 
 import com.api.yirang.auth.domain.jwt.exceptions.InvalidJwtException;
 import com.api.yirang.auth.domain.jwt.exceptions.JwtTokenMissingException;
@@ -21,7 +21,7 @@ public class RestAuthenticationEntryPoint implements AuthenticationEntryPoint {
     @Override
     public void commence(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, AuthenticationException e) throws IOException, ServletException {
 
-        System.out.println("[RestAuthenticaitionEntryPoint]: Authentication is failed");
+        System.out.println("[RestAuthenticationEntryPoint]: Authentication is failed");
 
         ErrorDto errorDto = ErrorDto.builder()
                                     .errorCode("012")

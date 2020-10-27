@@ -1,7 +1,7 @@
 package com.api.yirang.auth.presentation.controller;
 
 import com.api.yirang.auth.application.advancedService.AuthService;
-import com.api.yirang.auth.presentation.VO.RefreshYatResponseVO;
+import com.api.yirang.auth.presentation.VO.RefreshResponseVO;
 import com.api.yirang.auth.presentation.VO.SignInResponseVO;
 import com.api.yirang.auth.presentation.dto.SignInRequestDto;
 import lombok.RequiredArgsConstructor;
@@ -27,9 +27,9 @@ public class AuthController {
 
     @ResponseStatus(HttpStatus.OK)
     @PostMapping(value = "/refresh")
-    public void refreshYat(@RequestHeader(value = "Authorization") String authorizationHeader, HttpServletResponse response){
-        RefreshYatResponseVO refreshYatResponseVO = authService.refreshYat(authorizationHeader);
-        response.addHeader("Authorization", "Bearer " + refreshYatResponseVO.getYirangAccessToken());
+    public void refreshToken(@RequestHeader("Authorization") String header, HttpServletResponse response){
+        RefreshResponseVO refreshResponseVO = authService.refresh(header);
+        response.addHeader("Authorization", "Bearer " + refreshResponseVO.getYirangAccessToken());
     }
 
 }

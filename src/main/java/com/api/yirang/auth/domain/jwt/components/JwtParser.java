@@ -28,14 +28,14 @@ public class JwtParser {
                                             .getBody()
                                             .get("role");
 
-            return authority.equals("USER") ? Authority.ROLE_USER : Authority.ROLE_ADMIN;
+            return authority.equals("VOLUNTEER") ? Authority.ROLE_VOLUNTEER : Authority.ROLE_ADMIN;
         }
         catch (Exception ex){
             throw new InvalidJwtException();
         }
     }
 
-    public Long getUserIdFromJwt(String token){
+    public Long getUserIdFromJwt(String token) {
         try {
             return Long.parseLong(
                     (String) Jwts.parser()
@@ -44,7 +44,30 @@ public class JwtParser {
                                  .getBody()
                                  .get("userId")
             );
+        } catch (Exception ex) {
+            throw new InvalidJwtException();
         }
+    }
+    public String getUsernameFromJwt(String token){
+        try {
+            return (String) Jwts.parser()
+                                 .setSigningKey(JWT_SECRET)
+                                 .parseClaimsJws(token)
+                                 .getBody()
+                                 .get("username");
+        }
+        catch (Exception ex){
+            throw new InvalidJwtException();
+        }
+    }
+    public String getImageUrlFromJwt(String token){
+        try {
+            return (String) Jwts.parser()
+                                .setSigningKey(JWT_SECRET)
+                                .parseClaimsJws(token)
+                                .getBody()
+                                .get("imageUrl");
+       }
         catch (Exception ex){
             throw new InvalidJwtException();
         }

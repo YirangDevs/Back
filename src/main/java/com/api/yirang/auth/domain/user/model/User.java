@@ -4,26 +4,23 @@ import com.api.yirang.auth.support.type.Authority;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import javax.persistence.*;
 
 @Getter
 @NoArgsConstructor
+@ToString
 @Entity
+@Table(name = "user")
 public class User {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
-    @Column(nullable = false)
+    @Column(name = "user_id", nullable = false)
     private Long userId;
 
     @Column
     private String username; // Base64로 인코딩 한 값
-
-    @Column(columnDefinition = "VARCHAR(512) CHARACTER SET 'ascii' COLLATE 'ascii_general_ci'")
-    private String fileUrl;
 
     @Column(columnDefinition = "VARCHAR(255) default 'unknown'")
     private String sex;
@@ -40,22 +37,9 @@ public class User {
                 String sex, String email, Authority authority) {
         this.userId = userId;
         this.username = username;
-        this.fileUrl = fileUrl;
         this.sex = sex;
         this.email = email;
         this.authority = authority;
     }
 
-    @Override
-    public String toString() {
-        return "User{" +
-               "id=" + id +
-               ", userId=" + userId +
-               ", username='" + username + '\'' +
-               ", fileUrl='" + fileUrl + '\'' +
-               ", sex='" + sex + '\'' +
-               ", email='" + email + '\'' +
-               ", authority=" + authority +
-               '}';
-    }
 }
