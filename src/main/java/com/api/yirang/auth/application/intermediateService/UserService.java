@@ -1,6 +1,5 @@
 package com.api.yirang.auth.application.basicService;
 
-
 import com.api.yirang.auth.domain.jwt.components.JwtParser;
 import com.api.yirang.auth.domain.user.converter.UserConverter;
 import com.api.yirang.auth.domain.user.exceptions.UserNullException;
@@ -24,12 +23,11 @@ public class UserService {
     private final JwtParser jwtParser;
 
     /*-------------------------------------*/
-    // Methods
 
     // Methods For get or find
     public Authority getAuthorityByUserId(Long userId) {
         User user = userDao.findByUserId(userId).orElse(null);
-        return (user == null) ? Authority.ROLE_USER: user.getAuthority();
+        return (user == null) ? Authority.ROLE_VOLUNTEER: user.getAuthority();
     }
 
     public User findUserByUserId(Long userId) {
@@ -58,7 +56,7 @@ public class UserService {
         userDao.save(newUser);
     }
     public void registerUser(RegisterDto registerDto){
-        User newUser = UserConverter.fromRegisterDto(registerDto, Authority.ROLE_USER);
+        User newUser = UserConverter.fromRegisterDto(registerDto, Authority.ROLE_VOLUNTEER);
         userDao.save(newUser);
     }
 
