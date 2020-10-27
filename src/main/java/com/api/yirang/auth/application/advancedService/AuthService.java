@@ -85,9 +85,6 @@ public class AuthService {
 
         System.out.println("[AuthService]: YAT를 받았습니다.: " + YAT);
 
-        // 임시로
-//        jwtValidator.isValidJwt(YAT);
-
         String username = jwtParser.getUsernameFromJwt(YAT);
         String imageUrl = jwtParser.getImageUrlFromJwt(YAT);
         Long userId = jwtParser.getUserIdFromJwt(YAT);
