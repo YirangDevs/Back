@@ -47,7 +47,7 @@ public class AuthService {
 
         // userName이랑 imageUrl 얻기
         String username = kakaoUserInfo.getUsername();
-        String imageUrl = kakaoUserInfo.getUsername();
+        String imageUrl = kakaoUserInfo.getFileUrl();
 
         // 이전에 등록한 User인지 확인
         if (!userService.isRegisteredUserByUserId(userId)){
