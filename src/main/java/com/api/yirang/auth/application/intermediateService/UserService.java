@@ -5,6 +5,7 @@ import com.api.yirang.auth.application.basicService.VolunteerService;
 import com.api.yirang.auth.domain.user.converter.UserConverter;
 import com.api.yirang.auth.domain.user.exceptions.AlreadyExistedAdmin;
 import com.api.yirang.auth.domain.user.exceptions.UserNullException;
+import com.api.yirang.auth.domain.user.model.Admin;
 import com.api.yirang.auth.domain.user.model.User;
 import com.api.yirang.auth.presentation.dto.UserInfoResponseDto;
 import com.api.yirang.auth.repository.persistence.maria.UserDao;
@@ -51,6 +52,12 @@ public class UserService {
         userDao.updateAuthority(userId, authority);
     }
 
+    // Methods for chekcking existence
+    public boolean isRegisteredUserByUserId(Long userId){
+        return userDao.existsUserByUserId(userId);
+    }
+
+
 
     // 유저 저장하기
     @Transactional
@@ -67,11 +74,11 @@ public class UserService {
     }
 
 
-    // user -> admin 추가하기
+    // 일반 user -> admin 추가하기
     @Transactional
     public void registerAdmin(Long userId){
 
-        // userId에 해당하는 User가 있는 지 검사 없으면 예외 처리
+        // userId에 해당하는 User가 있는 지 검사
         User user = findUserByUserId(userId);
         // 이미 해당하는 user가 admin에 있으면 예외 처리
         if ( adminService.isExistedUser(user) )
@@ -80,18 +87,28 @@ public class UserService {
         }
         // User의 권한 바꾸기
         updateAuthority(userId, Authority.ROLE_ADMIN);
+
         // Admin에 아이디 추가
         adminService.save(user);
-    }
 
-    // Methods for chekcking existence
-    public boolean isRegisteredUserByUserId(Long userId){
-        return userDao.existsUserByUserId(userId);
     }
 
 
-    // admin -> user로 강등
+    // admin -> 일반 User로 강등
+    @Transactional
     public void fireAdmin(Long userId) {
+
+        // userId에 해당하는 User가 있는 지 검사
+        User user = findUserByUserId(userId);
+
+        // Admin으로 등록된 사람이 맞는지 확인
+        Admin admin = adminService.findAdminByUserId(userId);
+
+        // User 권한 바꾸기
+        updateAuthority(userId, Authority.ROLE_VOLUNTEER);
+
+        // Admin에 아이디 지우기
+        adminService.delete(user);
 
     }
 }
