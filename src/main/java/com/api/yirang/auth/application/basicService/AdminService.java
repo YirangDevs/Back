@@ -22,13 +22,19 @@ public class AdminService {
                .build()
         );
     }
+
+    public final void delete(User user){
+        adminDao.deleteByUser(user);
+    }
+
+
     public final Admin findAdminByUserId(Long userId) {
         return adminDao.findAdminByUserId(userId).orElseThrow(AdminNullException::new);
     }
 
 
     public final boolean isExistedUser(User user) {
-        return adminDao.findAdminByUser(user);
+        return adminDao.existsAdminByUser(user);
     }
 
 }

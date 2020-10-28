@@ -47,6 +47,10 @@ public class UserService {
         return UserConverter.toUserInfoResponseDto(foundedUser);
     }
 
+    public void updateAuthority(Long userId, Authority authority){
+        userDao.updateAuthority(userId, authority);
+    }
+
 
     // 유저 저장하기
     @Transactional
@@ -62,17 +66,20 @@ public class UserService {
         }
     }
 
+
     // user -> admin 추가하기
     @Transactional
     public void registerAdmin(Long userId){
 
         // userId에 해당하는 User가 있는 지 검사 없으면 예외 처리
-        User user = userDao.findByUserId(userId).orElseThrow(UserNullException::new);
+        User user = findUserByUserId(userId);
         // 이미 해당하는 user가 admin에 있으면 예외 처리
         if ( adminService.isExistedUser(user) )
         {
             throw new AlreadyExistedAdmin();
         }
+        // User의 권한 바꾸기
+        updateAuthority(userId, Authority.ROLE_ADMIN);
         // Admin에 아이디 추가
         adminService.save(user);
     }
@@ -82,4 +89,9 @@ public class UserService {
         return userDao.existsUserByUserId(userId);
     }
 
+
+    // admin -> user로 강등
+    public void fireAdmin(Long userId) {
+
+    }
 }

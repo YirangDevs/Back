@@ -23,4 +23,5 @@ public class UserErrorHandler {
     public final ErrorDto handleExistedUser(ApiException apiException){
         return apiException.buildErrorDto();
     }
+
 }
