@@ -15,11 +15,17 @@ public class RegionController {
     // DI service
     private final RegionService regionService;
 
-    // Post /v1/apis/region에 지역 이름 기억 적으면
-    // 그 Region이 저장됨
+    // Post /v1/apis/region 에 지역 이름 기억 적으면
+    // 그 Region 이 저장됨
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public void registerRegion(@RequestBody RegionRequestDto regionRequestDto){
         regionService.save(regionRequestDto);
+    }
+    // Delete /v1/apis/region?region_name={region_name}
+    @DeleteMapping
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteRegion(@RequestParam(name = "region_name") String regionName){
+        regionService.deleteByRegionName(regionName);
     }
 }

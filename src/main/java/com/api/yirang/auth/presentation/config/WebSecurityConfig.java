@@ -67,7 +67,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             .authorizeRequests()
             .antMatchers("/v1/apis/auth/signin").permitAll()
             .antMatchers("/v1/apis/test/**").permitAll()
-            .antMatchers("/v1/apis/admin/**").permitAll() // 임시로...
+            .antMatchers("/v1/apis/admin/**", "/v1/apis/admin").hasAnyAuthority("VOLUNTEER", "ADMIN") // 임시로...
+            .antMatchers("/v1/apis/region").hasAnyAuthority("VOLUNTEER", "ADMIN")
             .antMatchers("/v1/apis/auth/refresh").hasAnyAuthority("VOLUNTEER", "ADMIN")
             .anyRequest().authenticated()
             .and()
