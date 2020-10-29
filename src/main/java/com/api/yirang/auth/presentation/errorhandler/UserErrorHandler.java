@@ -1,5 +1,6 @@
 package com.api.yirang.auth.presentation.errorhandler;
 
+import com.api.yirang.auth.domain.user.exceptions.AdminNullException;
 import com.api.yirang.auth.domain.user.exceptions.AlreadyExistedAdmin;
 import com.api.yirang.auth.domain.user.exceptions.UserNullException;
 import com.api.yirang.common.exceptions.ApiException;
@@ -12,7 +13,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice
 public class UserErrorHandler {
 
-    @ExceptionHandler(value={UserNullException.class})
+    @ExceptionHandler(value={AdminNullException.class, UserNullException.class})
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public final ErrorDto handleUserNull(ApiException apiException){
         return apiException.buildErrorDto();
@@ -23,4 +24,5 @@ public class UserErrorHandler {
     public final ErrorDto handleExistedUser(ApiException apiException){
         return apiException.buildErrorDto();
     }
+
 }

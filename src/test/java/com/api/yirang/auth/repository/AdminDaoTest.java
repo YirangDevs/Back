@@ -61,6 +61,5 @@ public class AdminDaoTest {
         System.out.println("Admin: " + admin);
 
         assertThat(admin.getUser().getUserId()).isEqualTo(userId);
-        assertThat(admin.getDistributionRegions()).isEmpty();
     }
 }

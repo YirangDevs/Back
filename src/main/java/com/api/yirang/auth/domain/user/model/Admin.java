@@ -1,15 +1,12 @@
 package com.api.yirang.auth.domain.user.model;
 
 
-import com.api.yirang.common.domain.region.model.DistributionRegion;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import javax.persistence.*;
-import java.util.HashSet;
-import java.util.Set;
 
 @Getter
 @ToString
@@ -29,12 +26,8 @@ public class Admin {
     )
     private User user;
 
-    @OneToMany(mappedBy = "admin")
-    private Set<DistributionRegion> distributionRegions;
-
     @Builder
     public Admin(User user) {
         this.user = user;
-        this.distributionRegions = new HashSet<>();
     }
 }
