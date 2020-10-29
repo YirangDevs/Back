@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 @Entity
 @Table(name = "distribution_region")
@@ -33,5 +34,23 @@ public class DistributionRegion {
     public DistributionRegion(Admin admin, Region region) {
         this.admin = admin;
         this.region = region;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        DistributionRegion that = (DistributionRegion) o;
+        return Objects.equals(admin, that.admin) &&
+               Objects.equals(region, that.region);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(admin, region);
     }
 }

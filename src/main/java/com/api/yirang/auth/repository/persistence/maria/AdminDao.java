@@ -25,4 +25,7 @@ public interface AdminDao extends JpaRepository<Admin, Long> {
     @Transactional
     @Query("DELETE FROM Admin AS a WHERE a.user =:user")
     void deleteByUser(User user);
+
+    boolean existsAdminByUser_UserId(Long userId);
+
 }

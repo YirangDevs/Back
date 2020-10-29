@@ -27,7 +27,6 @@ public class AuthService {
 
     // JWT DI
     private final JwtProvider jwtProvider;
-    private final JwtValidator jwtValidator;
     private final JwtParser jwtParser;
 
     @Transactional
@@ -98,6 +97,35 @@ public class AuthService {
                                 .yirangAccessToken(newYAT)
                                 .build();
 
+    }
+    @Transactional
+    public RefreshResponseVO refreshAuthority(String header, Authority authority){
+        String YAT = ParsingHelper.parseHeader(header);
+
+        String username = jwtParser.getUsernameFromJwt(YAT);
+        String imageUrl = jwtParser.getImageUrlFromJwt(YAT);
+        Long userId = jwtParser.getUserIdFromJwt(YAT);
+
+        System.out.println("[AuthService]: 새로운 Authority 입니다: " + authority);
+
+        String newYAT = jwtProvider.generateJwtToken(username, imageUrl, userId, authority);
+        return RefreshResponseVO.builder()
+                                .yirangAccessToken(newYAT)
+                                .build();
+    }
+
+    @Transactional
+    public RefreshResponseVO refreshToAdmin(String header){
+        Long userId = jwtParser.getUserIdFromJwt(ParsingHelper.parseHeader(header));
+        userService.registerAdmin(userId);
+        return refreshAuthority(header, Authority.ROLE_ADMIN);
+    }
+
+    @Transactional
+    public RefreshResponseVO refreshFromAdmin(String header){
+        Long userId = jwtParser.getUserIdFromJwt(ParsingHelper.parseHeader(header));
+        userService.fireAdmin(userId);
+        return refreshAuthority(header, Authority.ROLE_VOLUNTEER);
     }
 
 }

@@ -2,6 +2,7 @@ package com.api.yirang.common.presentation;
 
 
 import com.api.yirang.common.domain.region.exception.AlreadyExistedRegion;
+import com.api.yirang.common.domain.region.exception.DistributionRegionNullException;
 import com.api.yirang.common.domain.region.exception.RegionNullException;
 import com.api.yirang.common.exceptions.ApiException;
 import com.api.yirang.common.exceptions.Dto.ErrorDto;
@@ -13,7 +14,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice
 public class RegionExceptionHandler {
 
-    @ExceptionHandler(value = {RegionNullException.class})
+    @ExceptionHandler(value = {DistributionRegionNullException.class, RegionNullException.class})
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public final ErrorDto handleNullException(ApiException apiException){
         return apiException.buildErrorDto();

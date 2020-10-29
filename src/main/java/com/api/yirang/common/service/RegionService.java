@@ -9,6 +9,7 @@ import com.api.yirang.common.presentation.dto.RegionRequestDto;
 import com.api.yirang.common.repository.persistence.maria.RegionDao;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -18,15 +19,17 @@ public class RegionService {
     private final RegionDao regionDao;
 
 
-    public final Region findRegionByRegionName(String regionName) {
+    @Transactional
+    public Region findRegionByRegionName(String regionName) {
         return regionDao.findRegionByRegionName(regionName).orElseThrow(RegionNullException::new);
     }
 
-    public final boolean isExistedByRegionName(String regionName){
+    public boolean isExistedByRegionName(String regionName){
         return regionDao.existsByRegionName(regionName);
     }
 
-    public final void save(RegionRequestDto regionRequestDto){
+    @Transactional
+    public void save(RegionRequestDto regionRequestDto){
         Region region = RegionConverter.fromRegionRequestDtoToRegion(regionRequestDto);
         if (isExistedByRegionName(region.getRegionName())){
             throw new AlreadyExistedRegion();
@@ -34,6 +37,7 @@ public class RegionService {
         regionDao.save(region);
     }
 
+    @Transactional
     public void deleteByRegionName(String regionName) {
         // 없으면 지우지 못함
         Region region = findRegionByRegionName(regionName);

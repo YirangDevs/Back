@@ -1,0 +1,8 @@
+POST http://localhost:8080/v1/apis/admins/region/남구
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6IuycoOygleuvvCIsInVzZXJJZCI6IjE0Njg0MTYxMzkiLCJyb2xlIjoiQURNSU4iLCJpYXQiOjE2MDM5NzE4MDUsImV4cCI6MTYwNDA1ODIwNX0.-Dag0IiPEDFXeqRI7zfP29xu2dw-tgS2JA-AcCf0goA
+###
+DELETE http://localhost:8080/v1/apis/admins/region/중구
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6IuycoOygleuvvCIsInVzZXJJZCI6IjE0Njg0MTYxMzkiLCJyb2xlIjoiQURNSU4iLCJpYXQiOjE2MDM5NzE4MDUsImV4cCI6MTYwNDA1ODIwNX0.-Dag0IiPEDFXeqRI7zfP29xu2dw-tgS2JA-AcCf0goA
+###
+GET http://localhost:8080/v1/apis/admins/region
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6IuycoOygleuvvCIsInVzZXJJZCI6IjE0Njg0MTYxMzkiLCJyb2xlIjoiQURNSU4iLCJpYXQiOjE2MDM5NzE4MDUsImV4cCI6MTYwNDA1ODIwNX0.-Dag0IiPEDFXeqRI7zfP29xu2dw-tgS2JA-AcCf0goA
