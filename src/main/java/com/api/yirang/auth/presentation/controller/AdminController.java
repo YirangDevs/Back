@@ -32,6 +32,7 @@ public class AdminController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public void registerAdmin(@RequestHeader("Authorization") String header, HttpServletResponse response){
+        System.out.println("[AdminController]: 유저 권한 업그레이드를 원합니다");
         RefreshResponseVO refreshResponseVO = authService.refreshToAdmin(header);
         response.setHeader("Authorization", "Bearer " + refreshResponseVO.getYirangAccessToken());
     }
@@ -41,6 +42,7 @@ public class AdminController {
     @DeleteMapping
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteAdmin(@RequestHeader("Authorization") String header, HttpServletResponse response){
+        System.out.println("[AdminController]: 유저 권한 다운그레이드를 원합니다.");
         RefreshResponseVO refreshResponseVO = authService.refreshFromAdmin(header);
         response.setHeader("Authorization", "Bearer " + refreshResponseVO.getYirangAccessToken());
     }
