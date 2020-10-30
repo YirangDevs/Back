@@ -27,7 +27,9 @@ import java.util.Properties;
         entityManagerFactoryRef = "mariaEntityManager",
         transactionManagerRef = "mariaTransactionManager",
         basePackages = {"com.api.yirang.auth.repository.persistence.maria",
-                        "com.api.yirang.common.repository.persistence.maria"
+                        "com.api.yirang.common.repository.persistence.maria",
+                        "com.api.yirang.notices.repository.persistence.maria",
+                        "com.api.yirang.seniors.repository.persistence.maria"
         }
 )
 @PropertySource("classpath:properties/application-db.properties")

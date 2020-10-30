@@ -1,35 +1,27 @@
 package com.api.yirang.notices.presentation.dto;
 
 
+import com.api.yirang.notices.presentation.dto.embeded.ActivityRegisterRequestDto;
 import lombok.Getter;
+import lombok.ToString;
 
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
 
 @Getter
+@ToString
 public class NoticeRegisterRequestDto {
 
+    @NotBlank(message = "title is mandatory")
     private final String title;
 
-    private final String content;
+    private final ActivityRegisterRequestDto activityRegisterRequestDto;
 
-    private final Long nor; // number of request
 
-    private final String dov; // date of Volunteer
-
-    private final String tov; // time of Volunteer
-
-    private final String dod; // deadline of volunteer
-
-    private final String address;
-
-    public NoticeRegisterRequestDto(String title, String content, Long nor, String dov,
-                                    String tov, String dod, String address) {
+    public NoticeRegisterRequestDto() {
         this.title = null;
-        this.content = null;
-        this.nor = null;
-        this.dov = null;
-        this.tov = null;
-        this.dod = null;
-        this.address = null;
+        this.activityRegisterRequestDto = null;
     }
+
 }

@@ -1,12 +1,12 @@
 package com.api.yirang.notices.presentation.controller;
 
 
+import com.api.yirang.notices.application.advancedService.NoticeActivityService;
 import com.api.yirang.notices.presentation.dto.NoticeRegisterRequestDto;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
 
 @RestController
 @RequiredArgsConstructor
@@ -14,9 +14,10 @@ import org.springframework.web.bind.annotation.RestController;
 public class NoticeController {
 
     // DI 할 필드
+    private final NoticeActivityService noticeActivityService;
 
     @PostMapping(consumes = "application/json")
-    public void registerNotice(@RequestBody NoticeRegisterRequestDto noticeRequestDto){
-
+    public void registerNotice(@RequestHeader("Authorization") String header, @Valid @RequestBody NoticeRegisterRequestDto noticeRequestDto){
+        noticeActivityService.register(header, noticeRequestDto);
     }
 }

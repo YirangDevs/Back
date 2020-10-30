@@ -19,9 +19,12 @@ public class Notice {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "notice_id")
     private Long noticeId;
-
+    
     @Column
     private String title;
+
+    @Column(columnDefinition = "VARCHAR(3000)")
+    private String content;
 
     @Column(name = "day_of_deadline")
     private LocalDateTime dod;
@@ -30,15 +33,16 @@ public class Notice {
     @JoinColumn(name = "admin_number", foreignKey = @ForeignKey(name = "fk_admin_notice"))
     private Admin admin;
 
-    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.REFRESH},fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "activity_id", foreignKey = @ForeignKey(name = "fk_activity_notice"))
     private Activity activity;
 
     @Builder
-    public Notice(Long noticeId, String title, LocalDateTime dod,
-                  Activity activity) {
+    public Notice(Long noticeId, String title, String content,
+                  LocalDateTime dod, Activity activity) {
         this.noticeId = noticeId;
         this.title = title;
+        this.content = content;
         this.dod = dod;
         this.activity = activity;
     }
