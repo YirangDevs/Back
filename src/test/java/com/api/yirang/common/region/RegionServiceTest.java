@@ -26,9 +26,8 @@ public class RegionServiceTest {
     @Autowired
     RegionService regionService;
 
-
     // variable
-    String regionName = "중구";
+    String regionName = "실험구";
 
     @After
     public void tearDown() {

@@ -1,7 +1,8 @@
-package com.api.yirang.seniors.domain.senior.model;
+package com.api.yirang.seniors.domain.volunteerService.model;
 
 
 import com.api.yirang.notices.domain.activity.model.Activity;
+import com.api.yirang.seniors.domain.senior.model.Senior;
 import com.api.yirang.seniors.support.custom.ServiceType;
 import lombok.Builder;
 import lombok.Getter;

@@ -73,7 +73,8 @@ public class MariaDataBaseConfig {
                              "com.api.yirang.common.domain.region.model",
                              "com.api.yirang.notices.domain.activity.model",
                              "com.api.yirang.notices.domain.notice.model",
-                             "com.api.yirang.seniors.domain.senior.model");
+                             "com.api.yirang.seniors.domain.senior.model",
+                             "com.api.yirang.seniors.domain.volunteerService.model");
         JpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
         em.setJpaVendorAdapter(vendorAdapter);
         em.setJpaProperties(hibernateProperties());

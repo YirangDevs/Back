@@ -1,6 +1,8 @@
 package com.api.yirang.notices.presentation.dto.embeded;
 
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.ToString;
 
@@ -9,6 +11,8 @@ import javax.validation.constraints.Pattern;
 
 @Getter
 @ToString
+@Builder
+@AllArgsConstructor
 public class ActivityRegisterRequestDto {
 
     @Min(value = 1, message = "nor should be larger than 0")
@@ -38,4 +42,5 @@ public class ActivityRegisterRequestDto {
         this.region = null;
         this.content = null;
     }
+
 }

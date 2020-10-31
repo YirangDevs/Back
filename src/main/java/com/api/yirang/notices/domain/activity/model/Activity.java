@@ -33,12 +33,14 @@ public class Activity {
     @Column(name = "numbers_of_apply")
     private Long noa;
 
-    @Column(name = "date_of_volunteer")
-    private LocalDateTime dov;
+    @Column(columnDefinition = "VARCHAR(3000)")
+    private String content;
 
-    @Column(name = "time_of_volunteer")
-    private LocalDate
+    @Column(name = "datetime_of_volunteer")
+    private LocalDateTime dtov;
 
+    @Column(name = "datetime_of_deadline")
+    private LocalDateTime dtod;
 
     // relationships
     @ManyToOne
@@ -47,10 +49,14 @@ public class Activity {
 
     @Builder
     public Activity(Long nor, String content,
-                    LocalDateTime dov, Region region) {
+                    LocalDateTime dtov, LocalDateTime dtod,
+                    Region region) {
         this.nor = nor;
+        this.content = content;
         this.noa = Long.valueOf(0);
-        this.dov = dov;
+        this.dtov = dtov;
+        this.dtod = dtod;
         this.region = region;
     }
+
 }

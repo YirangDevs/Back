@@ -5,30 +5,33 @@ import com.api.yirang.notices.domain.activity.model.Activity;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "notice")
 @Getter
+@ToString
 @NoArgsConstructor
 public class Notice {
 
+    // my fields
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "notice_id")
     private Long noticeId;
     
     @Column
+    @NotBlank
     private String title;
 
-    @Column(columnDefinition = "VARCHAR(3000)")
-    private String content;
+    @Column(name = "datetime_of_written")
+    private LocalDateTime dtow;
 
-    @Column(name = "day_of_deadline")
-    private LocalDateTime dod;
-
+    // relationships
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "admin_number", foreignKey = @ForeignKey(name = "fk_admin_notice"))
     private Admin admin;
@@ -37,13 +40,13 @@ public class Notice {
     @JoinColumn(name = "activity_id", foreignKey = @ForeignKey(name = "fk_activity_notice"))
     private Activity activity;
 
+    // Constructors
     @Builder
-    public Notice(Long noticeId, String title, String content,
-                  LocalDateTime dod, Activity activity) {
-        this.noticeId = noticeId;
+    public Notice(String title,
+                  Admin admin, Activity activity) {
         this.title = title;
-        this.content = content;
-        this.dod = dod;
+        this.dtow = LocalDateTime.now(); // 객체 만든 시간이 writtien 시간
+        this.admin = admin;
         this.activity = activity;
     }
 }
