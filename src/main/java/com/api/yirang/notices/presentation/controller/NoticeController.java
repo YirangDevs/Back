@@ -14,6 +14,8 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.HashMap;
+import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
@@ -32,7 +34,7 @@ public class NoticeController {
         noticeActivityService.registerNew(header, noticeRequestDto);
     }
     // 긴급 공고 등록
-    @PostMapping(value = "/{notice_id}/urgent", consumes = )
+    @PostMapping(value = "/{notice_id}/urgent", consumes = "application/json")
     @ResponseStatus(HttpStatus.CREATED)
     public void registerUrgentNotice(@RequestHeader("Authorization") String header,
                                      @PathVariable("notice_id") Long noticeId,
@@ -55,17 +57,21 @@ public class NoticeController {
     }
 
     // 공고 갯수 조회
-    @GetMapping(value = "/nums")
+    // DTO가 아닌 Map으로 했음 -> 테스트 해봐야 함!!
+    @GetMapping(value = "/nums", produces = "application/json")
     @ResponseStatus
-    public NoticeNumsDto getNumsOfNotices(){
-        return noticeActivityService.findNumsOfNotices();
+    public Map<String, Long> getNumsOfNotices(){
+        Map<String, Long> res = new HashMap<>();
+        res.put("totalNoticeNums", noticeActivityService.findNumsOfNotices());
+        return res;
     }
 
     // 공고 업데이트
     @PutMapping(value = "/{notice_id}", produces = "application/json")
     @ResponseStatus(HttpStatus.OK)
     public void updateOneNotice(@RequestHeader("Authorization") String header,
-                                @PathVariable("notice_id") Long noticeId){
+                                @PathVariable("notice_id") Long noticeId,
+                                @RequestBody Map<String, Object> param){
         noticeActivityService.updateOneNotice(header, noticeId);
     }
 
