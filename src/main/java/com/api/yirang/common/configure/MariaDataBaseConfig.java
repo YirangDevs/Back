@@ -27,7 +27,9 @@ import java.util.Properties;
         entityManagerFactoryRef = "mariaEntityManager",
         transactionManagerRef = "mariaTransactionManager",
         basePackages = {"com.api.yirang.auth.repository.persistence.maria",
-                        "com.api.yirang.common.repository.persistence.maria"
+                        "com.api.yirang.common.repository.persistence.maria",
+                        "com.api.yirang.notices.repository.persistence.maria",
+                        "com.api.yirang.seniors.repository.persistence.maria"
         }
 )
 @PropertySource("classpath:properties/application-db.properties")
@@ -71,7 +73,8 @@ public class MariaDataBaseConfig {
                              "com.api.yirang.common.domain.region.model",
                              "com.api.yirang.notices.domain.activity.model",
                              "com.api.yirang.notices.domain.notice.model",
-                             "com.api.yirang.seniors.domain.senior.model");
+                             "com.api.yirang.seniors.domain.senior.model",
+                             "com.api.yirang.seniors.domain.volunteerService.model");
         JpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
         em.setJpaVendorAdapter(vendorAdapter);
         em.setJpaProperties(hibernateProperties());

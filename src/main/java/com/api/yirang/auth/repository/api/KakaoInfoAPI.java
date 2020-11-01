@@ -39,8 +39,8 @@ public class KakaoInfoAPI {
     @Value("${kakao.api.token.info.content_type}")
     private String kakaoUserInfoContentType;
 
-    private String getListOfUserInfoKeys(){
 
+    private String getListOfUserInfoKeys(){
         return "[" + " \"" + "properties.nickname" + "\""
                + ",\"" + "properties.profile_image" + "\""
                + ",\"" + "kakao_account.email" + "\""
