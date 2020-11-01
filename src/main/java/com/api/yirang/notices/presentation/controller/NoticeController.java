@@ -17,6 +17,5 @@ public class NoticeController {
 
     @PostMapping(consumes = "application/json")
     public void registerNotice(@RequestBody NoticeRegisterRequestDto noticeRequestDto){
-
     }
 }
