@@ -29,7 +29,8 @@ public class Activity {
     // My field
     @Column(name = "numbers_of_request")
     private Long nor;
-
+    
+    // 봉사자들의 신청 숫자!
     @Column(name = "numbers_of_apply")
     private Long noa;
 

@@ -72,6 +72,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             .antMatchers("/v1/apis/admins/region/**").hasAnyAuthority("ADMIN")
             .antMatchers("/v1/apis/region").hasAnyAuthority("VOLUNTEER", "ADMIN")
             .antMatchers("/v1/apis/auth/refresh").hasAnyAuthority("VOLUNTEER", "ADMIN")
+            // test
+            .antMatchers("/v1/apis/main/notices/**", "/v1/apis/manage/notices/**").permitAll()
             .anyRequest().authenticated()
             .and()
             .exceptionHandling()

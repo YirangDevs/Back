@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 @Repository
 public interface ActivityDao extends JpaRepository<Activity, Long> {
@@ -28,6 +29,24 @@ public interface ActivityDao extends JpaRepository<Activity, Long> {
     @Transactional
     @Query("SELECT A " +
            "FROM Activity A " +
-           "WHERE A.region = :region AND A.dtov =:dtov")
-    Activity findActivityByRegionAndDTOV(Region region, LocalDateTime dtov);
+           "WHERE A.region =:region AND A.dtov =:dtov")
+    Optional<Activity> findActivityByRegionAndDTOV(Region region, LocalDateTime dtov);
+
+    @Override
+    Optional<Activity> findById(Long activityId);
+
+    @Modifying
+    @Transactional
+    @Query("UPDATE Activity A " +
+           "SET A.nor =:newNor, A.content =:newContent, " +
+           "    A.dtov =:newDtov, A.dtod =:newDtod, " +
+           "    A.region =:newRegion " +
+           "WHERE A.activityId =:activityId ")
+    void update(Long activityId, Long newNor, String newContent,
+                LocalDateTime newDtov, LocalDateTime newDtod, Region newRegion);
+
+    @Modifying
+    @Transactional
+    @Override
+    void deleteById(Long activityId);
 }
