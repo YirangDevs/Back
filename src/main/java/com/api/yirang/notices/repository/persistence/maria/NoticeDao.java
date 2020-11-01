@@ -46,4 +46,6 @@ public interface NoticeDao extends JpaRepository<Notice, Long> {
     @Query("DELETE FROM Notice N")
     @Override
     void deleteAll();
+
+    Long countNoticesByActivity(Activity activity);
 }

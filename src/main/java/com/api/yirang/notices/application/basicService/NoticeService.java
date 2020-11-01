@@ -87,4 +87,8 @@ public class NoticeService {
     public void deleteAll(){
         noticeDao.deleteAll();
     }
+
+    public Long countNumsOfNoticesByActivity(Activity activity) {
+        return noticeDao.countNoticesByActivity(activity);
+    }
 }

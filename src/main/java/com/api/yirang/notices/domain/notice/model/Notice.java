@@ -32,7 +32,7 @@ public class Notice {
     private LocalDateTime dtow;
 
     // relationships
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "admin_number", foreignKey = @ForeignKey(name = "fk_admin_notice"))
     private Admin admin;
 

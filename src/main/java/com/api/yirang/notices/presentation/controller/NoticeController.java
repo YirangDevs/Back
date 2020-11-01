@@ -87,6 +87,12 @@ public class NoticeController {
         System.out.println("[NoticeController] 공고 삭제 요청이 왔습니다.");
         noticeActivityService.deleteOneNotice(noticeId);
     }
-
+    // 공고 삭제 Force
+    @DeleteMapping(value = "/force/{notice_id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteOneNoticeWithForce(@PathVariable("notice_id") Long noticeId){
+        System.out.println("[NoticeController] 공고 강력 삭제 요청이 왔습니다.");
+        noticeActivityService.deleteOneNoticeWithForce(noticeId);
+    }
 
 }

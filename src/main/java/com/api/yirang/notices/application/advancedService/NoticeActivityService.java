@@ -9,6 +9,7 @@ import com.api.yirang.common.service.RegionService;
 import com.api.yirang.notices.application.basicService.ActivityService;
 import com.api.yirang.notices.application.basicService.NoticeService;
 import com.api.yirang.notices.domain.activity.converter.ActivityConverter;
+import com.api.yirang.notices.domain.activity.exception.LastExistedNotice;
 import com.api.yirang.notices.domain.activity.model.Activity;
 import com.api.yirang.notices.domain.notice.converter.NoticeConverter;
 import com.api.yirang.notices.domain.notice.model.Notice;
@@ -136,7 +137,6 @@ public class NoticeActivityService {
         String newTitle = noticeRegisterRequestDto.getTitle();
         noticeService.update(noticeId, newTitle, admin);
 
-
         // Notice와 해당되는 Activity 들고 오기
         Activity activity = noticeService.findActivityNoticeId(noticeId);
         Region region = regionService.findRegionByRegionName(activityRegisterRequestDto.getRegion());
@@ -147,6 +147,18 @@ public class NoticeActivityService {
     }
 
     public void deleteOneNotice(Long noticeId) {
+        //notice가 있는 지 확인
+        // 이 글이 마지막 활동의 마지막 글인지 아닌지, count 해서
+        Activity activity = noticeService.findActivityNoticeId(noticeId);
+        Long relatedNoticeNums =  noticeService.countNumsOfNoticesByActivity(activity);
+        if (relatedNoticeNums == 1){
+            throw new LastExistedNotice();
+        }
+        noticeService.deleteNoticeByNoticeId(noticeId);
+    }
+    public void deleteOneNoticeWithForce(Long noticeId){
+        Activity activity = noticeService.findActivityNoticeId(noticeId);
+        activityService.deleteActivityById(activity.getActivityId());
         noticeService.deleteNoticeByNoticeId(noticeId);
     }
 }

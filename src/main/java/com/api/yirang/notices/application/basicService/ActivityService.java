@@ -68,4 +68,11 @@ public class ActivityService {
     public boolean isExistedActivityById(Long activityId){
         return activityDao.existsById(activityId);
     }
+
+    public void deleteActivityById(Long activityId) {
+        // 나중에 구현할 거지만 관련된 모든 걸 삭제하는 것
+        // 봉사 매칭, 신청, service, notice 등
+        // 지금은 그냥 삭제랑 같음
+        deleteOnlyActivityById(activityId);
+    }
 }
