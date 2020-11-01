@@ -4,6 +4,7 @@ package com.api.yirang.notices.application.basicService;
 import com.api.yirang.common.domain.region.model.Region;
 import com.api.yirang.common.support.time.TimeConverter;
 import com.api.yirang.notices.domain.activity.exception.ActivityNullException;
+import com.api.yirang.notices.domain.activity.exception.AlreadyExistedActivityException;
 import com.api.yirang.notices.domain.activity.model.Activity;
 import com.api.yirang.notices.repository.persistence.maria.ActivityDao;
 import lombok.RequiredArgsConstructor;
@@ -20,15 +21,14 @@ public class ActivityService {
     private final ActivityDao activityDao;
 
     public Long save(Activity activity) {
-        Long Id = null;
-        // 있던 Activity가 중복되면 저장안함
+        // 있던 Activity가 중복되면 에러
         Region region = activity.getRegion();
         LocalDateTime dtov = activity.getDtov();
-        if (!activityDao.existsActivityByRegionAndDTOV(region, dtov)){
-            Activity returnedActivity = activityDao.save(activity);
-            Id = returnedActivity.getActivityId();
+        if (activityDao.existsActivityByRegionAndDTOV(region, dtov)){
+            throw new AlreadyExistedActivityException();
         }
-        return Id;
+        Activity returnedActivity = activityDao.save(activity);
+        return returnedActivity.getActivityId();
     }
 
     public Activity findActivityByRegionAndDTOV(Region region, String dov, String tov){
@@ -60,6 +60,9 @@ public class ActivityService {
 
     public void deleteOnlyActivityById(Long activityId){
         activityDao.deleteById(activityId);
+    }
+    public void deleteAll(){
+        activityDao.deleteAll();
     }
 
     public boolean isExistedActivityById(Long activityId){

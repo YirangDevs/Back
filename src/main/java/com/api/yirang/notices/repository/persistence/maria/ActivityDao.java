@@ -49,4 +49,5 @@ public interface ActivityDao extends JpaRepository<Activity, Long> {
     @Transactional
     @Override
     void deleteById(Long activityId);
+
 }

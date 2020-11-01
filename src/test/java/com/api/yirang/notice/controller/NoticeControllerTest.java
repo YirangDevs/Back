@@ -103,7 +103,7 @@ public class NoticeControllerTest {
     }
 
     @Test
-    public void Tile가_이상한_인테스트() throws Exception {
+    public void Titled이_이상한_인테스트() throws Exception {
         makeBadRequest("1234", Long.valueOf(5), "2020-01-23", "23:55:55",
                        "2020-02-23", "수성구", "G");
     }

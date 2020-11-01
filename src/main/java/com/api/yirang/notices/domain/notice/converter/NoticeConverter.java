@@ -5,9 +5,7 @@ import com.api.yirang.common.support.time.TimeConverter;
 import com.api.yirang.notices.domain.activity.model.Activity;
 import com.api.yirang.notices.domain.notice.model.Notice;
 import com.api.yirang.notices.presentation.dto.NoticeOneResponseDto;
-import com.api.yirang.notices.presentation.dto.NoticeRegisterRequestDto;
 import com.api.yirang.notices.presentation.dto.NoticeResponseDto;
-import com.api.yirang.notices.presentation.dto.NoticeResponsesDto;
 
 public class NoticeConverter {
 
@@ -25,13 +23,14 @@ public class NoticeConverter {
         String dtovString = TimeConverter.LocalDateTimeToString(activity.getDtov());
         String dtodString = TimeConverter.LocalDateTimeToString(activity.getDtod());
 
-        String[] dtovArray = dtodString.split(" ");
+        String[] dtovArray = dtovString.split(" ");
         String dov = dtovArray[0];
         String tov = dtovArray[1];
 
         String dod = dtodString.split(" ")[0];
 
         return NoticeOneResponseDto.builder()
+                                   .id(notice.getNoticeId())
                                    .title(notice.getTitle()).content(activity.getContent())
                                    .nor(activity.getNor()).noa(activity.getNoa())
                                    .dov(dov).tov(tov).dod(dod)

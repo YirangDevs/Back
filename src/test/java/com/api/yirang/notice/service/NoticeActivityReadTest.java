@@ -4,22 +4,20 @@ package com.api.yirang.notice.service;
 import com.api.yirang.auth.application.basicService.AdminService;
 import com.api.yirang.auth.application.intermediateService.UserService;
 import com.api.yirang.auth.domain.jwt.components.JwtParser;
-import com.api.yirang.auth.domain.user.exceptions.AdminNullException;
 import com.api.yirang.auth.domain.user.model.Admin;
 import com.api.yirang.auth.support.utils.ParsingHelper;
-import com.api.yirang.common.domain.region.exception.RegionNullException;
 import com.api.yirang.common.domain.region.model.Region;
 import com.api.yirang.common.service.RegionService;
+import com.api.yirang.common.support.time.TimeConverter;
 import com.api.yirang.notices.application.advancedService.NoticeActivityService;
 import com.api.yirang.notices.application.basicService.ActivityService;
 import com.api.yirang.notices.application.basicService.NoticeService;
-import com.api.yirang.notices.domain.activity.exception.ActivityNullException;
-import com.api.yirang.notices.domain.activity.exception.AlreadyExistedActivityException;
 import com.api.yirang.notices.domain.activity.model.Activity;
-import com.api.yirang.notices.domain.notice.exception.AlreadyExistedNoticeException;
 import com.api.yirang.notices.domain.notice.exception.NoticeNullException;
 import com.api.yirang.notices.domain.notice.model.Notice;
+import com.api.yirang.notices.presentation.dto.NoticeOneResponseDto;
 import com.api.yirang.notices.presentation.dto.NoticeRegisterRequestDto;
+import com.api.yirang.notices.presentation.dto.NoticeResponseDto;
 import com.api.yirang.notices.presentation.dto.embeded.ActivityRegisterRequestDto;
 import org.junit.After;
 import org.junit.Before;
@@ -36,13 +34,13 @@ import java.util.HashSet;
 import java.util.Iterator;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.Assert.assertTrue;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @TestPropertySource("classpath:properties/application-test.properties")
-public class NoticeActivityCreateTest {
+public class NoticeActivityReadTest {
 
-    // Test 하고자 하는 service
     @Autowired
     NoticeActivityService noticeActivityService;
 
@@ -61,13 +59,18 @@ public class NoticeActivityCreateTest {
     JwtParser jwtParser;
 
     // Test variables
-    String[] titles = {"Title1", "Title2", "Title3", "Title4"};
-    Long[] nors = {Long.valueOf(5), Long.valueOf(5), Long.valueOf(5), Long.valueOf(5)};
-    String[] dovs = {"2020-02-10", "2020-02-11", "2020-02-12", "2020-02-13"};
-    String[] tovs = {"11:10:11", "11:10:12", "11:10:13", "11:10:14"};
-    String[] dods = {"2020-02-09", "2020-02-08","2020-02-08","2020-02-08"};
-    String[] regions = {"중구", "서구", "남구", "수성구"};
-    String[] contents = {"GOOD", "GOOD","GOOD","GOOD"};
+    String[] titles = {"Title1", "Title2", "Title3", "Title4", "Title5", "Title6", "Title7"};
+    Long[] nors = {Long.valueOf(5), Long.valueOf(5), Long.valueOf(5), Long.valueOf(5),
+                   Long.valueOf(5),Long.valueOf(5),Long.valueOf(5)};
+    String[] dovs = {"2020-02-10", "2020-02-11", "2020-02-12", "2020-02-13",
+                     "2020-02-14", "2020-02-15", "2020-02-16"};
+    String[] tovs = {"11:10:11", "11:10:12", "11:10:13", "11:10:14",
+                     "11:10:15", "11:10:16", "11:10:17"};
+    String[] dods = {"2020-02-09", "2020-02-08","2020-02-08","2020-02-09",
+                     "2020-02-08", "2020-02-08", "2020-02-08"};
+    String[] regions = {"중구", "서구", "남구", "수성구",
+                        "수성구", "수성구", "수성구"};
+    String[] contents = {"GOOD", "GOOD","GOOD","GOOD", "GOOD", "GOOD", "GOOD"};
 
     Collection<Long> notices = new HashSet<>();
     Collection<Long> activities = new HashSet<>();
@@ -89,24 +92,11 @@ public class NoticeActivityCreateTest {
     @After
     public void tearDown(){
         System.out.println("테스트가 끝났습니다.");
-        // Notice 지우기
-//        Iterator<Long> noticeItr = notices.iterator();
-//        while(noticeItr.hasNext()){
-//            Long noticeId = noticeItr.next();
-//            noticeService.deleteNoticeByNoticeId(noticeId);
-//        }
-//        Iterator<Long> activityItr = activities.iterator();
-//        while(activityItr.hasNext()){
-//            Long activityId = activityItr.next();
-//            activityService.deleteOnlyActivityById(activityId);
-//        }
-//        notices.clear();
-//        activities.clear();
     }
 
     protected void saveAndCheck(String header, String title, String content, String region,
-                        String dod, String tov, String dov,
-                        Long nor){
+                                String dod, String tov, String dov,
+                                Long nor){
         ActivityRegisterRequestDto activityRegisterRequestDto =
                 ActivityRegisterRequestDto.builder()
                                           .content(content)
@@ -129,13 +119,11 @@ public class NoticeActivityCreateTest {
         Notice notice = noticeService.findByNoticeTitle(title);
         notices.add(notice.getNoticeId());
         activities.add(activity.getActivityId());
-
         // Activity 저장 됬는지 확인하기
         assertThat(activity.getNor()).isEqualTo(nor);
         assertThat(activity.getNoa()).isEqualTo(Long.valueOf(0));
         assertThat(activity.getContent()).isEqualTo(content);
         assertThat(activity.getRegion().getRegionId()).isEqualTo(regionModel.getRegionId());
-
         // Notice 저장 됬는 지 확인하기
         assertThat(notice.getTitle()).isEqualTo(title);
         assertThat(notice.getAdmin().getAdminNumber()).isEqualTo(adminService.findAdminByUserId(userId).getAdminNumber());
@@ -160,60 +148,24 @@ public class NoticeActivityCreateTest {
         assertThat(originActivity.getActivityId()).isEqualTo(activity.getActivityId());
     }
 
-
     @Test
-    public void 정상적으로_하나_등록했을_떄(){
-        saveAndCheck("Bearer " + YAT, titles[0], contents[0], regions[0],
-                     dods[0], tovs[0], dovs[0], nors[0]);
+    public void 현재_공고글이_0개일_때_Count(){
+       Long nums = noticeActivityService.findNumsOfNotices();
+       System.out.println("nums: " + nums);
+       assertThat(nums).isEqualTo(Long.valueOf(0));
     }
     @Test
-    public void 여러개_저장할_떄(){
-        // 저장
+    public void 현재_공고글이_4개일_때_Count(){
         for(int i =0; i < 4; i++){
             saveAndCheck("Bearer " + YAT, titles[i], contents[i], regions[i],
-                 dods[i], tovs[i], dovs[i], nors[i]);
+                         dods[i], tovs[i], dovs[i], nors[i]);
         }
-    }
-    @Test(expected = AlreadyExistedNoticeException.class)
-    public void 중복된_제목의_공고가_저장될_때(){
-        saveAndCheck("Bearer " + YAT, titles[0], contents[0], regions[0],
-                     dods[0], tovs[0], dovs[0], nors[0]);
-        saveAndCheck("Bearer " + YAT, titles[0], contents[0], regions[1],
-                     dods[2], tovs[0], dovs[0], nors[0]);
-    }
-    @Test(expected = AlreadyExistedActivityException.class)
-    public void 중복된_봉사활동이_저장될_때(){
-        saveAndCheck("Bearer " + YAT, titles[0], contents[0], regions[0],
-                     dods[0], tovs[0], dovs[0], nors[0]);
-        saveAndCheck("Bearer " + YAT, titles[1], contents[2], regions[0],
-                     dods[0], tovs[0], dovs[0], nors[0]);
-    }
-    @Test(expected = AdminNullException.class)
-    public void 공고글_등록시_작성자에_해당하는_Admin이_없으면(){
-        // admin 삭제
-        Long userId = jwtParser.getUserIdFromJwt(ParsingHelper.parseHeader("Bearer " + YAT));
-        userService.fireAdmin(userId);
-        saveAndCheck("Bearer " + YAT, titles[0], contents[0], regions[0],
-                     dods[0], tovs[0], dovs[0], nors[0]);
-    }
-    @Test(expected = RegionNullException.class)
-    public void 공고글_등록시_지역에_해당하는_Region이_없으면(){
-        saveAndCheck("Bearer " + YAT, titles[0], contents[0], "해운대구",
-                     dods[0], tovs[0], dovs[0], nors[0]);
-    }
-
-    @Test
-    public void 정상적인_관리자_긴급_공고_등록(){
-        //먼저 기존의 공고글 이 있고
-        saveAndCheck("Bearer " + YAT, titles[0], contents[0], regions[0],
-                     dods[0], tovs[0], dovs[0], nors[0]);
-        Notice notice = noticeService.findByNoticeTitle(titles[0]);
-        Long noticeId = notice.getNoticeId();
-
-        urgentSaveAndCheck("Bearer " + YAT, noticeId, "긴급 공고입니다.");
+        Long nums = noticeActivityService.findNumsOfNotices();
+        System.out.println("nums: " + nums);
+        assertThat(nums).isEqualTo(Long.valueOf(4));
     }
     @Test
-    public void 정상적인_관리자_긴급_공고_여러_개_등록(){
+    public void 현재_공고글이_1개_긴급공고글이_3개일때_Count(){
         saveAndCheck("Bearer " + YAT, titles[0], contents[0], regions[0],
                      dods[0], tovs[0], dovs[0], nors[0]);
         Notice notice = noticeService.findByNoticeTitle(titles[0]);
@@ -222,50 +174,111 @@ public class NoticeActivityCreateTest {
         urgentSaveAndCheck("Bearer " + YAT, noticeId, "긴급 공고입니다1.");
         urgentSaveAndCheck("Bearer " + YAT, noticeId, "긴급 공고입니다2.");
         urgentSaveAndCheck("Bearer " + YAT, noticeId, "긴급 공고입니다3.");
+
+        Long nums = noticeActivityService.findNumsOfNotices();
+        System.out.println("nums: " + nums);
+        assertThat(nums).isEqualTo(Long.valueOf(4));
     }
-    @Test(expected = AlreadyExistedNoticeException.class)
-    public void 중복되는_긴급_공고_등록(){
-        saveAndCheck("Bearer " + YAT, titles[0], contents[0], regions[1],
-                     dods[0], tovs[0], dovs[0], nors[0]);
+
+    @Test
+    public void 정상적으로_해당_공고글_조회(){
+        for(int i =0; i < 4; i++){
+            saveAndCheck("Bearer " + YAT, titles[i], contents[i], regions[i],
+                         dods[i], tovs[i], dovs[i], nors[i]);
+        }
         Notice notice = noticeService.findByNoticeTitle(titles[0]);
         Long noticeId = notice.getNoticeId();
+        Activity activity = noticeService.findActivityNoticeId(noticeId);
 
-        urgentSaveAndCheck("Bearer " + YAT, noticeId, "긴급 공고입니다1.");
-        urgentSaveAndCheck("Bearer " + YAT, noticeId, "긴급 공고입니다1.");
+        NoticeOneResponseDto noticeOneResponseDto =
+                noticeActivityService.getOneNoticeById(noticeId);
+
+        assertThat(noticeOneResponseDto.getId()).isEqualTo(notice.getNoticeId());
+        assertThat(noticeOneResponseDto.getTitle()).isEqualTo(notice.getTitle());
+        assertThat(noticeOneResponseDto.getContent()).isEqualTo(activity.getContent());
+        assertThat(noticeOneResponseDto.getNor()).isEqualTo(activity.getNor());
+        assertThat(noticeOneResponseDto.getNoa()).isEqualTo(activity.getNoa());
+
+        String dtovStr = noticeOneResponseDto.getDov() + " " + noticeOneResponseDto.getTov();
+        String dtodStr = noticeOneResponseDto.getDod() + " " + "23:59:59";
+
+        assertThat(dtovStr).isEqualTo(TimeConverter.LocalDateTimeToString(activity.getDtov()));
+        assertThat(dtodStr).isEqualTo(TimeConverter.LocalDateTimeToString(activity.getDtod()));
     }
     @Test(expected = NoticeNullException.class)
-    public void 긴급공고_등록_시_Notice가_없을_때(){
-        urgentSaveAndCheck("Bearer " + YAT, Long.valueOf(0), "긴급 공고입니다1.");
+    public void 해당하는_공고글이_없는_조회(){
+        NoticeOneResponseDto noticeOneResponseDto =
+                noticeActivityService.getOneNoticeById(Long.valueOf(123));
     }
-    @Test(expected = ActivityNullException.class)
-    public void 긴급공고_등록시_activity가_없을_떄(){
+    @Test(expected = NoticeNullException.class)
+    public void 해당하는_봉사활동이_없는_공고글_조회() {
         saveAndCheck("Bearer " + YAT, titles[0], contents[0], regions[0],
                      dods[0], tovs[0], dovs[0], nors[0]);
         Notice notice = noticeService.findByNoticeTitle(titles[0]);
         Long noticeId = notice.getNoticeId();
 
-        // acitiy 삭제
         Activity activity = notice.getActivity();
         Long activityId = activity.getActivityId();
         activityService.deleteOnlyActivityById(activityId);
-        activities.remove(activityId);
 
-        urgentSaveAndCheck("Bearer " + YAT, noticeId, "긴급 공고입니다1.");
+        System.out.println("noticeId : " + noticeId);
+        NoticeOneResponseDto noticeOneResponseDto =
+                noticeActivityService.getOneNoticeById(noticeId);
     }
-    @Test(expected = AdminNullException.class)
-    public void 긴급공고_등록_시_Admin이_없으면(){
-        saveAndCheck("Bearer " + YAT, titles[0], contents[0], regions[0],
-                     dods[0], tovs[0], dovs[0], nors[0]);
-        Notice notice = noticeService.findByNoticeTitle(titles[0]);
-        Long noticeId = notice.getNoticeId();
+     // Paging
+    @Test
+    public void 정상적인_공고글들_페이징_조회() throws InterruptedException {
+        // 최근에 쓴 글 순서로 나오는가?
 
-        // admin 삭제
-        Long userId = jwtParser.getUserIdFromJwt(ParsingHelper.parseHeader("Bearer " + YAT));
-        userService.fireAdmin(userId);
+        // 7개 저장
+        for(int i =0; i < 7; i++){
+            saveAndCheck("Bearer " + YAT, titles[i], contents[i], regions[i],
+                         dods[i], tovs[i], dovs[i], nors[i]);
+            Thread.sleep(1000);
+        }
 
-        urgentSaveAndCheck("Bearer " + YAT, noticeId, "긴급 공고입니다1.");
+        Collection<NoticeResponseDto> noticeResponses = noticeActivityService.findNoticesByPage(0);
+        // 6개 여야함
+        assertThat(noticeResponses.size()).isEqualTo(6);
+
+        // Tile7 -> Tile 2로 가야함
+        Iterator<NoticeResponseDto> itr = noticeResponses.iterator();
+        int i = 7;
+        while(itr.hasNext()){
+            NoticeResponseDto noticeResponseDto = itr.next();
+            assertThat(noticeResponseDto.getTitle()).isEqualTo(titles[--i]);
+        }
+        System.out.println(noticeResponses);
     }
+    @Test
+    public void 공고글이_6개가_안되는_조회() throws InterruptedException {
+        for(int i =0; i < 3; i++){
+            saveAndCheck("Bearer " + YAT, titles[i], contents[i], regions[i],
+                         dods[i], tovs[i], dovs[i], nors[i]);
+            Thread.sleep(1000);
+        }
+        Collection<NoticeResponseDto> noticeResponses = noticeActivityService.findNoticesByPage(0);
+        // 3개 여야함
+        assertThat(noticeResponses.size()).isEqualTo(3);
+
+        Iterator<NoticeResponseDto> itr = noticeResponses.iterator();
+        int i = 3;
+        while(itr.hasNext()){
+            NoticeResponseDto noticeResponseDto = itr.next();
+            assertThat(noticeResponseDto.getTitle()).isEqualTo(titles[--i]);
+        }
+        System.out.println(noticeResponses);
+    }
+
+    @Test(expected = NoticeNullException.class)
+    public void 요청하는_페이지가_너무_클_때() throws InterruptedException {
+        for(int i =0; i < 3; i++){
+            saveAndCheck("Bearer " + YAT, titles[i], contents[i], regions[i],
+                         dods[i], tovs[i], dovs[i], nors[i]);
+            Thread.sleep(1000);
+        }
+        Collection<NoticeResponseDto> noticeResponses = noticeActivityService.findNoticesByPage(4);
+    }
+
+
 }
-
-
-

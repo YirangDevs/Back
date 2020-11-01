@@ -38,4 +38,12 @@ public interface NoticeDao extends JpaRepository<Notice, Long> {
     void updateWithTitleAndAdmin(Long noticeId, String newTitle, Admin admin);
 
     Optional<Notice> findNoticeByTitle(String title);
+
+    boolean existsByTitle(String title);
+
+    @Modifying
+    @Transactional
+    @Query("DELETE FROM Notice N")
+    @Override
+    void deleteAll();
 }

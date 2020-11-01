@@ -1,7 +1,6 @@
 package com.api.yirang.notices.application.advancedService;
 
 import com.api.yirang.auth.application.basicService.AdminService;
-import com.api.yirang.auth.application.intermediateService.UserService;
 import com.api.yirang.auth.domain.jwt.components.JwtParser;
 import com.api.yirang.auth.domain.user.model.Admin;
 import com.api.yirang.auth.support.utils.ParsingHelper;
@@ -16,7 +15,6 @@ import com.api.yirang.notices.domain.notice.model.Notice;
 import com.api.yirang.notices.presentation.dto.NoticeOneResponseDto;
 import com.api.yirang.notices.presentation.dto.NoticeRegisterRequestDto;
 import com.api.yirang.notices.presentation.dto.NoticeResponseDto;
-import com.api.yirang.notices.presentation.dto.NoticeResponsesDto;
 import com.api.yirang.notices.presentation.dto.embeded.ActivityRegisterRequestDto;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.validator.constraints.Length;
@@ -27,8 +25,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.validation.constraints.NotBlank;
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.Iterator;
 
 @Service
@@ -83,7 +81,7 @@ public class NoticeActivityService {
     }
 
 
-    public NoticeResponsesDto findNoticesByPage(Integer pageNum) {
+    public Collection<NoticeResponseDto> findNoticesByPage(Integer pageNum) {
         // 갯수는 고정적
         int elementNums = 6;
         // Pageable 만들기
@@ -93,7 +91,7 @@ public class NoticeActivityService {
         Collection<Notice> notices = noticeService.findAllWithPage(pageWithSixElements);
 
         // Notice -> NoticeResponseDTO로 바꾸기
-        Collection<NoticeResponseDto> noticeResponseDtos = new HashSet<>();
+        Collection<NoticeResponseDto> noticeResponseDtos = new ArrayList<>();
 
         Iterator<Notice> itr = notices.iterator();
         while(itr.hasNext()){
@@ -103,9 +101,7 @@ public class NoticeActivityService {
                     NoticeConverter.convertFromNoticeToResponse(notice, activity));
         }
 
-        return NoticeResponsesDto.builder()
-                                 .notices(noticeResponseDtos)
-                                 .build();
+        return noticeResponseDtos;
     }
 
     public Long findNumsOfNotices() {
@@ -113,7 +109,8 @@ public class NoticeActivityService {
     }
 
     public void registerUrgent(String header, Long noticeId,
-                               @NotBlank(message = "title is mandatory") @Length(min=3, max= 100, message = "title should be between 5 ~ 100") String title) {
+                               @NotBlank(message = "title is mandatory")
+                               @Length(min=3, max= 100, message = "title should be between 5 ~ 100") String title) {
         // header 뜯어서 작성한 admin 누구인지 알아냄
         Long userId = jwtParser.getUserIdFromJwt(ParsingHelper.parseHeader(header));
         Admin admin = adminService.findAdminByUserId(userId);

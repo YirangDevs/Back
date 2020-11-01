@@ -11,6 +11,7 @@ import lombok.ToString;
 @Builder
 public class NoticeOneResponseDto {
 
+    private final Long id;
     private final String title;
     private final String content;
     private final Long nor;
@@ -21,6 +22,7 @@ public class NoticeOneResponseDto {
     private final String dod; // yyyy-MM-dd
 
     public NoticeOneResponseDto() {
+        this.id = null;
         this.title = null;
         this.content = null;
         this.nor = null;

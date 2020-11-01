@@ -4,13 +4,13 @@ package com.api.yirang.notices.presentation.controller;
 import com.api.yirang.notices.application.advancedService.NoticeActivityService;
 import com.api.yirang.notices.presentation.dto.NoticeOneResponseDto;
 import com.api.yirang.notices.presentation.dto.NoticeRegisterRequestDto;
-import com.api.yirang.notices.presentation.dto.NoticeResponsesDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import javax.validation.constraints.Min;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -45,9 +45,11 @@ public class NoticeController {
     // 공고 paging 조회
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public NoticeResponsesDto getPageNotices(@Param("page") Integer pageNum){
+    public Map<String, Object> getPageNotices(@Param("page") @Min(value = 0) Integer pageNum){
         System.out.println("[NoticeController] 공고 페이지 조회 요청이 왔습니다.");
-        return noticeActivityService.findNoticesByPage(pageNum);
+        Map<String, Object> res = new HashMap<>();
+        res.put("notices", noticeActivityService.findNoticesByPage(pageNum));
+        return res;
     }
 
     // 공고 하나 조회

@@ -1,8 +1,6 @@
 package com.api.yirang.notices.presentation.controller;
 
 import com.api.yirang.notices.application.advancedService.NoticeActivityService;
-import com.api.yirang.notices.application.basicService.NoticeService;
-import com.api.yirang.notices.presentation.dto.NoticeResponsesDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
@@ -11,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.constraints.Min;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -23,9 +22,11 @@ public class NoticeMainController {
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public NoticeResponsesDto getPageNotices(@Param("page") Integer pageNum){
+    public Map<String, Object> getPageNotices(@Param("page") @Min(value = 0) Integer pageNum){
         System.out.println("[NoticeMainController] 공고 페이지 조회 요청이 왔습니다.");
-        return noticeActivityService.findNoticesByPage(pageNum);
+        Map<String, Object> res = new HashMap<>();
+        res.put("notices",noticeActivityService.findNoticesByPage(pageNum));
+        return res;
     }
 
     @GetMapping(value = "/nums", produces = "application/json")
