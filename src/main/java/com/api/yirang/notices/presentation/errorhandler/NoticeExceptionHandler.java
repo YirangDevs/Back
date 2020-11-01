@@ -6,6 +6,7 @@ import com.api.yirang.common.domain.region.exception.RegionNullException;
 import com.api.yirang.common.exceptions.ApiException;
 import com.api.yirang.common.exceptions.Dto.ErrorDto;
 import com.api.yirang.notices.domain.activity.exception.ActivityNullException;
+import com.api.yirang.notices.domain.activity.exception.LastExistedNotice;
 import com.api.yirang.notices.domain.notice.exception.AlreadyExistedNoticeException;
 import com.api.yirang.notices.domain.notice.exception.NoticeNullException;
 import org.springframework.http.HttpStatus;
@@ -22,7 +23,7 @@ public class NoticeExceptionHandler {
         return apiException.buildErrorDto();
     }
 
-    @ExceptionHandler(value = {AlreadyExistedNoticeException.class})
+    @ExceptionHandler(value = {AlreadyExistedNoticeException.class, LastExistedNotice.class})
     @ResponseStatus(HttpStatus.NOT_ACCEPTABLE)
     public final ErrorDto handleAlreadyExistException(ApiException apiException){
         return apiException.buildErrorDto();
