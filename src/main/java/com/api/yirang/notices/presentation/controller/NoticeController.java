@@ -88,6 +88,8 @@ public class NoticeController {
     public void deleteOneNotice(@PathVariable("notice_id") Long noticeId){
         System.out.println("[NoticeController] 공고 삭제 요청이 왔습니다.");
         noticeActivityService.deleteOneNotice(noticeId);
+        System.out.println("[NoticeController] 공고 삭제를 했습니다.");
+
     }
     // 공고 삭제 Force
     @DeleteMapping(value = "/force/{notice_id}")
@@ -95,6 +97,8 @@ public class NoticeController {
     public void deleteOneNoticeWithForce(@PathVariable("notice_id") Long noticeId){
         System.out.println("[NoticeController] 공고 강력 삭제 요청이 왔습니다.");
         noticeActivityService.deleteOneNoticeWithForce(noticeId);
+        System.out.println("[NoticeController] 공고 삭제 요청을 했습니다.");
+
     }
 
 }
