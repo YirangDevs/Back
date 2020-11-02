@@ -69,7 +69,7 @@ public class NoticeActivityService {
         Activity activity = ActivityConverter.ConvertFromDtoToModel(activityRegisterRequestDto, region);
         activityService.save(activity);
 
-        System.out.println("[registerService]: activity를 저장했습니다. ");
+        System.out.println("[registerService]: activity를 저장했습니다.");
 
 
         // Notice 받아서, DB에 저장
@@ -81,11 +81,17 @@ public class NoticeActivityService {
     }
 
     public NoticeOneResponseDto getOneNoticeById(Long noticeId) {
+
+        System.out.println("[registerService]: getOneNoticeById를 실행하겠습니다.");
         // Notice Id로 Notice 불러오기
         Notice notice = noticeService.findByNoticeId(noticeId);
 
+        System.out.println("[registerService]: Notice: " + notice);
+
         // Notice에 해당하는 Activity 불러오기
         Activity activity = noticeService.findActivityNoticeId(noticeId);
+
+        System.out.println("[registerService]: activity: " + activity);
 
         // preprocessing 하고 Dto 만들기
         return NoticeConverter.convertFromNoticeToOneResponse(notice, activity);
@@ -98,8 +104,12 @@ public class NoticeActivityService {
         // Pageable 만들기
         Pageable pageWithSixElements = PageRequest.of(pageNum, elementNums, Sort.by("dtow").descending());
 
+        System.out.println("[registerService]: findNoticesByPage를 실행하겠습니다.");
+
         // collections Notice 구하기
         Collection<Notice> notices = noticeService.findAllWithPage(pageWithSixElements);
+
+        System.out.println("[registerService]: Collection<Notice>: " + notices);
 
         // Notice -> NoticeResponseDTO로 바꾸기
         Collection<NoticeResponseDto> noticeResponseDtos = new ArrayList<>();
@@ -112,10 +122,14 @@ public class NoticeActivityService {
                     NoticeConverter.convertFromNoticeToResponse(notice, activity));
         }
 
+        System.out.println("[registerService]: noticeResponseDtos를 만들어서 내보겠습니다.");
+
         return noticeResponseDtos;
     }
 
     public Long findNumsOfNotices() {
+
+        System.out.println("[registerService]: findNumsOfNotices를 실행하겠습니다.");
         return noticeService.countNumsOfNotices();
     }
 
@@ -128,7 +142,7 @@ public class NoticeActivityService {
         // noticeId를 이용해서 Activity를 가져옴
         Activity activity = noticeService.findActivityNoticeId(noticeId);
 
-        // 새로운 Notice를 만들고 저장
+        // 새로운 Notice를 만들고 저장g
         Notice newUrgentNotice = NoticeConverter.convertFromDtoToModel(title, admin, activity);
         noticeService.save(newUrgentNotice);
     }
