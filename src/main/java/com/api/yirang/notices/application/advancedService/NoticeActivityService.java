@@ -136,20 +136,30 @@ public class NoticeActivityService {
     public void registerUrgent(String header, Long noticeId,
                                @NotBlank(message = "title is mandatory")
                                @Length(min=3, max= 100, message = "title should be between 5 ~ 100") String title) {
+
+        System.out.println("[registerService]: registerUrgent를 실행하겠습니다.");
+        System.out.println("[registerService]: title을 받았습니다. " + title);
+
         // header 뜯어서 작성한 admin 누구인지 알아냄
         Long userId = jwtParser.getUserIdFromJwt(ParsingHelper.parseHeader(header));
         Admin admin = adminService.findAdminByUserId(userId);
         // noticeId를 이용해서 Activity를 가져옴
         Activity activity = noticeService.findActivityNoticeId(noticeId);
 
-        // 새로운 Notice를 만들고 저장g
+        System.out.println("[registerService]: Admin과 Activity을 구했습니다.");
+
+        // 새로운 Notice를 만들고 저장
         Notice newUrgentNotice = NoticeConverter.convertFromDtoToModel(title, admin, activity);
         noticeService.save(newUrgentNotice);
+
+        System.out.println("[registerService]: notice를 저장했습니다.");
     }
 
     public void updateOneNotice(String header, Long noticeId,
                                 NoticeRegisterRequestDto noticeRegisterRequestDto) {
         // header 뜯어서 작성한 admin 누구인지 알아내기
+        System.out.println("[registerService]: registerUrgent를 실행하겠습니다.");
+
         Long userId = jwtParser.getUserIdFromJwt(ParsingHelper.parseHeader(header));
         Admin admin = adminService.findAdminByUserId(userId);
 

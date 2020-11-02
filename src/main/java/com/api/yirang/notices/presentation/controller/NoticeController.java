@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Min;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -21,7 +22,6 @@ public class NoticeController {
 
     // DI 할 필드
     private final NoticeActivityService noticeActivityService;
-
 
     // 공고 등록
     @PostMapping(consumes = "application/json")
@@ -46,10 +46,11 @@ public class NoticeController {
     // 공고 paging 조회
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public Map<String, Object> getPageNotices(@Param("page") @Min(value = 0) Integer pageNum){
+    public Map<String, Collection> getPageNotices(@Param("page") @Min(value = 0) Integer page){
         System.out.println("[NoticeController] 공고 페이지 조회 요청이 왔습니다.");
-        Map<String, Object> res = new HashMap<>();
-        res.put("notices", noticeActivityService.findNoticesByPage(pageNum));
+        System.out.println("[NoticeController] PageNums: " + page);
+        Map<String, Collection> res = new HashMap<>();
+        res.put("notices", noticeActivityService.findNoticesByPage(page));
         return res;
     }
 
