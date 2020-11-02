@@ -48,26 +48,36 @@ public class NoticeActivityService {
 
     public void registerNew(String header, NoticeRegisterRequestDto noticeRequestDto) {
 
+        System.out.println("[registerService]: registerNew를 실행하겠습니다.");
+
         // header 뜯어서 누구인지 판단하고, admin 구하기
         Long userId = jwtParser.getUserIdFromJwt(ParsingHelper.parseHeader(header));
         Admin admin = adminService.findAdminByUserId(userId);
 
+        System.out.println("[registerService]: admin: " + admin);
+
         // Dto를 받아서 뜯어서 -> Notice랑 Activity로 나누어야 함
-        ActivityRegisterRequestDto activityRegisterRequestDto =
-                noticeRequestDto.getActivityRegisterRequestDto();
+        ActivityRegisterRequestDto activityRegisterRequestDto = noticeRequestDto.getActivityRegisterRequestDto();
+
 
         // 지역 구하기
         Region region = regionService.findRegionByRegionName(activityRegisterRequestDto.getRegion());
 
+        System.out.println("[registerService]: 지역은: " + region);
+
         // Activity 받아서 DB에 저장
         Activity activity = ActivityConverter.ConvertFromDtoToModel(activityRegisterRequestDto, region);
         activityService.save(activity);
+
+        System.out.println("[registerService]: activity를 저장했습니다. ");
+
 
         // Notice 받아서, DB에 저장
         String title = noticeRequestDto.getTitle();
         Notice notice = NoticeConverter.convertFromDtoToModel(title, admin, activity);
         noticeService.save(notice);
 
+        System.out.println("[registerService]: Notice를 저장했습니다. ");
     }
 
     public NoticeOneResponseDto getOneNoticeById(Long noticeId) {

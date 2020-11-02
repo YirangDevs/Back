@@ -29,6 +29,7 @@ public class NoticeController {
     public void registerNewNotice(@RequestHeader("Authorization") String header,
                                   @RequestBody @Valid NoticeRegisterRequestDto noticeRequestDto){
         System.out.println("[NoticeController] 공고 등록 요청이 왔습니다.");
+        System.out.println("[NoticeController] 요청: " + noticeRequestDto);
         noticeActivityService.registerNew(header, noticeRequestDto);
     }
     // 긴급 공고 등록
