@@ -1,15 +1,17 @@
 package com.api.yirang.seniors.domain.senior.model;
 
-
 import com.api.yirang.common.domain.region.model.Region;
+import com.api.yirang.common.support.type.Sex;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import javax.persistence.*;
 
 @Entity
 @Table(name = "senior")
+@ToString
 @NoArgsConstructor
 @Getter
 public class Senior {
@@ -23,8 +25,9 @@ public class Senior {
     @Column(name = "senior_name")
     private String seniorName;
 
+    @Enumerated(EnumType.STRING)
     @Column
-    private String sex;
+    private Sex sex;
 
     @Column(columnDefinition = "VARCHAR(255)")
     private String address;
@@ -33,12 +36,12 @@ public class Senior {
     private String phone;
 
     // relationship
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "region_id", foreignKey = @ForeignKey(name = "fk_region_senior"))
     private Region region;
 
     @Builder
-    public Senior(String seniorName, String sex, String address,
+    public Senior(String seniorName, Sex sex, String address,
                   String phone, Region region) {
         this.seniorName = seniorName;
         this.sex = sex;
