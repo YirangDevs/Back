@@ -15,7 +15,7 @@ public class RegionController {
     // DI service
     private final RegionService regionService;
 
-    // Post /v1/apis/region 에 지역 이름 기억 적으면
+    // Post /v1/apis/region에 지역 이름 기억 적으면
     // 그 Region 이 저장됨
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
