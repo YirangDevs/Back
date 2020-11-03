@@ -1,9 +1,12 @@
 package com.api.yirang.seniors.presentation.controller;
 
+import com.api.yirang.auth.domain.jwt.components.JwtParser;
+import com.api.yirang.auth.support.utils.ParsingHelper;
 import com.api.yirang.common.exceptions.ApiException;
 import com.api.yirang.common.exceptions.Dto.ErrorDto;
 import com.api.yirang.seniors.application.advancedService.SeniorVolunteerAdvancedService;
-import com.api.yirang.seniors.presentation.dto.RegisterSeniorRequestDto;
+import com.api.yirang.seniors.presentation.dto.request.RegisterSeniorRequestDto;
+import com.api.yirang.seniors.presentation.dto.response.SeniorResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -22,6 +25,9 @@ public class SeniorController {
 
     // DI Serivce
     private final SeniorVolunteerAdvancedService seniorVolunteerAdvancedService;
+
+    // DI Jwt
+    private final JwtParser jwtParser;
 
     /** Post **/
     // 낱개씩 추가하는 API
@@ -65,16 +71,16 @@ public class SeniorController {
     public Map<String, Long> getTotalSeniorNums(){
         System.out.println("[SeniorController] 전체 피봉사자 수를 원하는 API 요청 받았습니다: ");
         Map<String, Long> res = new HashMap<>();
-
+        res.put("nums", seniorVolunteerAdvancedService.countTotalSeniors());
         return res;
     }
     // 전체 피봉사자 GET API (paging)
     @GetMapping(value = "/total", produces = "application/json")
     @ResponseStatus(HttpStatus.OK)
-    public Map<String, Collection> getTotalSeniors(@RequestParam("page") Long page){
+    public Map<String, Collection<SeniorResponseDto>> getTotalSeniors(@RequestParam("page") Integer page){
         System.out.println("[SeniorController] 전체 피봉사자 데이터 리스트를 원하는 API 요청 받았습니다: ");
-        Map<String, Collection> res = new HashMap<>();
-
+        Map<String, Collection<SeniorResponseDto>> res = new HashMap<>();
+        res.put("seniors", seniorVolunteerAdvancedService.findAllSeniors(page));
         return res;
     }
     // 해당 지역 피봉사자 수 GET API
@@ -83,17 +89,17 @@ public class SeniorController {
     public Map<String, Long> getSpecificRegionSeniorsNums(@RequestParam("region") String region){
         System.out.println("[SeniorController] 해당 지역의 피봉사자 수를 원하는 API 요청 받았습니다: ");
         Map<String, Long> res = new HashMap<>();
-
+        res.put("nums", seniorVolunteerAdvancedService.countSeniorsByRegion(region));
         return res;
     }
     // 해당 지역 관련 피봉사자 GET API (paging)
     @GetMapping(value = "/area", produces = "application/json")
     @ResponseStatus(HttpStatus.OK)
-    public Map<String, Long> getSpecificRegionSeniors(@RequestParam("region") String region,
-                                                      @RequestParam("page") Long page){
+    public Map<String, Collection<SeniorResponseDto>> getSpecificRegionSeniors(@RequestParam("region") String region,
+                                                                               @RequestParam("page") Integer page){
         System.out.println("[SeniorController] 해당 지역의 피봉사자 리스트를 원하는 API 요청 받았습니다: ");
-        Map<String, Long> res = new HashMap<>();
-
+        Map<String, Collection<SeniorResponseDto>> res = new HashMap<>();
+        res.put("seniors", seniorVolunteerAdvancedService.findSeniorsByRegion(region, page));
         return res;
     }
     // 관리자 관할 구역 피봉사자 수 GET API
@@ -101,18 +107,20 @@ public class SeniorController {
     @ResponseStatus(HttpStatus.OK)
     public Map<String, Long> getMyRegionSeniorsNums(@RequestHeader("Authorization") String header){
         System.out.println("[SeniorController] 자신 관할 구역의 피봉사자 수를 원하는 API 요청 받았습니다: ");
+        Long userId = jwtParser.getUserIdFromJwt(ParsingHelper.parseHeader(header));
         Map<String, Long> res = new HashMap<>();
-
+        res.put("nums", seniorVolunteerAdvancedService.countSeniorsByMyArea(userId));
         return res;
     }
     // 관리자 관할 구역 피봉사자 GET API (paging)
     @GetMapping(value = "/myArea", produces = "application/json")
     @ResponseStatus(HttpStatus.OK)
-    public Map<String, Long> getMyRegionSeniors(@RequestHeader("Authorization") String header,
-                                                @RequestParam("page") Long page){
+    public Map<String, Collection<SeniorResponseDto>> getMyRegionSeniors(@RequestHeader("Authorization") String header,
+                                                                         @RequestParam("page") Integer page){
         System.out.println("[SeniorController] 자신 관할 구역의 피봉사자 리스트를 원하는 API 요청 받았습니다: ");
-        Map<String, Long> res = new HashMap<>();
-
+        Long userId = jwtParser.getUserIdFromJwt(ParsingHelper.parseHeader(header));
+        Map<String, Collection<SeniorResponseDto> > res = new HashMap<>();
+        res.put("seniors", seniorVolunteerAdvancedService.findSeniorsByMyArea(userId, page));
         return res;
     }
     /** UPDATE **/
@@ -122,6 +130,8 @@ public class SeniorController {
     public void updateSenior(@PathVariable("senior_id") Long seniorId,
                              @RequestBody @Valid RegisterSeniorRequestDto registerSeniorRequestDto){
         System.out.println("[SeniorController] 피봉사자의 정보를 업데이트 하기를 원하는 API 요청 받았습니다: ");
+        seniorVolunteerAdvancedService.updateSenior(seniorId, registerSeniorRequestDto);
+
     }
 
     /** DELETE **/
@@ -131,7 +141,7 @@ public class SeniorController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteSenior(@PathVariable("senior_id") Long seniorId){
         System.out.println("[SeniorController] 피봉사자의 정보 삭제를 원하는 API 요청 받았습니다: ");
-
+        seniorVolunteerAdvancedService.deleteSenior(seniorId);
     }
 
 }

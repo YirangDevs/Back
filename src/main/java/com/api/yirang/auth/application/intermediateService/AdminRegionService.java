@@ -42,7 +42,7 @@ public class AdminRegionService {
     }
 
     @Transactional
-    public regionsResponseDto getMyRegions(Long userId) {
+    public Collection<String> getMyRegions(Long userId) {
 
         List<String> regions = new ArrayList<>();
         Collection<DistributionRegion> distributionRegions = distributionRegionService.findDistributionsByUserId(userId);
@@ -53,8 +53,6 @@ public class AdminRegionService {
             DistributionRegion distributionRegion = itr.next();
             regions.add(distributionRegion.getRegion().getRegionName());
         }
-        return regionsResponseDto.builder()
-                                 .regions(regions)
-                                 .build();
+        return regions;
     }
 }

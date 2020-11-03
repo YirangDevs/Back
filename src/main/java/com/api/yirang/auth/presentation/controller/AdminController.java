@@ -5,13 +5,15 @@ import com.api.yirang.auth.application.intermediateService.AdminRegionService;
 import com.api.yirang.auth.application.intermediateService.UserService;
 import com.api.yirang.auth.domain.jwt.components.JwtParser;
 import com.api.yirang.auth.presentation.VO.RefreshResponseVO;
-import com.api.yirang.auth.presentation.dto.regionsResponseDto;
 import com.api.yirang.auth.support.utils.ParsingHelper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 
 
 @RestController
@@ -67,9 +69,11 @@ public class AdminController {
     // /v1/apis/admin/region
     @GetMapping(value="/region", produces = "application/json")
     @ResponseStatus(HttpStatus.OK)
-    public regionsResponseDto getMyRegions(@RequestHeader("Authorization") String header){
+    public Map<String, Collection> getMyRegions(@RequestHeader("Authorization") String header){
+        Map<String, Collection> res = new HashMap<>();
         Long userId = jwtParser.getUserIdFromJwt(ParsingHelper.parseHeader(header));
-        return adminRegionService.getMyRegions(userId);
+        res.put("regions", adminRegionService.getMyRegions(userId));
+        return res;
     }
 
 

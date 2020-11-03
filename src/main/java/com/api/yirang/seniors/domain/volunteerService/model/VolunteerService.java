@@ -30,17 +30,20 @@ public class VolunteerService {
     private Long priority;
 
     // relationships
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "activity_id", foreignKey = @ForeignKey(name = "fk_activity_service"))
     private Activity activity;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "senior_id", foreignKey = @ForeignKey(name = "fk_senior_service"))
     private Senior senior;
 
     @Builder
-    public VolunteerService(ServiceType serviceType, Long priority) {
+    public VolunteerService(ServiceType serviceType, Long priority,
+                            Activity activity, Senior senior) {
         this.serviceType = serviceType;
         this.priority = priority;
+        this.activity = activity;
+        this.senior = senior;
     }
 }

@@ -1,4 +1,4 @@
-package com.api.yirang.seniors.presentation.dto;
+package com.api.yirang.seniors.presentation.dto.request;
 
 
 import com.api.yirang.common.support.type.Sex;
