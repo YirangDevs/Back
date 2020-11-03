@@ -44,7 +44,7 @@ public class Activity {
     private LocalDateTime dtod;
 
     // relationships
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "region_id", foreignKey = @ForeignKey(name = "fk_activity_region"))
     private Region region;
 

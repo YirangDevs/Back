@@ -9,7 +9,7 @@ import com.api.yirang.common.service.RegionService;
 import com.api.yirang.notices.application.basicService.ActivityService;
 import com.api.yirang.notices.application.basicService.NoticeService;
 import com.api.yirang.notices.domain.activity.converter.ActivityConverter;
-import com.api.yirang.notices.domain.activity.exception.LastExistedNotice;
+import com.api.yirang.notices.domain.notice.exception.LastExistedNotice;
 import com.api.yirang.notices.domain.activity.model.Activity;
 import com.api.yirang.notices.domain.notice.converter.NoticeConverter;
 import com.api.yirang.notices.domain.notice.model.Notice;

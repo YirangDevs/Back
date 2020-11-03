@@ -23,6 +23,7 @@ public class NoticeController {
     // DI 할 필드
     private final NoticeActivityService noticeActivityService;
 
+    /** POST methods **/
     // 공고 등록
     @PostMapping(consumes = "application/json")
     @ResponseStatus(HttpStatus.CREATED)
@@ -42,6 +43,8 @@ public class NoticeController {
         String title = param.get("title");
         noticeActivityService.registerUrgent(header,noticeId, title);
     }
+
+    /** Get methods **/
 
     // 공고 paging 조회
     @GetMapping
@@ -71,6 +74,7 @@ public class NoticeController {
         res.put("totalNoticeNums", noticeActivityService.findNumsOfNotices());
         return res;
     }
+    /** PUT methods **/
 
     // 공고 업데이트
     @PutMapping(value = "/{notice_id}", produces = "application/json")
@@ -82,6 +86,8 @@ public class NoticeController {
         noticeActivityService.updateOneNotice(header, noticeId, noticeRegisterRequestDto);
     }
 
+    /** Delete methods **/
+
     // 공고 삭제
     @DeleteMapping(value = "/{notice_id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
@@ -91,7 +97,7 @@ public class NoticeController {
         System.out.println("[NoticeController] 공고 삭제를 했습니다.");
 
     }
-    // 공고 삭제 Force
+    // 공고 강력 삭제(Force)
     @DeleteMapping(value = "/force/{notice_id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteOneNoticeWithForce(@PathVariable("notice_id") Long noticeId){

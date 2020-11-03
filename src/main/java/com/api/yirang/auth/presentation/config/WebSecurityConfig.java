@@ -8,6 +8,7 @@ import com.api.yirang.auth.presentation.errorEntryPoint.RestAuthenticationEntryP
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -69,10 +70,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             .antMatchers("/v1/apis/test/**").permitAll()
             .antMatchers("/v1/apis/admins").hasAnyAuthority("VOLUNTEER", "ADMIN") // 임시로...
             .antMatchers("/v1/apis/admins/region/**").hasAnyAuthority("ADMIN")
-            .antMatchers("/v1/apis/region").hasAnyAuthority("VOLUNTEER", "ADMIN")
+            .antMatchers("/v1/apis/region").hasAnyAuthority("ADMIN")
             .antMatchers("/v1/apis/auth/refresh").hasAnyAuthority("VOLUNTEER", "ADMIN")
-            // test
-            .antMatchers("/v1/apis/main/notices/**", "/v1/apis/main/notices").permitAll()
+            // 공고글 보는 건 Anonymous, User, admin 다 가능해야함
+            .antMatchers(HttpMethod.GET, "/v1/apis/manage/notices", "/v1/apis/manage/notices/**").permitAll()
             .antMatchers("/v1/apis/manage/notices", "/v1/apis/manage/notices/**").hasAuthority("ADMIN")
             .anyRequest().authenticated()
             .and()

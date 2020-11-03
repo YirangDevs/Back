@@ -1,4 +1,4 @@
-package com.api.yirang.notices.domain.activity.exception;
+package com.api.yirang.notices.domain.notice.exception;
 
 import com.api.yirang.common.exceptions.ApiException;
 

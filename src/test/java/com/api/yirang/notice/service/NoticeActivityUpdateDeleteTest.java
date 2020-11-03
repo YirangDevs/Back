@@ -14,7 +14,7 @@ import com.api.yirang.notices.application.advancedService.NoticeActivityService;
 import com.api.yirang.notices.application.basicService.ActivityService;
 import com.api.yirang.notices.application.basicService.NoticeService;
 import com.api.yirang.notices.domain.activity.exception.ActivityNullException;
-import com.api.yirang.notices.domain.activity.exception.LastExistedNotice;
+import com.api.yirang.notices.domain.notice.exception.LastExistedNotice;
 import com.api.yirang.notices.domain.activity.model.Activity;
 import com.api.yirang.notices.domain.notice.exception.NoticeNullException;
 import com.api.yirang.notices.domain.notice.model.Notice;

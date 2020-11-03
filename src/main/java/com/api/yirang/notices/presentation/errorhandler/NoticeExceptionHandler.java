@@ -1,12 +1,9 @@
 package com.api.yirang.notices.presentation.errorhandler;
 
-import com.api.yirang.common.domain.region.exception.AlreadyExistedRegion;
-import com.api.yirang.common.domain.region.exception.DistributionRegionNullException;
-import com.api.yirang.common.domain.region.exception.RegionNullException;
 import com.api.yirang.common.exceptions.ApiException;
 import com.api.yirang.common.exceptions.Dto.ErrorDto;
 import com.api.yirang.notices.domain.activity.exception.ActivityNullException;
-import com.api.yirang.notices.domain.activity.exception.LastExistedNotice;
+import com.api.yirang.notices.domain.notice.exception.LastExistedNotice;
 import com.api.yirang.notices.domain.notice.exception.AlreadyExistedNoticeException;
 import com.api.yirang.notices.domain.notice.exception.NoticeNullException;
 import org.springframework.http.HttpStatus;
@@ -24,7 +21,7 @@ public class NoticeExceptionHandler {
     }
 
     @ExceptionHandler(value = {AlreadyExistedNoticeException.class, LastExistedNotice.class})
-    @ResponseStatus(HttpStatus.NOT_ACCEPTABLE)
+    @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
     public final ErrorDto handleAlreadyExistException(ApiException apiException){
         return apiException.buildErrorDto();
     }

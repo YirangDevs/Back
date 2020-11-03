@@ -22,6 +22,7 @@ public class NoticeConverter {
     public static final NoticeOneResponseDto convertFromNoticeToOneResponse(Notice notice, Activity activity){
         String dtovString = TimeConverter.LocalDateTimeToString(activity.getDtov());
         String dtodString = TimeConverter.LocalDateTimeToString(activity.getDtod());
+        String region = activity.getRegion().getRegionName();
 
         String[] dtovArray = dtovString.split(" ");
         String dov = dtovArray[0];
@@ -33,6 +34,7 @@ public class NoticeConverter {
                                    .id(notice.getNoticeId())
                                    .title(notice.getTitle()).content(activity.getContent())
                                    .nor(activity.getNor()).noa(activity.getNoa())
+                                   .region(region)
                                    .dov(dov).tov(tov).dod(dod)
                                    .build();
     }
