@@ -16,15 +16,11 @@ import com.api.yirang.seniors.presentation.dto.request.RegisterSeniorRequestDto;
 import com.api.yirang.seniors.presentation.dto.response.SeniorResponseDto;
 import com.api.yirang.seniors.support.custom.ServiceType;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.validation.Valid;
 import java.util.Collection;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -39,9 +35,6 @@ public class SeniorVolunteerAdvancedService {
     private final RegionService regionService;
     private final ActivityService activityService;
     private final AdminRegionService adminRegionService;
-
-    // PageNums 갯수
-    private static final int ELEMENT_NUMS = 6;
 
     // Create Method
     public void registerSenior(@Valid RegisterSeniorRequestDto registerSeniorRequestDto) {
@@ -69,45 +62,21 @@ public class SeniorVolunteerAdvancedService {
                                                                                      activity, senior);
         volunteerServiceBasicService.save(volunteerService);
     }
-
-    // Count methods
-    public Long countTotalSeniors() {
-        return seniorBasicService.countAll();
-    }
-
-    public Long countSeniorsByRegion(String regionName) {
-        // Region 알아 내기
-        Region region = regionService.findRegionByRegionName(regionName);
-        // 숫자 세아리기
-        return seniorBasicService.countSeniorsByRegion(region);
-    }
-    public Long countSeniorsByMyArea(Long userId) {
-        // 내 관할 구역들 찾기
-        Collection<Region> regions = adminRegionService.getMyRegions(userId).stream()
-                                                       .map(region -> regionService.findRegionByRegionName(region))
-                                                       .collect(Collectors.toList());
-
-        return regions.stream().map(region -> seniorBasicService.countSeniorsByRegion(region)).reduce(Long.valueOf(0), Long::sum);
-    }
-
     // Find methods
-    public Collection<SeniorResponseDto> findAllSeniors(Integer page) {
-        // element 갯수는 몇 개 였지?
-        Pageable pageWithSixElements = PageRequest.of(page, ELEMENT_NUMS, Sort.by("name").ascending());
-        Collection<>
-        return null;
+    public Collection<SeniorResponseDto> findSeniorsByRegion(String regionName) {
+        // Region을 찾고
+        Region region = regionService.findRegionByRegionName(regionName);
+
+        // Region을 가지고 Seniors 찾기
+        Collection<Senior> seniors = seniorBasicService.findSeniorsByRegion(region);
+        // Seniors가 해당되는 봉사활동 이력 찾기
+        Collection<VolunteerService> volunteerServices =
+                volunteerServiceBasicService.findSortedVolunteerServiceInSeniors(seniors);
+
+        return volunteerServices.stream().map();
     }
 
-    public Collection<SeniorResponseDto> findSeniorsByRegion(String region, Integer page) {
-
-        Pageable pageWithSixElements = PageRequest.of(page, ELEMENT_NUMS, Sort.by("name").ascending());
-
-        return null;
-    }
-
-    public Collection<SeniorResponseDto> findSeniorsByMyArea(Long userId, Integer page) {
-
-        Pageable pageWithSixElements = PageRequest.of(page, ELEMENT_NUMS, Sort.by("name").ascending());
+    public Collection<SeniorResponseDto> findSeniorsByMyArea(Long userId) {
 
         return null;
     }

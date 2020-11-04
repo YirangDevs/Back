@@ -41,7 +41,7 @@ public class SeniorController {
     @PostMapping(value = "/total", consumes = "application/json")
     @ResponseStatus(HttpStatus.CREATED)
     public Map<String, Map> registerSeniors(@RequestBody @NotEmpty Map<String, Collection> registerSeniors){
-        Collection<RegisterSeniorRequestDto> registerSeniorRequestDtos = registerSeniors.getOrDefault("seniors", null);
+        Collection<RegisterSeniorRequestDto> registerSeniorRequestDtos = registerSeniors.get("seniors");
         System.out.println("[SeniorController] 피봉사자를 한 번에 추가하는 API 요청 받았습니다: " + registerSeniorRequestDtos);
 
         // 실패 리스트 저장
@@ -64,63 +64,24 @@ public class SeniorController {
         }
         return res;
     }
-    /** GET **/
-    // 전체 피봉사자 수 GET API
-    @GetMapping(value = "/totalNums", produces = "application/json")
-    @ResponseStatus(HttpStatus.OK)
-    public Map<String, Long> getTotalSeniorNums(){
-        System.out.println("[SeniorController] 전체 피봉사자 수를 원하는 API 요청 받았습니다: ");
-        Map<String, Long> res = new HashMap<>();
-        res.put("nums", seniorVolunteerAdvancedService.countTotalSeniors());
-        return res;
-    }
-    // 전체 피봉사자 GET API (paging)
-    @GetMapping(value = "/total", produces = "application/json")
-    @ResponseStatus(HttpStatus.OK)
-    public Map<String, Collection<SeniorResponseDto>> getTotalSeniors(@RequestParam("page") Integer page){
-        System.out.println("[SeniorController] 전체 피봉사자 데이터 리스트를 원하는 API 요청 받았습니다: ");
-        Map<String, Collection<SeniorResponseDto>> res = new HashMap<>();
-        res.put("seniors", seniorVolunteerAdvancedService.findAllSeniors(page));
-        return res;
-    }
-    // 해당 지역 피봉사자 수 GET API
-    @GetMapping(value = "/areaNums",produces = "application/json")
-    @ResponseStatus(HttpStatus.OK)
-    public Map<String, Long> getSpecificRegionSeniorsNums(@RequestParam("region") String region){
-        System.out.println("[SeniorController] 해당 지역의 피봉사자 수를 원하는 API 요청 받았습니다: ");
-        Map<String, Long> res = new HashMap<>();
-        res.put("nums", seniorVolunteerAdvancedService.countSeniorsByRegion(region));
-        return res;
-    }
-    // 해당 지역 관련 피봉사자 GET API (paging)
+    // 해당 지역 관련 피봉사자 GET API
+    // 지역에 해당하는 히스토리를 줘야함
     @GetMapping(value = "/area", produces = "application/json")
     @ResponseStatus(HttpStatus.OK)
-    public Map<String, Collection<SeniorResponseDto>> getSpecificRegionSeniors(@RequestParam("region") String region,
-                                                                               @RequestParam("page") Integer page){
+    public Map<String, Collection<SeniorResponseDto>> getSpecificRegionSeniors(@RequestParam("region") String region){
         System.out.println("[SeniorController] 해당 지역의 피봉사자 리스트를 원하는 API 요청 받았습니다: ");
         Map<String, Collection<SeniorResponseDto>> res = new HashMap<>();
-        res.put("seniors", seniorVolunteerAdvancedService.findSeniorsByRegion(region, page));
+        res.put("seniors", seniorVolunteerAdvancedService.findSeniorsByRegion(region));
         return res;
     }
-    // 관리자 관할 구역 피봉사자 수 GET API
-    @GetMapping(value = "/myAreaNums", produces = "application/json")
-    @ResponseStatus(HttpStatus.OK)
-    public Map<String, Long> getMyRegionSeniorsNums(@RequestHeader("Authorization") String header){
-        System.out.println("[SeniorController] 자신 관할 구역의 피봉사자 수를 원하는 API 요청 받았습니다: ");
-        Long userId = jwtParser.getUserIdFromJwt(ParsingHelper.parseHeader(header));
-        Map<String, Long> res = new HashMap<>();
-        res.put("nums", seniorVolunteerAdvancedService.countSeniorsByMyArea(userId));
-        return res;
-    }
-    // 관리자 관할 구역 피봉사자 GET API (paging)
+    // 관리자 관할 구역 피봉사자 GET API
     @GetMapping(value = "/myArea", produces = "application/json")
     @ResponseStatus(HttpStatus.OK)
-    public Map<String, Collection<SeniorResponseDto>> getMyRegionSeniors(@RequestHeader("Authorization") String header,
-                                                                         @RequestParam("page") Integer page){
+    public Map<String, Collection<SeniorResponseDto>> getMyRegionSeniors(@RequestHeader("Authorization") String header){
         System.out.println("[SeniorController] 자신 관할 구역의 피봉사자 리스트를 원하는 API 요청 받았습니다: ");
         Long userId = jwtParser.getUserIdFromJwt(ParsingHelper.parseHeader(header));
         Map<String, Collection<SeniorResponseDto> > res = new HashMap<>();
-        res.put("seniors", seniorVolunteerAdvancedService.findSeniorsByMyArea(userId, page));
+        res.put("seniors", seniorVolunteerAdvancedService.findSeniorsByMyArea(userId) );
         return res;
     }
     /** UPDATE **/

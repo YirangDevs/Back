@@ -7,23 +7,17 @@ import com.api.yirang.seniors.domain.senior.model.Senior;
 import com.api.yirang.seniors.repository.persistence.maria.SeniorDao;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Collection;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class SeniorBasicService {
 
     private final SeniorDao seniorDao;
 
-
-
-    // Count
-    public Long countAll() {
-        return seniorDao.count();
-    }
-
-    public Long countSeniorsByRegion(Region region) {
-        return seniorDao.countSeniorsByRegion(region);
-    }
 
     // exist
     public boolean isExistByPhone(String phone) {
@@ -37,5 +31,13 @@ public class SeniorBasicService {
     // Find
     public Senior findSeniorByPhone(String phone) {
         return seniorDao.findSeniorByPhone(phone).orElseThrow(SeniorNullException::new);
+    }
+
+    public Collection<Senior> findSeniorsByRegion(Region region) {
+        Collection<Senior> seniors = seniorDao.findSeniorsByRegion(region);
+        if (seniors.size() == 0){
+            throw new SeniorNullException();
+        }
+        return seniors;
     }
 }

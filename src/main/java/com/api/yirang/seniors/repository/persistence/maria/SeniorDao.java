@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collection;
 import java.util.Optional;
 
 @Repository
@@ -17,11 +18,13 @@ public interface SeniorDao extends JpaRepository<Senior, Long> {
 
     Optional<Senior> findSeniorByPhone(String phone);
 
+    Collection<Senior> findSeniorsByRegion(Region region);
     // isExist
     boolean existsSeniorByPhone(String phone);
 
     // Count
     Long countSeniorsByRegion(Region region);
+
 
 
     // update
