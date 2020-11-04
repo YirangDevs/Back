@@ -82,7 +82,7 @@ public class AuthService {
     public RefreshResponseVO refresh(String header){
         String YAT = ParsingHelper.parseHeader(header);
 
-        System.out.println("[AuthService]: YAT를 받았습니다.: " + YAT);
+        System.out.println("[AuthService]: Refresh를 위한 YAT를 받았습니다.: " + YAT);
 
         String username = jwtParser.getUsernameFromJwt(YAT);
         String imgUrl = jwtParser.getImageUrlFromJwt(YAT);
