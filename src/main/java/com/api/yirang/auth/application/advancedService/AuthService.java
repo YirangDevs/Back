@@ -85,11 +85,11 @@ public class AuthService {
         System.out.println("[AuthService]: YAT를 받았습니다.: " + YAT);
 
         String username = jwtParser.getUsernameFromJwt(YAT);
-        String imageUrl = jwtParser.getImageUrlFromJwt(YAT);
+        String imgUrl = jwtParser.getImageUrlFromJwt(YAT);
         Long userId = jwtParser.getUserIdFromJwt(YAT);
         Authority authority = jwtParser.getRoleFromJwt(YAT);
 
-        String newYAT = jwtProvider.generateJwtToken(username, imageUrl, userId, authority);
+        String newYAT = jwtProvider.generateJwtToken(username, imgUrl, userId, authority);
 
         System.out.println("[AuthService]: 새로운 YAT를 보내겠습니다.: " + newYAT);
 
