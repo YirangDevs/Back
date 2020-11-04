@@ -29,6 +29,7 @@ import javax.validation.constraints.NotBlank;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -71,7 +72,6 @@ public class NoticeActivityService {
 
         System.out.println("[NoticeActivityService]: activity를 저장했습니다.");
 
-
         // Notice 받아서, DB에 저장
         String title = noticeRequestDto.getTitle();
         Notice notice = NoticeConverter.convertFromDtoToModel(title, admin, activity);
@@ -111,20 +111,9 @@ public class NoticeActivityService {
 
         System.out.println("[NoticeActivityService]: Collection<Notice>: " + notices);
 
-        // Notice -> NoticeResponseDTO로 바꾸기
-        Collection<NoticeResponseDto> noticeResponseDtos = new ArrayList<>();
-
-        Iterator<Notice> itr = notices.iterator();
-        while(itr.hasNext()){
-            Notice notice = itr.next();
-            Activity activity = notice.getActivity();
-            noticeResponseDtos.add(
-                    NoticeConverter.convertFromNoticeToResponse(notice, activity));
-        }
-
-        System.out.println("[NoticeActivityService]: noticeResponseDtos를 만들어서 내보겠습니다.");
-
-        return noticeResponseDtos;
+        return notices.stream()
+                      .map(notice -> NoticeConverter.convertFromNoticeToResponse(notice, notice.getActivity()))
+                      .collect(Collectors.toList());
     }
 
     public Long findNumsOfNotices() {
