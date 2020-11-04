@@ -86,23 +86,23 @@ public class SeniorController {
     }
     /** UPDATE **/
     // 피봉사자 데이터 UPDATE API
-    @PutMapping(value = "/{senior_id}", consumes = "application/json")
+    @PutMapping(value = "/{volunteerService_id}", consumes = "application/json")
     @ResponseStatus(HttpStatus.OK)
-    public void updateSenior(@PathVariable("senior_id") Long seniorId,
+    public void updateVolunteerService(@PathVariable("volunteerService_id") Long volunteerServiceId,
                              @RequestBody @Valid RegisterSeniorRequestDto registerSeniorRequestDto){
         System.out.println("[SeniorController] 피봉사자의 정보를 업데이트 하기를 원하는 API 요청 받았습니다: ");
-        seniorVolunteerAdvancedService.updateSenior(seniorId, registerSeniorRequestDto);
+        seniorVolunteerAdvancedService.updateVolunteerService(volunteerServiceId, registerSeniorRequestDto);
 
     }
 
     /** DELETE **/
     // 나중에 매칭 되지않은 봉사자와 매칭된 봉사자 case로 나누어야 할 듯
     // 피봉사자 데이터 DELETE API
-    @DeleteMapping(value = "/{senior_id}")
+    @DeleteMapping(value = "/{volunteerService_id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteSenior(@PathVariable("senior_id") Long seniorId){
+    public void deleteVolunteerService(@PathVariable("volunteerService_id") Long volunteerServiceId){
         System.out.println("[SeniorController] 피봉사자의 정보 삭제를 원하는 API 요청 받았습니다: ");
-        seniorVolunteerAdvancedService.deleteSenior(seniorId);
+        seniorVolunteerAdvancedService.deleteVolunteerService(volunteerServiceId);
     }
 
 }

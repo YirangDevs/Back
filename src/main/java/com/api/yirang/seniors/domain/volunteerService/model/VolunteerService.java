@@ -30,11 +30,11 @@ public class VolunteerService {
     private Long priority;
 
     // relationships
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "activity_id", foreignKey = @ForeignKey(name = "fk_activity_service"))
     private Activity activity;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "senior_id", foreignKey = @ForeignKey(name = "fk_senior_service"))
     private Senior senior;
 

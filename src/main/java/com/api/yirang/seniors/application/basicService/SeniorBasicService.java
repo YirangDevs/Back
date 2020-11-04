@@ -2,6 +2,7 @@ package com.api.yirang.seniors.application.basicService;
 
 
 import com.api.yirang.common.domain.region.model.Region;
+import com.api.yirang.common.support.type.Sex;
 import com.api.yirang.seniors.domain.senior.exception.SeniorNullException;
 import com.api.yirang.seniors.domain.senior.model.Senior;
 import com.api.yirang.seniors.repository.persistence.maria.SeniorDao;
@@ -39,5 +40,10 @@ public class SeniorBasicService {
             throw new SeniorNullException();
         }
         return seniors;
+    }
+    // update
+
+    public void updateSenior(Senior existedSenior, String name, Sex sex, String address, String phone, Region region) {
+        seniorDao.updateSenior(existedSenior, name, sex, address, phone, region);
     }
 }
