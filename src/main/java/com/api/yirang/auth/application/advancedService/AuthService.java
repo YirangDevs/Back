@@ -50,12 +50,9 @@ public class AuthService {
 
         // 이전에 등록한 User인지 확인
         if (!userService.isRegisteredUserByUserId(userId)){
-            System.out.println("처음 등록한 봉사자입니다.");
 
             User user = UserConverter.fromKakaoUserInfo(userId, kakaoUserInfo, Authority.ROLE_VOLUNTEER);
             // for debugging
-            System.out.println("봉사자: " + user);
-            System.out.println("봉사자 정보 저장합니다.");
             userService.saveUser(user);
         }
         else{
@@ -69,9 +66,6 @@ public class AuthService {
         System.out.println("봉사자의 authority는: " + authority);
 
         String yat = jwtProvider.generateJwtToken(username, imageUrl, userId, authority);
-
-        System.out.println("Yat가 성공적으로 만들어졌습니다!" );
-        System.out.println("Yat를 보내겠습니다." );
 
         return SignInResponseVO.builder()
                                .yirangAccessToken(yat)

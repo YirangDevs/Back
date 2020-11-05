@@ -73,7 +73,6 @@ public class UserService {
         }
     }
 
-
     // 일반 user -> admin 추가하기
     @Transactional
     public void registerAdmin(Long userId){
@@ -89,7 +88,6 @@ public class UserService {
             adminService.save(user);
         }
     }
-
 
     // admin -> 일반 User로 강등
     @Transactional
