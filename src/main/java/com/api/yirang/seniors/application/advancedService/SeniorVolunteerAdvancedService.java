@@ -92,10 +92,8 @@ public class SeniorVolunteerAdvancedService {
 
         // regions로 해당하는 Seniors 찾기
         Collection<Senior> seniors = new ArrayList<>();
+        regions.stream().forEach(e -> seniors.addAll(seniorBasicService.findSeniorsByRegion(e)));
 
-        for(Region region: regions){
-            seniors.addAll(seniorBasicService.findSeniorsByRegion(region));
-        }
 
         // Seniors에 해당하는 봉사활동 이력 찾기
         Collection<VolunteerService> volunteerServices =
@@ -150,10 +148,12 @@ public class SeniorVolunteerAdvancedService {
     }
 
     // Delete
+
+    /**
+     *  활동이력만 삭제하지, Senior 정보나 봉사활동 정보는 이상이 없다.
+     */
     public void deleteVolunteerService(Long volunteerServiceId) {
         System.out.println("[SeniorVolunteerAdvancedService]: deleteSenior를 실행하겠습니다.");
-        // 활동이력만 삭제하지, Senior 정보나 봉사활동 정보는 이상이 없다.
-        // 활동 이력 삭제하기
         volunteerServiceBasicService.delete(volunteerServiceId);
     }
 }

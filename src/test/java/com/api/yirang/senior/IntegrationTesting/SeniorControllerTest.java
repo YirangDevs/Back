@@ -1,4 +1,4 @@
-package com.api.yirang.senior.controller;
+package com.api.yirang.senior.IntegrationTesting;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
