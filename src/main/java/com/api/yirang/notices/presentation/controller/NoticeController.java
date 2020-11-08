@@ -74,6 +74,7 @@ public class NoticeController {
         res.put("totalNoticeNums", noticeActivityService.findNumsOfNotices());
         return res;
     }
+
     /** PUT methods **/
 
     // 공고 업데이트

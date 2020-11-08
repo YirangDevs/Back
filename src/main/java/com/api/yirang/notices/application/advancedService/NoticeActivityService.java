@@ -29,6 +29,7 @@ import javax.validation.constraints.NotBlank;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -112,15 +113,12 @@ public class NoticeActivityService {
         System.out.println("[registerService]: Collection<Notice>: " + notices);
 
         // Notice -> NoticeResponseDTO로 바꾸기
-        Collection<NoticeResponseDto> noticeResponseDtos = new ArrayList<>();
-
-        Iterator<Notice> itr = notices.iterator();
-        while(itr.hasNext()){
-            Notice notice = itr.next();
-            Activity activity = notice.getActivity();
-            noticeResponseDtos.add(
-                    NoticeConverter.convertFromNoticeToResponse(notice, activity));
-        }
+        Collection<NoticeResponseDto> noticeResponseDtos = notices.stream()
+                                                                  .map(e -> {   Activity activity = e.getActivity();
+                                                                                Region region = activity.getRegion();
+                                                                                return NoticeConverter.convertFromNoticeToResponse(e, activity, region);
+                                                                            })
+                                                                  .collect(Collectors.toList());
 
         System.out.println("[registerService]: noticeResponseDtos를 만들어서 내보겠습니다.");
 
