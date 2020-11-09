@@ -66,7 +66,7 @@ public class JwtParser {
                                 .setSigningKey(JWT_SECRET)
                                 .parseClaimsJws(token)
                                 .getBody()
-                                .get("imageUrl");
+                                .get("imgUrl");
        }
         catch (Exception ex){
             throw new InvalidJwtException();

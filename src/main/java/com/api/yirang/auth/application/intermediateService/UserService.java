@@ -73,26 +73,21 @@ public class UserService {
         }
     }
 
-
     // 일반 user -> admin 추가하기
     @Transactional
     public void registerAdmin(Long userId){
 
         // userId에 해당하는 User가 있는 지 검사
         User user = findUserByUserId(userId);
-        // 이미 해당하는 user가 admin에 있으면 예외 처리
-        if ( adminService.isExistedUser(user) )
-        {
-            throw new AlreadyExistedAdmin();
-        }
         // User의 권한 바꾸기
         updateAuthority(userId, Authority.ROLE_ADMIN);
 
         // Admin에 아이디 추가
-        adminService.save(user);
-
+        // 예전에 있었떤 Admin이면 그 Number를 계속 씀
+        if (!adminService.isExistedByUserId(userId)) {
+            adminService.save(user);
+        }
     }
-
 
     // admin -> 일반 User로 강등
     @Transactional
@@ -107,8 +102,6 @@ public class UserService {
         // User 권한 바꾸기
         updateAuthority(userId, Authority.ROLE_VOLUNTEER);
 
-        // Admin에 아이디 지우기
-        adminService.delete(user);
-
+        // admin을 지우진 않음
     }
 }

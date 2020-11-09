@@ -50,12 +50,9 @@ public class AuthService {
 
         // 이전에 등록한 User인지 확인
         if (!userService.isRegisteredUserByUserId(userId)){
-            System.out.println("처음 등록한 봉사자입니다.");
 
             User user = UserConverter.fromKakaoUserInfo(userId, kakaoUserInfo, Authority.ROLE_VOLUNTEER);
             // for debugging
-            System.out.println("봉사자: " + user);
-            System.out.println("봉사자 정보 저장합니다.");
             userService.saveUser(user);
         }
         else{
@@ -70,9 +67,6 @@ public class AuthService {
 
         String yat = jwtProvider.generateJwtToken(username, imageUrl, userId, authority);
 
-        System.out.println("Yat가 성공적으로 만들어졌습니다!" );
-        System.out.println("Yat를 보내겠습니다." );
-
         return SignInResponseVO.builder()
                                .yirangAccessToken(yat)
                                .build();
@@ -82,14 +76,14 @@ public class AuthService {
     public RefreshResponseVO refresh(String header){
         String YAT = ParsingHelper.parseHeader(header);
 
-        System.out.println("[AuthService]: YAT를 받았습니다.: " + YAT);
+        System.out.println("[AuthService]: Refresh를 위한 YAT를 받았습니다.: " + YAT);
 
         String username = jwtParser.getUsernameFromJwt(YAT);
-        String imageUrl = jwtParser.getImageUrlFromJwt(YAT);
+        String imgUrl = jwtParser.getImageUrlFromJwt(YAT);
         Long userId = jwtParser.getUserIdFromJwt(YAT);
         Authority authority = jwtParser.getRoleFromJwt(YAT);
 
-        String newYAT = jwtProvider.generateJwtToken(username, imageUrl, userId, authority);
+        String newYAT = jwtProvider.generateJwtToken(username, imgUrl, userId, authority);
 
         System.out.println("[AuthService]: 새로운 YAT를 보내겠습니다.: " + newYAT);
 

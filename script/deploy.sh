@@ -35,9 +35,9 @@ echo "> $JAR_NAME 에 실행권한 추가"
 chmod +x "$JAR_NAME"
 echo "> $JAR_NAME 실행"
 
-nohup java -javaagent:/home/ec2-user/app/scouter/scouter/agent.java/scouter.agent.jar\
-  -Dspring.config.location=classpath:/application.properties\
+nohup java -Dspring.config.location=classpath:/application.properties\
   -jar "$JAR_NAME" > $REPOSITORY/nohup.out 2x81 &
+# -javaagent:/home/ec2-user/app/scouter/scouter/agent.java/scouter.agent.jar\
 #  -Dspring.config.location=classpath:/application.properties,\
 #  classpath:/application-real.properties,/home/ec2-user/app/application-oauth.properties\
 #  ,/home/ec2-user/app/application-real-db.properties\

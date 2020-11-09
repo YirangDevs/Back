@@ -109,7 +109,17 @@ public class NoticeActivityService {
         // collections Notice 구하기
         Collection<Notice> notices = noticeService.findAllWithPage(pageWithSixElements);
 
-        System.out.println("[NoticeActivityService]: Collection<Notice>: " + notices);
+        System.out.println("[registerService]: Collection<Notice>: " + notices);
+
+        // Notice -> NoticeResponseDTO로 바꾸기
+        Collection<NoticeResponseDto> noticeResponseDtos = notices.stream()
+                                                                  .map(e -> {   Activity activity = e.getActivity();
+                                                                                Region region = activity.getRegion();
+                                                                                return NoticeConverter.convertFromNoticeToResponse(e, activity, region);
+                                                                            })
+                                                                  .collect(Collectors.toList());
+
+        System.out.println("[registerService]: noticeResponseDtos를 만들어서 내보겠습니다.");
 
         return notices.stream()
                       .map(notice -> NoticeConverter.convertFromNoticeToResponse(notice, notice.getActivity()))

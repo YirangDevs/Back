@@ -1,6 +1,7 @@
 package com.api.yirang.notices.domain.notice.converter;
 
 import com.api.yirang.auth.domain.user.model.Admin;
+import com.api.yirang.common.domain.region.model.Region;
 import com.api.yirang.common.support.time.TimeConverter;
 import com.api.yirang.notices.domain.activity.model.Activity;
 import com.api.yirang.notices.domain.notice.model.Notice;
@@ -39,7 +40,7 @@ public class NoticeConverter {
                                    .build();
     }
 
-    public static final NoticeResponseDto convertFromNoticeToResponse(Notice notice, Activity activity){
+    public static final NoticeResponseDto convertFromNoticeToResponse(Notice notice, Activity activity, Region region){
         String dtov = TimeConverter.LocalDateTimeToString(activity.getDtov());
 
         String[] dtovArray = dtov.split(" ");
@@ -51,6 +52,7 @@ public class NoticeConverter {
                                 .title(notice.getTitle())
                                 .nor(activity.getNor())
                                 .dov(dov).tov(tov)
+                                .region(region.getRegionName())
                                 .build();
     }
 }

@@ -21,9 +21,7 @@ public class Admin {
     private Long adminNumber;
 
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(
-            name = "user_id"
-    )
+    @JoinColumn(name = "user_id")
     private User user;
 
     @Builder
