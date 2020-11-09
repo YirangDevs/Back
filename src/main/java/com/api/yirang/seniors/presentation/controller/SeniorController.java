@@ -4,13 +4,17 @@ import com.api.yirang.auth.domain.jwt.components.JwtParser;
 import com.api.yirang.auth.support.utils.ParsingHelper;
 import com.api.yirang.common.exceptions.ApiException;
 import com.api.yirang.common.exceptions.Dto.ErrorDto;
+import com.api.yirang.common.support.custom.ValidCollection;
 import com.api.yirang.seniors.application.advancedService.SeniorVolunteerAdvancedService;
 import com.api.yirang.seniors.presentation.dto.request.RegisterSeniorRequestDto;
 import com.api.yirang.seniors.presentation.dto.response.SeniorResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.ConstraintViolationException;
 import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
 import java.util.Collection;
@@ -18,6 +22,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
+//@Validated
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/v1/apis/seniors")
@@ -40,19 +45,30 @@ public class SeniorController {
     // 엑셀로 피봉사자들을 업로드하는 API
     @PostMapping(value = "/total", consumes = "application/json")
     @ResponseStatus(HttpStatus.CREATED)
-    public Map<String, Map> registerSeniors(@RequestBody @NotEmpty Map<String, Collection> registerSeniors){
-        Collection<RegisterSeniorRequestDto> registerSeniorRequestDtos = registerSeniors.get("seniors");
-        System.out.println("[SeniorController] 피봉사자를 한 번에 추가하는 API 요청 받았습니다: " + registerSeniorRequestDtos);
+    public Map<String, Map> registerSeniors(@RequestBody @NotEmpty @Valid ValidCollection<RegisterSeniorRequestDto> registerSeniors,
+                                            BindingResult bindingResult){
+        System.out.println("[SeniorController] 피봉사자를 한 번에 추가하는 API 요청 받았습니다: " + registerSeniors);
+
+        if(bindingResult.hasErrors()){
+            bindingResult.getFieldErrors().stream().forEach(e -> {
+                System.out.println(e.getField());
+                System.out.println(e.isBindingFailure());
+                System.out.println(e.getDefaultMessage());
+            });
+        }
 
         // 실패 리스트 저장
         Map<String, Map> res = new HashMap<>();
         Map<RegisterSeniorRequestDto, ErrorDto> mapInput = new HashMap<>();
-        Iterator<RegisterSeniorRequestDto> itr = registerSeniorRequestDtos.iterator();
+        Iterator<RegisterSeniorRequestDto> itr = registerSeniors.iterator();
         while(itr.hasNext()){
             RegisterSeniorRequestDto registerSeniorRequestDto = itr.next();
             try {
                 seniorVolunteerAdvancedService.registerSenior(registerSeniorRequestDto);
-            } catch (ApiException e){
+            }catch (ConstraintViolationException coe){
+                throw new ApiException("011", coe.getMessage());
+            }
+            catch (ApiException e){
                 mapInput.put(registerSeniorRequestDto, e.buildErrorDto());
             }
         }
@@ -92,7 +108,6 @@ public class SeniorController {
                              @RequestBody @Valid RegisterSeniorRequestDto registerSeniorRequestDto){
         System.out.println("[SeniorController] 피봉사자의 정보를 업데이트 하기를 원하는 API 요청 받았습니다: ");
         seniorVolunteerAdvancedService.updateVolunteerService(volunteerServiceId, registerSeniorRequestDto);
-
     }
 
     /** DELETE **/

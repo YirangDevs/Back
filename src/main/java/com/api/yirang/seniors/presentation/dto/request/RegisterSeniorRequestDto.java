@@ -22,7 +22,8 @@ public class RegisterSeniorRequestDto {
     private final String region;
     private final String address;
 
-    @Pattern(regexp = "^[0-9]*$")
+    @Pattern(regexp = "^[0-9]*$",
+             message = "Phone shoudl be numbers!")
     private final String phone;
 
     private final Sex sex;
