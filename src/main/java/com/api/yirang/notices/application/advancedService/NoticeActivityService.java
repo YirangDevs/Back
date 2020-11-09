@@ -121,9 +121,7 @@ public class NoticeActivityService {
 
         System.out.println("[registerService]: noticeResponseDtos를 만들어서 내보겠습니다.");
 
-        return notices.stream()
-                      .map(notice -> NoticeConverter.convertFromNoticeToResponse(notice, notice.getActivity()))
-                      .collect(Collectors.toList());
+        return noticeResponseDtos;
     }
 
     public Long findNumsOfNotices() {
