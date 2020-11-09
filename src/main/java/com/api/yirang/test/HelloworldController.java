@@ -28,4 +28,9 @@ public class HelloworldController {
     }
     @GetMapping("/gohome")
     public String goHome(){return "집못감";}
+
+    @GetMapping("/yeonhoo")
+    public String getYeonhoo(){
+        return "연후 실버 축하";
+    }
 }
