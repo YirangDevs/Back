@@ -1,7 +1,7 @@
 package com.api.yirang.auth.application.intermediateService;
 
 import com.api.yirang.auth.application.basicService.AdminService;
-import com.api.yirang.auth.application.basicService.VolunteerService;
+import com.api.yirang.auth.application.basicService.VolunteerBasicService;
 import com.api.yirang.auth.domain.user.converter.UserConverter;
 import com.api.yirang.auth.domain.user.exceptions.AlreadyExistedAdmin;
 import com.api.yirang.auth.domain.user.exceptions.UserNullException;
@@ -23,7 +23,7 @@ public class UserService {
 
     // DI service
     private final AdminService adminService;
-    private final VolunteerService volunteerService;
+    private final VolunteerBasicService volunteerBasicService;
 
     /*-------------------------------------*/
 
@@ -66,7 +66,7 @@ public class UserService {
         Authority authority = user.getAuthority();
 
         if (authority == Authority.ROLE_VOLUNTEER) {
-            volunteerService.save(user);
+            volunteerBasicService.save(user);
         }
         else {
             adminService.save(user);

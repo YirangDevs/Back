@@ -7,6 +7,7 @@ import lombok.ToString;
 
 import javax.persistence.*;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 @Getter
@@ -27,5 +28,22 @@ public class Region {
     @Builder
     public Region(String regionName) {
         this.regionName = regionName;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        Region region = (Region) o;
+        return Objects.equals(regionId, region.regionId);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(regionId);
     }
 }

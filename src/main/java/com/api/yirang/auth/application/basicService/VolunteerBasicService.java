@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class VolunteerService {
+public class VolunteerBasicService {
 
     // DI dao
     private final VolunteerDao volunteerDao;

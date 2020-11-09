@@ -32,6 +32,15 @@ public interface ActivityDao extends JpaRepository<Activity, Long> {
            "WHERE A.region =:region AND A.dtov =:dtov")
     Optional<Activity> findActivityByRegionAndDTOV(Region region, LocalDateTime dtov);
 
+
+    @Transactional
+    @Query("SELECT A " +
+           "FROM Activity A " +
+           "WHERE A.region =:region " +
+           "      AND A.dtov > :startDtov " +
+           "      AND A.dtov < :endDtov")
+    Optional<Activity> findActivityByRegionAndRangeOfDTOV(Region region,
+                                                          LocalDateTime startDtov, LocalDateTime endDtov);
     @Override
     Optional<Activity> findById(Long activityId);
 

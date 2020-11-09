@@ -1,0 +1,26 @@
+POST http://localhost:8080/v1/apis/seniors/total
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6IuycoOygleuvvCIsImltZ1VybCI6Imh0dHA6Ly9rLmtha2FvY2RuLm5ldC9kbi9oQTFWdS9idHFGS1h4ZlFzWC95MGhIalpsNlhaVWVScFdPa3lrTGtLL2ltZ182NDB4NjQwLmpwZyIsInVzZXJJZCI6IjE0Njg0MTYxMzkiLCJyb2xlIjoiVk9MVU5URUVSIiwiaWF0IjoxNjA0ODk4MTk1LCJleHAiOjE2MDQ5ODQ1OTV9.osRLKNJ6shTDbwRea5Pg8kNul9bhGnG3PnOgbW-jV98
+Content-Type: application/json
+
+[
+  {
+      "name": "김복자",
+      "region": "중구",
+      "address": "이곡공원로",
+      "phone": "1234a",
+      "sex": "female",
+      "type": "work",
+      "date": "2020-11-03",
+      "priority": 1
+    },
+    {
+      "name": "박연후",
+      "region": "동구",
+      "address": "집없음",
+      "phone": "1235",
+      "sex": "female",
+      "type": "work",
+      "date": "2020-11",
+      "priority": 5
+    }
+]

@@ -49,13 +49,13 @@ public class NoticeActivityService {
 
     public void registerNew(String header, NoticeRegisterRequestDto noticeRequestDto) {
 
-        System.out.println("[registerService]: registerNew를 실행하겠습니다.");
+        System.out.println("[NoticeActivityService]: registerNew를 실행하겠습니다.");
 
         // header 뜯어서 누구인지 판단하고, admin 구하기
         Long userId = jwtParser.getUserIdFromJwt(ParsingHelper.parseHeader(header));
         Admin admin = adminService.findAdminByUserId(userId);
 
-        System.out.println("[registerService]: admin: " + admin);
+        System.out.println("[NoticeActivityService]: admin: " + admin);
 
         // Dto를 받아서 뜯어서 -> Notice랑 Activity로 나누어야 함
         ActivityRegisterRequestDto activityRegisterRequestDto = noticeRequestDto.getActivityRegisterRequestDto();
@@ -64,35 +64,34 @@ public class NoticeActivityService {
         // 지역 구하기
         Region region = regionService.findRegionByRegionName(activityRegisterRequestDto.getRegion());
 
-        System.out.println("[registerService]: 지역은: " + region);
+        System.out.println("[NoticeActivityService]: 지역은: " + region);
 
         // Activity 받아서 DB에 저장
         Activity activity = ActivityConverter.ConvertFromDtoToModel(activityRegisterRequestDto, region);
         activityService.save(activity);
 
-        System.out.println("[registerService]: activity를 저장했습니다.");
-
+        System.out.println("[NoticeActivityService]: activity를 저장했습니다.");
 
         // Notice 받아서, DB에 저장
         String title = noticeRequestDto.getTitle();
         Notice notice = NoticeConverter.convertFromDtoToModel(title, admin, activity);
         noticeService.save(notice);
 
-        System.out.println("[registerService]: Notice를 저장했습니다. ");
+        System.out.println("[NoticeActivityService]: Notice를 저장했습니다. ");
     }
 
     public NoticeOneResponseDto getOneNoticeById(Long noticeId) {
 
-        System.out.println("[registerService]: getOneNoticeById를 실행하겠습니다.");
+        System.out.println("[NoticeActivityService]: getOneNoticeById를 실행하겠습니다.");
         // Notice Id로 Notice 불러오기
         Notice notice = noticeService.findByNoticeId(noticeId);
 
-        System.out.println("[registerService]: Notice: " + notice);
+        System.out.println("[NoticeActivityService]: Notice: " + notice);
 
         // Notice에 해당하는 Activity 불러오기
         Activity activity = noticeService.findActivityNoticeId(noticeId);
 
-        System.out.println("[registerService]: activity: " + activity);
+        System.out.println("[NoticeActivityService]: activity: " + activity);
 
         // preprocessing 하고 Dto 만들기
         return NoticeConverter.convertFromNoticeToOneResponse(notice, activity);
@@ -105,7 +104,7 @@ public class NoticeActivityService {
         // Pageable 만들기
         Pageable pageWithSixElements = PageRequest.of(pageNum, elementNums, Sort.by("dtow").descending());
 
-        System.out.println("[registerService]: findNoticesByPage를 실행하겠습니다.");
+        System.out.println("[NoticeActivityService]: findNoticesByPage를 실행하겠습니다.");
 
         // collections Notice 구하기
         Collection<Notice> notices = noticeService.findAllWithPage(pageWithSixElements);
@@ -122,12 +121,14 @@ public class NoticeActivityService {
 
         System.out.println("[registerService]: noticeResponseDtos를 만들어서 내보겠습니다.");
 
-        return noticeResponseDtos;
+        return notices.stream()
+                      .map(notice -> NoticeConverter.convertFromNoticeToResponse(notice, notice.getActivity()))
+                      .collect(Collectors.toList());
     }
 
     public Long findNumsOfNotices() {
 
-        System.out.println("[registerService]: findNumsOfNotices를 실행하겠습니다.");
+        System.out.println("[NoticeActivityService]: findNumsOfNotices를 실행하겠습니다.");
         return noticeService.countNumsOfNotices();
     }
 
@@ -135,8 +136,8 @@ public class NoticeActivityService {
                                @NotBlank(message = "title is mandatory")
                                @Length(min=3, max= 100, message = "title should be between 5 ~ 100") String title) {
 
-        System.out.println("[registerService]: registerUrgent를 실행하겠습니다.");
-        System.out.println("[registerService]: title을 받았습니다. " + title);
+        System.out.println("[NoticeActivityService]: registerUrgent를 실행하겠습니다.");
+        System.out.println("[NoticeActivityService]: title을 받았습니다. " + title);
 
         // header 뜯어서 작성한 admin 누구인지 알아냄
         Long userId = jwtParser.getUserIdFromJwt(ParsingHelper.parseHeader(header));
@@ -144,19 +145,19 @@ public class NoticeActivityService {
         // noticeId를 이용해서 Activity를 가져옴
         Activity activity = noticeService.findActivityNoticeId(noticeId);
 
-        System.out.println("[registerService]: Admin과 Activity을 구했습니다.");
+        System.out.println("[NoticeActivityService]: Admin과 Activity을 구했습니다.");
 
         // 새로운 Notice를 만들고 저장
         Notice newUrgentNotice = NoticeConverter.convertFromDtoToModel(title, admin, activity);
         noticeService.save(newUrgentNotice);
 
-        System.out.println("[registerService]: notice를 저장했습니다.");
+        System.out.println("[NoticeActivityService]: notice를 저장했습니다.");
     }
 
     public void updateOneNotice(String header, Long noticeId,
                                 NoticeRegisterRequestDto noticeRegisterRequestDto) {
         // header 뜯어서 작성한 admin 누구인지 알아내기
-        System.out.println("[registerService]: registerUrgent를 실행하겠습니다.");
+        System.out.println("[NoticeActivityService]: registerUrgent를 실행하겠습니다.");
 
         Long userId = jwtParser.getUserIdFromJwt(ParsingHelper.parseHeader(header));
         Admin admin = adminService.findAdminByUserId(userId);

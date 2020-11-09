@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -42,19 +43,10 @@ public class AdminRegionService {
     }
 
     @Transactional
-    public regionsResponseDto getMyRegions(Long userId) {
+    public Collection<String> getMyRegions(Long userId) {
 
-        List<String> regions = new ArrayList<>();
         Collection<DistributionRegion> distributionRegions = distributionRegionService.findDistributionsByUserId(userId);
+        return distributionRegions.stream().map(e -> e.getRegion().getRegionName()).collect(Collectors.toList());
 
-        Iterator<DistributionRegion> itr = distributionRegions.iterator();
-
-        while(itr.hasNext()){
-            DistributionRegion distributionRegion = itr.next();
-            regions.add(distributionRegion.getRegion().getRegionName());
-        }
-        return regionsResponseDto.builder()
-                                 .regions(regions)
-                                 .build();
     }
 }

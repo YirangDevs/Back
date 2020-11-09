@@ -27,12 +27,10 @@ public class JwtUserDetailsService implements UserDetailsService {
         String password = "1234";
         Authority authority = jwtParser.getRoleFromJwt(YAT);
 
-        UserDetailsVO userDetailsVO =   UserDetailsVO.builder()
-                                        .userId(userId)
-                                        .username(username)
-                                        .password(password)
-                                        .authority(authority)
-                                        .build();
+        UserDetailsVO userDetailsVO = UserDetailsVO.builder()
+                                                   .userId(userId).username(username)
+                                                   .password(password).authority(authority)
+                                                   .build();
 
         System.out.println("[UserDetailService]: UserDetail 생성: " + userDetailsVO);
 

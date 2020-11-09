@@ -39,8 +39,11 @@ public class VolunteerService {
     private Senior senior;
 
     @Builder
-    public VolunteerService(ServiceType serviceType, Long priority) {
+    public VolunteerService(ServiceType serviceType, Long priority,
+                            Activity activity, Senior senior) {
         this.serviceType = serviceType;
         this.priority = priority;
+        this.activity = activity;
+        this.senior = senior;
     }
 }

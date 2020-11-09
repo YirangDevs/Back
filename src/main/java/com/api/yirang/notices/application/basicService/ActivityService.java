@@ -36,6 +36,14 @@ public class ActivityService {
         LocalDateTime dtov = TimeConverter.StringToLocalDateTime(dtovStr);
         return activityDao.findActivityByRegionAndDTOV(region, dtov).orElseThrow(ActivityNullException::new);
     }
+    public Activity findActivityByRegionAndDOV(Region region, String dov){
+        String startDtovStr = dov + " " + "00:00:00";
+        String endDtovSTr = dov + " " + "23:59:59";
+
+        LocalDateTime startDtov = TimeConverter.StringToLocalDateTime(startDtovStr);
+        LocalDateTime endDtov = TimeConverter.StringToLocalDateTime(endDtovSTr);
+        return activityDao.findActivityByRegionAndRangeOfDTOV(region, startDtov, endDtov).orElseThrow(ActivityNullException::new);
+    }
 
     public Activity findActivityByActivityId(Long activityId){
         return activityDao.findById(activityId).orElseThrow(ActivityNullException::new);
