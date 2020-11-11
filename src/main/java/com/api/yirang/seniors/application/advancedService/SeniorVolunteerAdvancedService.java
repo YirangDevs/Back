@@ -72,7 +72,7 @@ public class SeniorVolunteerAdvancedService {
         Region region = regionService.findRegionByRegionName(regionName);
 
         // Region을 가지고 Seniors 찾기
-        Collection<Senior> seniors = seniorBasicService.findSeniorsByRegion(region);
+        Collection<Senior> seniors = seniorBasicService.findSeniorsByRegion(region, true);
         // Seniors가 해당되는 봉사활동 이력 찾기
         Collection<VolunteerService> volunteerServices =
                 volunteerServiceBasicService.findSortedVolunteerServiceInSeniors(seniors);
@@ -92,7 +92,7 @@ public class SeniorVolunteerAdvancedService {
 
         // regions로 해당하는 Seniors 찾기
         Collection<Senior> seniors = new ArrayList<>();
-        regions.stream().forEach(e -> seniors.addAll(seniorBasicService.findSeniorsByRegion(e)));
+        regions.stream().forEach(e -> seniors.addAll(seniorBasicService.findSeniorsByRegion(e, false)));
 
 
         // Seniors에 해당하는 봉사활동 이력 찾기

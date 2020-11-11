@@ -16,23 +16,23 @@ import static org.springframework.data.util.Pair.toMap;
 
 @Getter
 public enum Sex {
-    SEX_FEMAIL("FEMAIL", "Is a woman"),
-    SEX_MAIL("MAIL", "Is a man"),
+    SEX_FEMALE("FEMALE", "Is a woman"),
+    SEX_MALE("MALE", "Is a man"),
     SEX_UNKNOWN("UNKNOWN", "Is a man or Is a woman");
 
     private final String gender;
-    private final String descrption;
+    private final String description;
     private static final Map<String, Sex> namesMap;
 
-    Sex(String gender, String descrption) {
+    Sex(String gender, String description) {
         this.gender = gender;
-        this.descrption = descrption;
+        this.description = description;
     }
 
     static {
         namesMap = new HashMap<>(3);
-        namesMap.put("female", SEX_FEMAIL);
-        namesMap.put("male", SEX_MAIL);
+        namesMap.put("female", SEX_FEMALE);
+        namesMap.put("male", SEX_MALE);
         namesMap.put("unknown", SEX_UNKNOWN);
     }
 

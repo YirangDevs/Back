@@ -80,6 +80,7 @@ public class SeniorController {
         }
         return res;
     }
+    /** Get method **/
     // 해당 지역 관련 피봉사자 GET API
     // 지역에 해당하는 히스토리를 줘야함
     @GetMapping(value = "/area", produces = "application/json")

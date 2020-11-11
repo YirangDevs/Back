@@ -67,7 +67,7 @@ public class NoticeController {
 
     // 공고 갯수 조회
     @GetMapping(value = "/nums", produces = "application/json")
-    @ResponseStatus
+    @ResponseStatus(HttpStatus.OK)
     public Map<String, Long> getNumsOfNotices(){
         System.out.println("[NoticeController] 공고 숫자 요청이 왔습니다.");
         Map<String, Long> res = new HashMap<>();
@@ -76,7 +76,6 @@ public class NoticeController {
     }
 
     /** PUT methods **/
-
     // 공고 업데이트
     @PutMapping(value = "/{notice_id}", produces = "application/json")
     @ResponseStatus(HttpStatus.OK)
