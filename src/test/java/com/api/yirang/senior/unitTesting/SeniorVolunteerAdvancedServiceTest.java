@@ -123,7 +123,7 @@ public class SeniorVolunteerAdvancedServiceTest {
                                                                                 }).collect(Collectors.toList());
 
         when(regionService.findRegionByRegionName(regionName)).thenReturn(region);
-        when(seniorBasicService.findSeniorsByRegion(region)).thenReturn(seniors);
+        when(seniorBasicService.findSeniorsByRegion(region, false)).thenReturn(seniors);
         when(volunteerServiceBasicService.findSortedVolunteerServiceInSeniors(seniors)).thenReturn(volunteerServices);
 
         Collection<SeniorResponseDto> res = seniorVolunteerAdvancedService.findSeniorsByRegion(regionName);

@@ -34,9 +34,9 @@ public class SeniorBasicService {
         return seniorDao.findSeniorByPhone(phone).orElseThrow(SeniorNullException::new);
     }
 
-    public Collection<Senior> findSeniorsByRegion(Region region, Boolean nullDisable) {
+    public Collection<Senior> findSeniorsByRegion(Region region, Boolean nullable) {
         Collection<Senior> seniors = seniorDao.findSeniorsByRegion(region);
-        if (seniors.size() == 0 && nullDisable){
+        if (seniors.size() == 0 && !nullable){
             throw new SeniorNullException();
         }
         return seniors;

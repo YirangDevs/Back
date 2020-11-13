@@ -68,13 +68,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             .authorizeRequests()
             .antMatchers("/v1/apis/auth/signin").permitAll()
             .antMatchers("/v1/apis/test/**").permitAll()
-            .antMatchers("/v1/apis/admins").hasAnyAuthority("VOLUNTEER", "ADMIN") // 임시로...
+            // 임시로..
+            .antMatchers("/v1/apis/admins").hasAnyAuthority("VOLUNTEER", "ADMIN")
             .antMatchers("/v1/apis/admins/region/**").hasAnyAuthority("ADMIN")
             .antMatchers("/v1/apis/region").hasAnyAuthority("ADMIN")
             .antMatchers("/v1/apis/auth/refresh").hasAnyAuthority("VOLUNTEER", "ADMIN")
             // senior test
-            .antMatchers("/v1/apis/seniors", "/v1/apis/seniors/**").permitAll()
-            // 공고글 보는 건 Anonymous, User, admin 다 가능해야함
+            .antMatchers("/v1/apis/seniors", "/v1/apis/seniors/**").hasAnyAuthority("ADMIN")
+            // 공고글 보는 건 Anonymous, User, admin 다 가능 해야함
             .antMatchers(HttpMethod.GET, "/v1/apis/manage/notices", "/v1/apis/manage/notices/**").permitAll()
             .antMatchers("/v1/apis/manage/notices", "/v1/apis/manage/notices/**").hasAuthority("ADMIN")
             .anyRequest().authenticated()
