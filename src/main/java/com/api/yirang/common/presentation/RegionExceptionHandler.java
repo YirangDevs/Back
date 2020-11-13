@@ -1,6 +1,7 @@
 package com.api.yirang.common.presentation;
 
 
+import com.api.yirang.common.domain.region.exception.AlreadyExistedDistribution;
 import com.api.yirang.common.domain.region.exception.AlreadyExistedRegion;
 import com.api.yirang.common.domain.region.exception.DistributionRegionNullException;
 import com.api.yirang.common.domain.region.exception.RegionNullException;
@@ -20,7 +21,7 @@ public class RegionExceptionHandler {
         return apiException.buildErrorDto();
     }
 
-    @ExceptionHandler(value = {AlreadyExistedRegion.class})
+    @ExceptionHandler(value = {AlreadyExistedRegion.class, AlreadyExistedDistribution.class})
     @ResponseStatus(HttpStatus.NOT_ACCEPTABLE)
     public final ErrorDto handleAlreadyExistException(ApiException apiException){
         return apiException.buildErrorDto();

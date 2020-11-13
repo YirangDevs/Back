@@ -68,4 +68,6 @@ public interface DistributionRegionDao extends JpaRepository<DistributionRegion,
     @Modifying
     @Query("DELETE FROM DistributionRegion D")
     void deleteAll();
+
+    boolean existsByAdminAndRegion(Admin admin, Region region);
 }

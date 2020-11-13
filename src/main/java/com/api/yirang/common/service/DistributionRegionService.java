@@ -3,6 +3,7 @@ package com.api.yirang.common.service;
 
 import com.api.yirang.auth.application.basicService.AdminService;
 import com.api.yirang.auth.domain.user.model.Admin;
+import com.api.yirang.common.domain.region.exception.AlreadyExistedDistribution;
 import com.api.yirang.common.domain.region.exception.DistributionRegionNullException;
 import com.api.yirang.common.domain.region.model.DistributionRegion;
 import com.api.yirang.common.domain.region.model.Region;
@@ -33,12 +34,23 @@ public class DistributionRegionService {
 
         // region 찾기
         Region region = regionService.findRegionByRegionName(regionName);
+        
+        // 이미 배정이 된 경우, Exception을 줌
+        if (existDistributionByAdminAndRegion(admin, region)){
+            throw new AlreadyExistedDistribution();
+        }
 
         // 저장하기
         distributionRegionDao.save(DistributionRegion.builder()
                                                      .admin(admin)
                                                      .region(region)
                                                      .build());
+    }
+
+    // Exist
+    @Transactional
+    public boolean existDistributionByAdminAndRegion(Admin admin, Region region){
+        return distributionRegionDao.existsByAdminAndRegion(admin, region);
     }
 
     // 찾기
