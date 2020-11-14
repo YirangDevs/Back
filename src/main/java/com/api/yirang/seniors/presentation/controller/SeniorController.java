@@ -112,7 +112,7 @@ public class SeniorController {
     }
 
     /** DELETE **/
-    // 나중에 매칭 되지않은 봉사자와 매칭된 봉사자 case로 나누어야 할 듯
+    // 나중에 매칭 되지 않은 봉사자와 매칭된 봉사자 case로 나누어야 할 듯
     // 피봉사자 데이터 DELETE API
     @DeleteMapping(value = "/{volunteerService_id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)

@@ -18,18 +18,24 @@ import org.springframework.stereotype.Repository;
 import java.io.IOException;
 
 @Repository
-@RequiredArgsConstructor
 @PropertySource("classpath:properties/application-kakao.properties")
 public class KakaoTokenAPI {
 
-    @Qualifier("YirangHttpClient")
+
     private final HttpClient yirangHttpClient;
 
     // Kakao Token info
-    @Value("${kakao.api.token.access.url}")
-    private String kakaoAccessTokenInfoUrl;
-    @Value("${kakao.api.token.access.content_type}")
-    private String kakaoAccessTokenInfoContentType;
+    private final String kakaoAccessTokenInfoUrl;
+
+    private final String kakaoAccessTokenInfoContentType;
+
+    public KakaoTokenAPI(@Qualifier("YirangHttpClient") HttpClient yirangHttpClient,
+                         @Value("${kakao.api.token.access.url}") String kakaoAccessTokenInfoUrl,
+                         @Value("${kakao.api.token.access.content_type}") String kakaoAccessTokenInfoContentType) {
+        this.yirangHttpClient = yirangHttpClient;
+        this.kakaoAccessTokenInfoUrl = kakaoAccessTokenInfoUrl;
+        this.kakaoAccessTokenInfoContentType = kakaoAccessTokenInfoContentType;
+    }
 
     private KakaoTokenInfoDto connectAndGetKakaoTokenInfo(String kakaoAccessToken){
 

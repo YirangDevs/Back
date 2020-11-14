@@ -18,8 +18,8 @@ public class JwtProvider {
     private final String JWT_SECRET;
     private final int JWT_EXPIRATION_MS;
 
-    public JwtProvider(   @Value("${spring.app.jwtSecret}") String JWT_SECRET
-                        , @Value("${spring.app.jwtExpirationMs}") int JWT_EXPIRATION_MS ) {
+    public JwtProvider(@Value("${spring.app.jwtSecret}") String JWT_SECRET,
+                       @Value("${spring.app.jwtExpirationMs}") int JWT_EXPIRATION_MS ) {
         this.JWT_SECRET = JWT_SECRET;
         this.JWT_EXPIRATION_MS = JWT_EXPIRATION_MS;
     }

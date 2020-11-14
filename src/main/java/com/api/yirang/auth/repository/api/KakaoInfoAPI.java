@@ -1,6 +1,5 @@
 package com.api.yirang.auth.repository.api;
 
-import com.api.yirang.auth.domain.kakaoToken.dto.KakaoUserInfo;
 import com.api.yirang.auth.domain.kakaoToken.dto.KakaoUserInfoDto;
 import com.api.yirang.auth.domain.kakaoToken.exceptions.InvalidKakaoAccessTokenException;
 import com.api.yirang.auth.domain.kakaoToken.exceptions.KakaoServerException;
@@ -8,10 +7,8 @@ import com.google.gson.Gson;
 import lombok.RequiredArgsConstructor;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
-import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
@@ -21,24 +18,27 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Repository;
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 
 @Repository
-@RequiredArgsConstructor
 @PropertySource("classpath:properties/application-kakao.properties")
 public class KakaoInfoAPI {
 
-    @Qualifier("YirangHttpClient")
+
     private final HttpClient yirangHttpClient;
 
-    @Value("${kakao.api.token.info.url}")
-    private String kakaoUserInfoUrl;
+    private final String kakaoUserInfoUrl;
 
-    @Value("${kakao.api.token.info.content_type}")
-    private String kakaoUserInfoContentType;
+    private final String kakaoUserInfoContentType;
 
+    public KakaoInfoAPI(@Qualifier("YirangHttpClient") HttpClient yirangHttpClient,
+                        @Value("${kakao.api.token.info.url}") String kakaoUserInfoUrl,
+                        @Value("${kakao.api.token.info.content_type}") String kakaoUserInfoContentType) {
+        this.yirangHttpClient = yirangHttpClient;
+        this.kakaoUserInfoUrl = kakaoUserInfoUrl;
+        this.kakaoUserInfoContentType = kakaoUserInfoContentType;
+    }
 
     private String getListOfUserInfoKeys(){
         return "[" + " \"" + "properties.nickname" + "\""

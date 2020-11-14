@@ -1,18 +1,13 @@
 package com.api.yirang.seniors.domain.senior.exception;
 
 import com.api.yirang.common.exceptions.ApiException;
+import com.api.yirang.common.exceptions.NullException;
 
 import java.util.function.Supplier;
 
-public class SeniorNullException extends ApiException implements Supplier<SeniorNullException> {
-
+public class SeniorNullException extends NullException {
 
     public SeniorNullException() {
-        super("012", "Senior Not Found");
-    }
-
-    @Override
-    public SeniorNullException get() {
-        return this;
+        super("Senior Not Found");
     }
 }

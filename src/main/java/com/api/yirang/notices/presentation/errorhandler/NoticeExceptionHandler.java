@@ -13,14 +13,8 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @RestControllerAdvice
 public class NoticeExceptionHandler {
-
-    @ExceptionHandler(value = {NoticeNullException.class, ActivityNullException.class})
-    @ResponseStatus(HttpStatus.NOT_FOUND)
-    public final ErrorDto handleNullException(ApiException apiException){
-        return apiException.buildErrorDto();
-    }
-
-    @ExceptionHandler(value = {AlreadyExistedNoticeException.class, LastExistedNotice.class})
+    
+    @ExceptionHandler(value = {LastExistedNotice.class})
     @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
     public final ErrorDto handleAlreadyExistException(ApiException apiException){
         return apiException.buildErrorDto();

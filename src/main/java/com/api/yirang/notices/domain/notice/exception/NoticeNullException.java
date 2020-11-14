@@ -1,17 +1,14 @@
 package com.api.yirang.notices.domain.notice.exception;
 
 import com.api.yirang.common.exceptions.ApiException;
+import com.api.yirang.common.exceptions.NullException;
 
 import java.util.function.Supplier;
 
-public class NoticeNullException extends ApiException implements Supplier<NoticeNullException> {
+public class NoticeNullException extends NullException {
 
     public NoticeNullException() {
-        super("011", "Notice Not Found");
+        super("Notice Not Found");
     }
 
-    @Override
-    public NoticeNullException get() {
-        return this;
-    }
 }

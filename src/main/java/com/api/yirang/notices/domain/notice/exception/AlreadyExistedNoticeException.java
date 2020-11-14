@@ -1,10 +1,10 @@
 package com.api.yirang.notices.domain.notice.exception;
 
-import com.api.yirang.common.exceptions.ApiException;
+import com.api.yirang.common.exceptions.AlreadyException;
 
-public class AlreadyExistedNoticeException extends ApiException {
+public class AlreadyExistedNoticeException extends AlreadyException {
 
     public AlreadyExistedNoticeException() {
-        super("012", "Notice Already exist");
+        super("Notice Already exist");
     }
 }
