@@ -26,10 +26,11 @@ import java.util.Properties;
 @EnableJpaRepositories(
         entityManagerFactoryRef = "mariaEntityManager",
         transactionManagerRef = "mariaTransactionManager",
-        basePackages = {"com.api.yirang.auth.repository.persistence.maria",
-                        "com.api.yirang.common.repository.persistence.maria",
-                        "com.api.yirang.notices.repository.persistence.maria",
-                        "com.api.yirang.seniors.repository.persistence.maria"
+        basePackages = {
+                "com.api.yirang.auth.repository.persistence.maria",
+                "com.api.yirang.common.repository.persistence.maria",
+                "com.api.yirang.notices.repository.persistence.maria",
+                "com.api.yirang.seniors.repository.persistence.maria"
         }
 )
 @PropertySource("classpath:properties/application-db.properties")
@@ -56,7 +57,6 @@ public class MariaDataBaseConfig {
     @Value("#{${spring.mariadb.datasource.models}}")
     private List<String> LIST_OF_MODELS;
 
-
     @Primary
     @Bean
     public DataSource mariaDataSource(){
@@ -70,7 +70,6 @@ public class MariaDataBaseConfig {
     public LocalContainerEntityManagerFactoryBean entityManagerFactory(){
         LocalContainerEntityManagerFactoryBean em = new LocalContainerEntityManagerFactoryBean();
         em.setDataSource(mariaDataSource());
-        System.out.println(LIST_OF_MODELS);
         em.setPackagesToScan(LIST_OF_MODELS.toArray(new String[LIST_OF_MODELS.size()]));
         JpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
         em.setJpaVendorAdapter(vendorAdapter);
