@@ -56,6 +56,7 @@ public class MariaDataBaseConfig {
     @Value("#{${spring.mariadb.datasource.models}}")
     private List<String> LIST_OF_MODELS;
 
+
     @Primary
     @Bean
     public DataSource mariaDataSource(){
@@ -69,12 +70,8 @@ public class MariaDataBaseConfig {
     public LocalContainerEntityManagerFactoryBean entityManagerFactory(){
         LocalContainerEntityManagerFactoryBean em = new LocalContainerEntityManagerFactoryBean();
         em.setDataSource(mariaDataSource());
-        em.setPackagesToScan("com.api.yirang.auth.domain.user.model",
-                             "com.api.yirang.common.domain.region.model",
-                             "com.api.yirang.notices.domain.activity.model",
-                             "com.api.yirang.notices.domain.notice.model",
-                             "com.api.yirang.seniors.domain.senior.model",
-                             "com.api.yirang.seniors.domain.volunteerService.model");
+        System.out.println(LIST_OF_MODELS);
+        em.setPackagesToScan(LIST_OF_MODELS.toArray(new String[LIST_OF_MODELS.size()]));
         JpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
         em.setJpaVendorAdapter(vendorAdapter);
         em.setJpaProperties(hibernateProperties());
