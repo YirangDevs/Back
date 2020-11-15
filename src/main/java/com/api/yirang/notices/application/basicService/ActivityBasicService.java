@@ -1,8 +1,8 @@
 package com.api.yirang.notices.application.basicService;
 
 
-import com.api.yirang.common.domain.region.model.Region;
 import com.api.yirang.common.support.time.TimeConverter;
+import com.api.yirang.common.support.type.Region;
 import com.api.yirang.notices.domain.activity.exception.ActivityNullException;
 import com.api.yirang.notices.domain.activity.exception.AlreadyExistedActivityException;
 import com.api.yirang.notices.domain.activity.model.Activity;
