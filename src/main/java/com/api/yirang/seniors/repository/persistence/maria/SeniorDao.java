@@ -1,6 +1,6 @@
 package com.api.yirang.seniors.repository.persistence.maria;
 
-import com.api.yirang.common.domain.region.model.Region;
+import com.api.yirang.common.support.type.Region;
 import com.api.yirang.common.support.type.Sex;
 import com.api.yirang.seniors.domain.senior.model.Senior;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -17,7 +17,6 @@ public interface SeniorDao extends JpaRepository<Senior, Long> {
 
 
     // Find
-
     Optional<Senior> findSeniorByPhone(String phone);
     Collection<Senior> findSeniorsByRegion(Region region);
     // isExist

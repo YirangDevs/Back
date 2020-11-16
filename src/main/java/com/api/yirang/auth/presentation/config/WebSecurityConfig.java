@@ -68,6 +68,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             .authorizeRequests()
             .antMatchers("/v1/apis/auth/signin").permitAll()
             .antMatchers("/v1/apis/test/**").permitAll()
+            // h2-conosole
+            .antMatchers("/h2-console", "/h2", "/h2/").permitAll()
             // 임시로..
             .antMatchers("/v1/apis/admins").hasAnyAuthority("VOLUNTEER", "ADMIN")
             .antMatchers("/v1/apis/admins/region/**").hasAnyAuthority("ADMIN")
@@ -86,6 +88,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
         httpSecurity.addFilterBefore(authenticationFilter(), UsernamePasswordAuthenticationFilter.class);
-
+        // h2-console 위해서 설정
     }
 }

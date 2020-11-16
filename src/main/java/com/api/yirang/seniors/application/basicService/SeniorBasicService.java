@@ -1,7 +1,6 @@
 package com.api.yirang.seniors.application.basicService;
 
-
-import com.api.yirang.common.domain.region.model.Region;
+import com.api.yirang.common.support.type.Region;
 import com.api.yirang.common.support.type.Sex;
 import com.api.yirang.seniors.domain.senior.exception.SeniorNullException;
 import com.api.yirang.seniors.domain.senior.model.Senior;
@@ -18,8 +17,6 @@ import java.util.Collection;
 public class SeniorBasicService {
 
     private final SeniorDao seniorDao;
-
-
     // exist
     public boolean isExistByPhone(String phone) {
         return seniorDao.existsSeniorByPhone(phone);
@@ -43,7 +40,8 @@ public class SeniorBasicService {
     }
     // update
 
-    public void updateSenior(Senior existedSenior, String name, Sex sex, String address, String phone, Region region) {
+    public void updateSenior(Senior existedSenior, String name, Sex sex,
+                             String address, String phone, Region region) {
         seniorDao.updateSenior(existedSenior, name, sex, address, phone, region);
     }
 }

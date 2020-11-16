@@ -20,14 +20,14 @@ import java.util.Collection;
 @Service
 @RequiredArgsConstructor
 @Transactional
-public class NoticeService {
+public class NoticeBasicService {
 
     // DI Daos
     private final NoticeDao noticeDao;
     private final PageableNoticeDao pageableNoticeDao;
 
     // DI Services
-    private final ActivityService activityService;
+    private final ActivityBasicService activityBasicService;
 
     // Methods
     public Long save(Notice notice) {

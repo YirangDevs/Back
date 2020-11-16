@@ -1,10 +1,9 @@
 package com.api.yirang.senior.generator;
 
 
-import com.api.yirang.common.domain.region.model.Region;
 import com.api.yirang.common.generator.EnumGenerator;
-import com.api.yirang.common.generator.RegionGenerator;
 import com.api.yirang.common.generator.StringRandomGenerator;
+import com.api.yirang.common.support.type.Region;
 import com.api.yirang.common.support.type.Sex;
 import com.api.yirang.seniors.domain.senior.model.Senior;
 
@@ -16,7 +15,7 @@ public class SeniorGenerator {
         Sex sex = EnumGenerator.generateRandomSex();
         String address = StringRandomGenerator.generateRandomKoreansWithLength(Long.valueOf(10));
         String phone = StringRandomGenerator.generateNumericStringWithLength(Long.valueOf(11));
-        Region region = RegionGenerator.generateRandomRegion();
+        Region region = EnumGenerator.generateRandomRegion();
 
         return Senior.builder()
                      .seniorName(seniorName).sex(sex)
@@ -28,7 +27,7 @@ public class SeniorGenerator {
         Sex sex = EnumGenerator.generateRandomSex();
         String address = StringRandomGenerator.generateRandomKoreansWithLength(Long.valueOf(10));
         String phone = StringRandomGenerator.generateNumericStringWithLength(Long.valueOf(11));
-        Region region = RegionGenerator.generateRandomRegion();
+        Region region = EnumGenerator.generateRandomRegion();
 
         return Senior.builder()
                      .seniorName(seniorName).sex(sex)
@@ -54,7 +53,7 @@ public class SeniorGenerator {
         String seniorName = StringRandomGenerator.generateKoreanNameWithLength(Long.valueOf(2));
         Sex sex = EnumGenerator.generateRandomSex();
         String address = StringRandomGenerator.generateRandomKoreansWithLength(Long.valueOf(10));
-        Region region = RegionGenerator.generateRandomRegion();
+        Region region = EnumGenerator.generateRandomRegion();
 
         return Senior.builder()
                      .seniorName(seniorName).sex(sex)

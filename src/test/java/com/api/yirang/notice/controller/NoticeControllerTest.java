@@ -1,5 +1,6 @@
 package com.api.yirang.notice.controller;
 
+import com.api.yirang.common.support.type.Region;
 import com.api.yirang.notices.presentation.dto.NoticeRegisterRequestDto;
 import com.api.yirang.notices.presentation.dto.embeded.ActivityRegisterRequestDto;
 import com.google.gson.Gson;
@@ -43,8 +44,8 @@ public class NoticeControllerTest {
 
     }
     private void makeOk(String content, Long nor,
-                                String dov, String tov, String dod,
-                                String region, String title) throws Exception {
+                        String dov, String tov, String dod,
+                        Region region, String title) throws Exception {
 
         ActivityRegisterRequestDto activityRegisterRequestDto =
                 ActivityRegisterRequestDto.builder()
@@ -71,7 +72,7 @@ public class NoticeControllerTest {
 
     private void makeBadRequest(String content, Long nor,
                                 String dov, String tov, String dod,
-                                String region, String title) throws Exception {
+                                Region region, String title) throws Exception {
 
         ActivityRegisterRequestDto activityRegisterRequestDto =
                 ActivityRegisterRequestDto.builder()
@@ -99,36 +100,36 @@ public class NoticeControllerTest {
     @Test
     public void 정상적인_DTO_Valid_테스트() throws Exception {
         makeOk("1234", Long.valueOf(5), "2020-01-23", "23:55:55",
-               "2020-02-23", "수성구", "Good");
+               "2020-02-23", Region.SOOSEONG_DISTRICT, "Good");
     }
 
     @Test
     public void Titled이_이상한_인테스트() throws Exception {
         makeBadRequest("1234", Long.valueOf(5), "2020-01-23", "23:55:55",
-                       "2020-02-23", "수성구", "G");
+                       "2020-02-23", Region.SOOSEONG_DISTRICT, "G");
     }
 
     @Test
     public void NOR가_이상한_테스트() throws Exception {
         makeBadRequest("1234", Long.valueOf(-1), "2020-01-23", "23:55:55",
-                       "2020-02-23", "수성구", "GOOD");
+                       "2020-02-23", Region.SOOSEONG_DISTRICT, "GOOD");
     }
 
     @Test
     public void DOV가_이상한_테스트() throws Exception {
         makeBadRequest("1234", Long.valueOf(5), "2020230123", "23:55:55",
-                       "2020-02-23", "수성구", "Good");
+                       "2020-02-23", Region.SOOSEONG_DISTRICT, "Good");
     }
     @Test
     public void TOV가_이상한_테스트() throws Exception {
         makeBadRequest("1234", Long.valueOf(5), "2020-01-23", "23675:55",
-                       "2020-02-23", "수성구", "Good");
+                       "2020-02-23", Region.SOOSEONG_DISTRICT, "Good");
     }
 
     @Test
     public void DOD가_이상한_테스트() throws Exception {
         makeBadRequest("1234", Long.valueOf(5), "2020-01-23", "23:55:55",
-                       "2020-02-1233", "수성구", "Good");
+                       "2020-02-1233", Region.SOOSEONG_DISTRICT, "Good");
     }
 
 }

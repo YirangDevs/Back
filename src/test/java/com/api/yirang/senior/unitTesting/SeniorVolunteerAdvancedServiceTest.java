@@ -1,15 +1,11 @@
 package com.api.yirang.senior.unitTesting;
 
-import com.api.yirang.auth.application.basicService.VolunteerBasicService;
-import com.api.yirang.auth.application.intermediateService.AdminRegionService;
-import com.api.yirang.auth.domain.user.model.Volunteer;
-import com.api.yirang.common.domain.region.model.Region;
-import com.api.yirang.common.generator.RegionGenerator;
-import com.api.yirang.common.service.RegionService;
+import com.api.yirang.common.generator.EnumGenerator;
 import com.api.yirang.common.support.time.TimeConverter;
+import com.api.yirang.common.support.type.Region;
 import com.api.yirang.common.support.type.Sex;
 import com.api.yirang.notice.generator.ActivityGenerator;
-import com.api.yirang.notices.application.basicService.ActivityService;
+import com.api.yirang.notices.application.basicService.ActivityBasicService;
 import com.api.yirang.notices.domain.activity.model.Activity;
 import com.api.yirang.senior.generator.SeniorGenerator;
 import com.api.yirang.senior.generator.VolunteerServiceGenerator;
@@ -47,19 +43,13 @@ public class SeniorVolunteerAdvancedServiceTest {
     VolunteerServiceBasicService volunteerServiceBasicService;
 
     @Mock
-    RegionService regionService;
-
-    @Mock
-    ActivityService activityService;
-
-    @Mock
-    AdminRegionService adminRegionService;
+    ActivityBasicService activityBasicService;
 
 
     @Test
     public void 새로운_시니어_등록(){
         // 필요한 랜덤 모델 만들기
-        Region region = RegionGenerator.generateRandomRegion();
+        Region region = EnumGenerator.generateRandomRegion();
         Activity activity = ActivityGenerator.createRandomActivity(region);
         Senior senior = SeniorGenerator.createRandomSenior(region);
         VolunteerService volunteerService = VolunteerServiceGenerator.createRandomVolunteerService(senior, activity);
@@ -74,15 +64,14 @@ public class SeniorVolunteerAdvancedServiceTest {
         Long priority = volunteerService.getPriority();
 
         RegisterSeniorRequestDto registerSeniorRequestDto = RegisterSeniorRequestDto.builder()
-                                                                                    .name(name).region(regionName)
+                                                                                    .name(name).region(region)
                                                                                     .address(address).phone(phone)
                                                                                     .sex(sex).type(serviceType)
                                                                                     .date(date).priority(priority)
                                                                                     .build();
         System.out.println(registerSeniorRequestDto);
 
-        when(regionService.findRegionByRegionName(regionName)).thenReturn(region);
-        when(activityService.findActivityByRegionAndDOV(region, date)).thenReturn(activity);
+        when(activityBasicService.findActivityByRegionAndDOV(region, date)).thenReturn(activity);
         when(seniorBasicService.isExistByPhone(phone)).thenReturn(Boolean.FALSE);
         when(seniorBasicService.findSeniorByPhone(phone)).thenReturn(senior);
 
@@ -92,8 +81,7 @@ public class SeniorVolunteerAdvancedServiceTest {
     @Test
     public void 지역으로_활동_이력_찾기(){
         // DB 모델 예시 설계
-        String regionName = "중구";
-        Region region = Region.builder().regionName(regionName).build();
+        Region region = Region.CENTRAL_DISTRICT;
 
         Senior firstSenior = SeniorGenerator.createRandomSenior(region);
         Senior secondSenior = SeniorGenerator.createRandomSenior(region);
@@ -122,11 +110,10 @@ public class SeniorVolunteerAdvancedServiceTest {
                                                                                         return ~lhs.getActivity().getDtov().compareTo(rhs.getActivity().getDtov());
                                                                                 }).collect(Collectors.toList());
 
-        when(regionService.findRegionByRegionName(regionName)).thenReturn(region);
         when(seniorBasicService.findSeniorsByRegion(region, false)).thenReturn(seniors);
         when(volunteerServiceBasicService.findSortedVolunteerServiceInSeniors(seniors)).thenReturn(volunteerServices);
 
-        Collection<SeniorResponseDto> res = seniorVolunteerAdvancedService.findSeniorsByRegion(regionName);
+        Collection<SeniorResponseDto> res = seniorVolunteerAdvancedService.findSeniorsByRegion(region);
         System.out.println(res);
     }
 

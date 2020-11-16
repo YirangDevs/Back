@@ -1,9 +1,9 @@
 package com.api.yirang.notice.generator;
 
-import com.api.yirang.common.domain.region.model.Region;
-import com.api.yirang.common.generator.RegionGenerator;
+import com.api.yirang.common.generator.EnumGenerator;
 import com.api.yirang.common.generator.StringRandomGenerator;
 import com.api.yirang.common.generator.TimeGenerator;
+import com.api.yirang.common.support.type.Region;
 import com.api.yirang.notices.domain.activity.model.Activity;
 
 import java.time.LocalDateTime;
@@ -36,7 +36,7 @@ public class ActivityGenerator {
     }
 
     public static final Activity createRandomActivity(){
-        Region region = RegionGenerator.generateRandomRegion();
+        Region region = EnumGenerator.generateRandomRegion();
         return createRandomActivity(region);
     }
 

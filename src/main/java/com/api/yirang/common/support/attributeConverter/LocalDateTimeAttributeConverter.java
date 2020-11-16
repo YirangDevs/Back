@@ -1,4 +1,4 @@
-package com.api.yirang.common.support.time;
+package com.api.yirang.common.support.attributeConverter;
 
 import javax.persistence.AttributeConverter;
 import javax.persistence.Converter;

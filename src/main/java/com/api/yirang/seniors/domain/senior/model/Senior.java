@@ -1,6 +1,6 @@
 package com.api.yirang.seniors.domain.senior.model;
 
-import com.api.yirang.common.domain.region.model.Region;
+import com.api.yirang.common.support.type.Region;
 import com.api.yirang.common.support.type.Sex;
 import lombok.Builder;
 import lombok.Getter;
@@ -35,9 +35,6 @@ public class Senior {
     @Column(columnDefinition = "VARCHAR(20)")
     private String phone;
 
-    // relationship
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "region_id", foreignKey = @ForeignKey(name = "fk_region_senior"))
     private Region region;
 
     @Builder

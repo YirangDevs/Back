@@ -16,7 +16,7 @@ import java.time.LocalDateTime;
 @Service
 @RequiredArgsConstructor
 @Transactional
-public class ActivityService {
+public class ActivityBasicService {
 
     private final ActivityDao activityDao;
 
@@ -50,7 +50,7 @@ public class ActivityService {
     }
 
     public void update(Long activityId, Activity toBeUpdatedActivity) {
-        // Acitivty 찾기
+        // Activity 찾기
         Activity activity = findActivityByActivityId(activityId);
 
         // (Noa:= apply 숫자는 바뀔 수 없음)

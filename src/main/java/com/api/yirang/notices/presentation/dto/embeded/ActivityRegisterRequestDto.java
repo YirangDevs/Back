@@ -1,6 +1,7 @@
 package com.api.yirang.notices.presentation.dto.embeded;
 
 
+import com.api.yirang.common.support.type.Region;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -30,7 +31,7 @@ public class ActivityRegisterRequestDto {
              message = "DateTime should be yyyy-mm-dd")
     private final String dod; // date of deadline
 
-    private final String region;
+    private final Region region;
 
     private final String content;
 

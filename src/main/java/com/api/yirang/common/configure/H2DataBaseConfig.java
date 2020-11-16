@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
@@ -16,6 +17,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
+import java.util.List;
 import java.util.Properties;
 
 @Configuration
@@ -23,9 +25,13 @@ import java.util.Properties;
 @EnableJpaRepositories(
         entityManagerFactoryRef = "h2EntityManager",
         transactionManagerRef = "h2TransactionManager",
-        basePackages = {"com.api.yirang.auth.repository.persistence.h2"}
+        basePackages = { "com.api.yirang.auth.repository.persistence.maria",
+                         "com.api.yirang.notices.repository.persistence.maria",
+                         "com.api.yirang.seniors.repository.persistence.maria",
+                         "com.api.yirang.test.dao"}
 )
-@PropertySource("classpath:properties/application-db.properties")
+@PropertySource("classpath:properties/application-test.properties")
+@Profile("test")
 public class H2DataBaseConfig {
 
     @Value("${spring.h2.datasource.driver-class-name}")
@@ -46,8 +52,12 @@ public class H2DataBaseConfig {
     @Value("${spring.h2.hibernate.dialect}")
     private String DIALECT;
 
+    @Value("#{${spring.h2.datasource.models}}")
+    private List<String> LIST_OF_MODELS;
+
     @Bean
     public DataSource h2DataSource(){
+        System.out.println("TEST 모드로 DataBaseSource를 실행합니다.");
         DriverManagerDataSource dataSource = new DriverManagerDataSource(URL, USER_NAME, PASSWORD);
         dataSource.setDriverClassName(DRIVER);
         return dataSource;
@@ -57,7 +67,7 @@ public class H2DataBaseConfig {
     public LocalContainerEntityManagerFactoryBean entityManagerFactory(){
         LocalContainerEntityManagerFactoryBean em = new LocalContainerEntityManagerFactoryBean();
         em.setDataSource(h2DataSource());
-        em.setPackagesToScan(new String[] {"com.api.yirang.auth.domain.kakaoToken.model"});
+        em.setPackagesToScan(LIST_OF_MODELS.toArray(new String[LIST_OF_MODELS.size()]));
         JpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
         em.setJpaVendorAdapter(vendorAdapter);
         em.setJpaProperties(hibernateProperties());

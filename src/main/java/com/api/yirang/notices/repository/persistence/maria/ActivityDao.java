@@ -1,6 +1,6 @@
 package com.api.yirang.notices.repository.persistence.maria;
 
-import com.api.yirang.common.domain.region.model.Region;
+import com.api.yirang.common.support.type.Region;
 import com.api.yirang.notices.domain.activity.model.Activity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;

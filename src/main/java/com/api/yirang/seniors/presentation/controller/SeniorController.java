@@ -5,6 +5,7 @@ import com.api.yirang.auth.support.utils.ParsingHelper;
 import com.api.yirang.common.exceptions.ApiException;
 import com.api.yirang.common.exceptions.Dto.ErrorDto;
 import com.api.yirang.common.support.custom.ValidCollection;
+import com.api.yirang.common.support.type.Region;
 import com.api.yirang.seniors.application.advancedService.SeniorVolunteerAdvancedService;
 import com.api.yirang.seniors.presentation.dto.request.RegisterSeniorRequestDto;
 import com.api.yirang.seniors.presentation.dto.response.SeniorResponseDto;
@@ -22,7 +23,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-//@Validated
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/v1/apis/seniors")
@@ -85,7 +85,7 @@ public class SeniorController {
     // 지역에 해당하는 히스토리를 줘야함
     @GetMapping(value = "/area", produces = "application/json")
     @ResponseStatus(HttpStatus.OK)
-    public Map<String, Collection<SeniorResponseDto>> getSpecificRegionSeniors(@RequestParam("region") String region){
+    public Map<String, Collection<SeniorResponseDto>> getSpecificRegionSeniors(@RequestParam("region") Region region){
         System.out.println("[SeniorController] 해당 지역의 피봉사자 리스트를 원하는 API 요청 받았습니다: ");
         Map<String, Collection<SeniorResponseDto>> res = new HashMap<>();
         res.put("seniors", seniorVolunteerAdvancedService.findSeniorsByRegion(region));

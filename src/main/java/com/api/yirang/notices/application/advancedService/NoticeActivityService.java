@@ -4,10 +4,8 @@ import com.api.yirang.auth.application.basicService.AdminService;
 import com.api.yirang.auth.domain.jwt.components.JwtParser;
 import com.api.yirang.auth.domain.user.model.Admin;
 import com.api.yirang.auth.support.utils.ParsingHelper;
-import com.api.yirang.common.domain.region.model.Region;
-import com.api.yirang.common.service.RegionService;
-import com.api.yirang.notices.application.basicService.ActivityService;
-import com.api.yirang.notices.application.basicService.NoticeService;
+import com.api.yirang.notices.application.basicService.ActivityBasicService;
+import com.api.yirang.notices.application.basicService.NoticeBasicService;
 import com.api.yirang.notices.domain.activity.converter.ActivityConverter;
 import com.api.yirang.notices.domain.notice.exception.LastExistedNotice;
 import com.api.yirang.notices.domain.activity.model.Activity;
@@ -26,9 +24,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.validation.constraints.NotBlank;
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.stream.Collectors;
 
 @Service
@@ -37,12 +33,11 @@ import java.util.stream.Collectors;
 public class NoticeActivityService {
 
     // DI service
-    private final NoticeService noticeService;
-    private final ActivityService activityService;
+    private final NoticeBasicService noticeBasicService;
+    private final ActivityBasicService activityBasicService;
 
     // DI user Service
     private final AdminService adminService;
-    private final RegionService regionService;
 
     // DI JwtParser
     private final JwtParser jwtParser;
@@ -57,25 +52,19 @@ public class NoticeActivityService {
 
         System.out.println("[NoticeActivityService]: admin: " + admin);
 
-        // Dto를 받아서 뜯어서 -> Notice랑 Activity로 나누어야 함
+        // DTO를 받아서 뜯어서 -> Notice랑 Activity로 나누어야 함
         ActivityRegisterRequestDto activityRegisterRequestDto = noticeRequestDto.getActivityRegisterRequestDto();
 
-
-        // 지역 구하기
-        Region region = regionService.findRegionByRegionName(activityRegisterRequestDto.getRegion());
-
-        System.out.println("[NoticeActivityService]: 지역은: " + region);
-
         // Activity 받아서 DB에 저장
-        Activity activity = ActivityConverter.ConvertFromDtoToModel(activityRegisterRequestDto, region);
-        activityService.save(activity);
+        Activity activity = ActivityConverter.ConvertFromDtoToModel(activityRegisterRequestDto);
+        activityBasicService.save(activity);
 
         System.out.println("[NoticeActivityService]: activity를 저장했습니다.");
 
         // Notice 받아서, DB에 저장
         String title = noticeRequestDto.getTitle();
         Notice notice = NoticeConverter.convertFromDtoToModel(title, admin, activity);
-        noticeService.save(notice);
+        noticeBasicService.save(notice);
 
         System.out.println("[NoticeActivityService]: Notice를 저장했습니다. ");
     }
@@ -84,12 +73,12 @@ public class NoticeActivityService {
 
         System.out.println("[NoticeActivityService]: getOneNoticeById를 실행하겠습니다.");
         // Notice Id로 Notice 불러오기
-        Notice notice = noticeService.findByNoticeId(noticeId);
+        Notice notice = noticeBasicService.findByNoticeId(noticeId);
 
         System.out.println("[NoticeActivityService]: Notice: " + notice);
 
         // Notice에 해당하는 Activity 불러오기
-        Activity activity = noticeService.findActivityNoticeId(noticeId);
+        Activity activity = noticeBasicService.findActivityNoticeId(noticeId);
 
         System.out.println("[NoticeActivityService]: activity: " + activity);
 
@@ -107,15 +96,14 @@ public class NoticeActivityService {
         System.out.println("[NoticeActivityService]: findNoticesByPage를 실행하겠습니다.");
 
         // collections Notice 구하기
-        Collection<Notice> notices = noticeService.findAllWithPage(pageWithSixElements);
+        Collection<Notice> notices = noticeBasicService.findAllWithPage(pageWithSixElements);
 
         System.out.println("[registerService]: Collection<Notice>: " + notices);
 
         // Notice -> NoticeResponseDTO로 바꾸기
         Collection<NoticeResponseDto> noticeResponseDtos = notices.stream()
                                                                   .map(e -> {   Activity activity = e.getActivity();
-                                                                                Region region = activity.getRegion();
-                                                                                return NoticeConverter.convertFromNoticeToResponse(e, activity, region);
+                                                                                return NoticeConverter.convertFromNoticeToResponse(e, activity);
                                                                             })
                                                                   .collect(Collectors.toList());
 
@@ -127,7 +115,7 @@ public class NoticeActivityService {
     public Long findNumsOfNotices() {
 
         System.out.println("[NoticeActivityService]: findNumsOfNotices를 실행하겠습니다.");
-        return noticeService.countNumsOfNotices();
+        return noticeBasicService.countNumsOfNotices();
     }
 
     public void registerUrgent(String header, Long noticeId,
@@ -141,13 +129,13 @@ public class NoticeActivityService {
         Long userId = jwtParser.getUserIdFromJwt(ParsingHelper.parseHeader(header));
         Admin admin = adminService.findAdminByUserId(userId);
         // noticeId를 이용해서 Activity를 가져옴
-        Activity activity = noticeService.findActivityNoticeId(noticeId);
+        Activity activity = noticeBasicService.findActivityNoticeId(noticeId);
 
         System.out.println("[NoticeActivityService]: Admin과 Activity을 구했습니다.");
 
         // 새로운 Notice를 만들고 저장
         Notice newUrgentNotice = NoticeConverter.convertFromDtoToModel(title, admin, activity);
-        noticeService.save(newUrgentNotice);
+        noticeBasicService.save(newUrgentNotice);
 
         System.out.println("[NoticeActivityService]: notice를 저장했습니다.");
     }
@@ -166,30 +154,29 @@ public class NoticeActivityService {
 
         // Notice update 하기
         String newTitle = noticeRegisterRequestDto.getTitle();
-        noticeService.update(noticeId, newTitle, admin);
+        noticeBasicService.update(noticeId, newTitle, admin);
 
         // Notice와 해당되는 Activity 들고 오기
-        Activity activity = noticeService.findActivityNoticeId(noticeId);
-        Region region = regionService.findRegionByRegionName(activityRegisterRequestDto.getRegion());
+        Activity activity = noticeBasicService.findActivityNoticeId(noticeId);
 
         // Activity update 하기
-        Activity toBeUpdatedActivity = ActivityConverter.ConvertFromDtoToModel(activityRegisterRequestDto, region);
-        activityService.update(activity.getActivityId(), toBeUpdatedActivity);
+        Activity toBeUpdatedActivity = ActivityConverter.ConvertFromDtoToModel(activityRegisterRequestDto);
+        activityBasicService.update(activity.getActivityId(), toBeUpdatedActivity);
     }
 
     public void deleteOneNotice(Long noticeId) {
         //notice가 있는 지 확인
         // 이 글이 마지막 활동의 마지막 글인지 아닌지, count 해서
-        Activity activity = noticeService.findActivityNoticeId(noticeId);
-        Long relatedNoticeNums =  noticeService.countNumsOfNoticesByActivity(activity);
+        Activity activity = noticeBasicService.findActivityNoticeId(noticeId);
+        Long relatedNoticeNums =  noticeBasicService.countNumsOfNoticesByActivity(activity);
         if (relatedNoticeNums == 1){
             throw new LastExistedNotice();
         }
-        noticeService.deleteNoticeByNoticeId(noticeId);
+        noticeBasicService.deleteNoticeByNoticeId(noticeId);
     }
     public void deleteOneNoticeWithForce(Long noticeId){
-        Activity activity = noticeService.findActivityNoticeId(noticeId);
-        activityService.deleteActivityById(activity.getActivityId());
-        noticeService.deleteNoticeByNoticeId(noticeId);
+        Activity activity = noticeBasicService.findActivityNoticeId(noticeId);
+        activityBasicService.deleteActivityById(activity.getActivityId());
+        noticeBasicService.deleteNoticeByNoticeId(noticeId);
     }
 }

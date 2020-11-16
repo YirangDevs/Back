@@ -1,6 +1,7 @@
 package com.api.yirang.seniors.presentation.dto.request;
 
 
+import com.api.yirang.common.support.type.Region;
 import com.api.yirang.common.support.type.Sex;
 import com.api.yirang.seniors.support.custom.ServiceType;
 import lombok.AllArgsConstructor;
@@ -19,7 +20,7 @@ public class RegisterSeniorRequestDto {
     @NotBlank
     private final String name;
 
-    private final String region;
+    private final Region region;
     private final String address;
 
     @Pattern(regexp = "^[0-9]*$",

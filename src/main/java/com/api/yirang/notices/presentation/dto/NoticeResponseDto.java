@@ -1,6 +1,7 @@
 package com.api.yirang.notices.presentation.dto;
 
 
+import com.api.yirang.common.support.type.Region;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -18,7 +19,7 @@ public class NoticeResponseDto {
 
     private final String dov;
     private final String tov;
-    private final String region;
+    private final Region region;
 
     public NoticeResponseDto() {
         this.id = null;

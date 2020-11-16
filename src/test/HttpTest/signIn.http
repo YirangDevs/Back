@@ -2,7 +2,7 @@ POST http://localhost:8080/v1/apis/auth/signin
 Content-Type: application/json
 
 {
- "accessToken": "sIj_hastyvUnFz2SQ2PbQ3Po46jyYy2IDCsRXQorDNMAAAF1x2Wv4g",
+ "accessToken": "I3giU20rHw4NG7RB_jO6kPW2xINQLI9i4n2cPwopyV8AAAF1y04Qng",
  "refreshToken": "Refresh",
   "refreshTokenExpiredTime": 1000
 }

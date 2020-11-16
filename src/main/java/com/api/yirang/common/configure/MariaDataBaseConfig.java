@@ -2,10 +2,7 @@ package com.api.yirang.common.configure;
 
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Primary;
-import org.springframework.context.annotation.PropertySource;
+import org.springframework.context.annotation.*;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.orm.jpa.JpaTransactionManager;
@@ -28,12 +25,12 @@ import java.util.Properties;
         transactionManagerRef = "mariaTransactionManager",
         basePackages = {
                 "com.api.yirang.auth.repository.persistence.maria",
-                "com.api.yirang.common.repository.persistence.maria",
                 "com.api.yirang.notices.repository.persistence.maria",
                 "com.api.yirang.seniors.repository.persistence.maria"
         }
 )
 @PropertySource("classpath:properties/application-db.properties")
+@Profile("dev")
 public class MariaDataBaseConfig {
 
     @Value("${spring.mariadb.datasource.driver-class-name}")
@@ -60,6 +57,7 @@ public class MariaDataBaseConfig {
     @Primary
     @Bean
     public DataSource mariaDataSource(){
+        System.out.println("DEV 모드로 DataBaseSource를 실행합니다.");
         DriverManagerDataSource dataSource = new DriverManagerDataSource(URL, USER_NAME, PASSWORD);
         dataSource.setDriverClassName(DRIVER);
         return dataSource;

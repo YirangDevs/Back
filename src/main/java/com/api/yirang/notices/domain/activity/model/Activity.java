@@ -1,18 +1,14 @@
 package com.api.yirang.notices.domain.activity.model;
 
 
-import com.api.yirang.common.domain.region.model.Region;
-import com.api.yirang.notices.domain.notice.model.Notice;
+import com.api.yirang.common.support.type.Region;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import javax.persistence.*;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.HashSet;
-import java.util.Set;
 
 @Entity
 @Table(name = "activity")
@@ -43,9 +39,7 @@ public class Activity {
     @Column(name = "datetime_of_deadline")
     private LocalDateTime dtod;
 
-    // relationships
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "region_id", foreignKey = @ForeignKey(name = "fk_activity_region"))
+    @Column(name = "region")
     private Region region;
 
     @Builder

@@ -1,16 +1,18 @@
 package com.api.yirang.auth.presentation.controller;
 
 import com.api.yirang.auth.application.advancedService.AuthService;
-import com.api.yirang.auth.application.intermediateService.AdminRegionService;
+import com.api.yirang.auth.application.basicService.AdminService;
 import com.api.yirang.auth.application.intermediateService.UserService;
 import com.api.yirang.auth.domain.jwt.components.JwtParser;
 import com.api.yirang.auth.presentation.VO.RefreshResponseVO;
 import com.api.yirang.auth.support.utils.ParsingHelper;
+import com.api.yirang.common.support.type.Region;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -22,9 +24,8 @@ import java.util.Map;
 public class AdminController {
 
     // DI services
-    private final UserService userService;
-    private final AdminRegionService adminRegionService;
     private final AuthService authService;
+    private final AdminService adminService;
 
     // DI Jwt
     private final JwtParser jwtParser;
@@ -51,19 +52,19 @@ public class AdminController {
 
     // 기존의 Admin에 관리 지역 추가
     // /v1/apis/admin/region
-    @PostMapping(value="/region/{regionName}")
+    @PostMapping(value="/region/{region}")
     @ResponseStatus(HttpStatus.CREATED)
-    public void registerMyRegion(@RequestHeader("Authorization") String header, @PathVariable String regionName){
+    public void registerMyRegion(@RequestHeader("Authorization") String header, @PathVariable @Valid Region region){
         Long userId = jwtParser.getUserIdFromJwt(ParsingHelper.parseHeader(header));
-        adminRegionService.delegateRegion(userId, regionName);
+        adminService.addAreaByUserId(userId, region);
     }
     // 기존의 Admin에 관리 지역 삭제
     // /v1/apis/admin/region
-    @DeleteMapping(value="/region/{regionName}")
+    @DeleteMapping(value="/region/{region}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteMyRegion(@RequestHeader("Authorization") String header, @PathVariable String regionName){
+    public void deleteMyRegion(@RequestHeader("Authorization") String header, @PathVariable @Valid Region region){
         Long userId = jwtParser.getUserIdFromJwt(ParsingHelper.parseHeader(header));
-        adminRegionService.unDelegateRegion(userId, regionName);
+        adminService.deleteAreaByUserId(userId, region);
     }
     // 기존 Admin 관리 지역 조회
     // /v1/apis/admin/region
@@ -72,7 +73,7 @@ public class AdminController {
     public Map<String, Collection> getMyRegions(@RequestHeader("Authorization") String header){
         Map<String, Collection> res = new HashMap<>();
         Long userId = jwtParser.getUserIdFromJwt(ParsingHelper.parseHeader(header));
-        res.put("regions", adminRegionService.getMyRegions(userId));
+        res.put("regions", adminService.findAreasByUserId(userId));
         return res;
     }
 

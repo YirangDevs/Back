@@ -1,12 +1,10 @@
 package com.api.yirang.seniors.application.advancedService;
 
-
-import com.api.yirang.auth.application.intermediateService.AdminRegionService;
-import com.api.yirang.common.domain.region.model.Region;
-import com.api.yirang.common.service.RegionService;
+import com.api.yirang.auth.application.basicService.AdminService;
 import com.api.yirang.common.support.time.TimeConverter;
+import com.api.yirang.common.support.type.Region;
 import com.api.yirang.common.support.type.Sex;
-import com.api.yirang.notices.application.basicService.ActivityService;
+import com.api.yirang.notices.application.basicService.ActivityBasicService;
 import com.api.yirang.notices.domain.activity.model.Activity;
 import com.api.yirang.seniors.application.basicService.SeniorBasicService;
 import com.api.yirang.seniors.application.basicService.VolunteerServiceBasicService;
@@ -21,7 +19,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.stream.Collectors;
@@ -31,23 +28,27 @@ import java.util.stream.Collectors;
 @Transactional
 public class SeniorVolunteerAdvancedService {
 
-    // DI Senior's features Service
+    // DI Senior's features Services
     private final SeniorBasicService seniorBasicService;
     private final VolunteerServiceBasicService volunteerServiceBasicService;
 
-    // DI other feathures Service
-    private final RegionService regionService;
-    private final ActivityService activityService;
-    private final AdminRegionService adminRegionService;
+    // DI other Basic features Services
+    private final ActivityBasicService activityBasicService;
+    private final AdminService adminService;
 
     // Create Method
-    public void registerSenior(@Valid RegisterSeniorRequestDto registerSeniorRequestDto) {
+    public void registerSenior(final RegisterSeniorRequestDto registerSeniorRequestDto) {
         System.out.println("[SeniorVolunteerAdvancedService]: registerSenior를 실행하겠습니다.");
         // region을 이용해 region 구하기
-        Region region = regionService.findRegionByRegionName(registerSeniorRequestDto.getRegion());
+        final Region region = registerSeniorRequestDto.getRegion();
 
         // date와 region 이용해서 등록되어있던 Activity 구하기
-        Activity activity = activityService.findActivityByRegionAndDOV(region, registerSeniorRequestDto.getDate());
+        Activity activity = activityBasicService.findActivityByRegionAndDOV(region, registerSeniorRequestDto.getDate());
+
+        /** TO-DO
+         * Written on [2020/11/15]
+         * 해당하는 날짜와 지역에 Activity가 없을 시, 예약 기능 발동  **/
+
 
         // Senior 만들기 혹은 기존의 있는 Senior을 구하기
         String phone = registerSeniorRequestDto.getPhone();
@@ -56,20 +57,23 @@ public class SeniorVolunteerAdvancedService {
 
         // 저장이 안되어있으면 만들기
         if(!seniorBasicService.isExistByPhone(phone)){
-            seniorBasicService.save(SeniorConverter.convertFromDtoToModel(registerSeniorRequestDto, region));
+            seniorBasicService.save(SeniorConverter.convertFromDtoToModel(registerSeniorRequestDto));
         }
         // phone으로 찾기
         Senior senior = seniorBasicService.findSeniorByPhone(phone);
+
+        /** TO-DO
+         * Written on [2020/11/15]
+         * 1. 중복된 Service 저장 안 해야함
+         * 2. And, Throw exception **/
 
         // Service에 등록하기
         VolunteerService volunteerService = VolunteerServiceConverter.convertToModel(serviceType, priority, activity, senior);
         volunteerServiceBasicService.save(volunteerService);
     }
     // Find methods
-    public Collection<SeniorResponseDto> findSeniorsByRegion(String regionName) {
+    public Collection<SeniorResponseDto> findSeniorsByRegion(Region region) {
         System.out.println("[SeniorVolunteerAdvancedService]: findSeniorsByRegion를 실행하겠습니다.");
-        // Region을 찾고
-        Region region = regionService.findRegionByRegionName(regionName);
 
         // Region을 가지고 Seniors 찾기
         Collection<Senior> seniors = seniorBasicService.findSeniorsByRegion(region, false);
@@ -85,10 +89,7 @@ public class SeniorVolunteerAdvancedService {
     public Collection<SeniorResponseDto> findSeniorsByMyArea(Long userId) {
         System.out.println("[SeniorVolunteerAdvancedService]: findSeniorsByMyArea를 실행하겠습니다.");
         // 해당하는 지역 찾기
-        Collection<String> regionNames = adminRegionService.getMyRegions(userId);
-        Collection<Region> regions = regionNames.stream()
-                                                .map(e -> regionService.findRegionByRegionName(e))
-                                                .collect(Collectors.toList());
+        Collection<Region> regions = adminService.findAreasByUserId(userId);
 
         // regions로 해당하는 Seniors 찾기
         Collection<Senior> seniors = new ArrayList<>();
@@ -116,7 +117,7 @@ public class SeniorVolunteerAdvancedService {
 
         // name 또는 region 또는 address, phone 또는 sex가 변했을 경우
         String name = registerSeniorRequestDto.getName();
-        Region region = regionService.findRegionByRegionName(registerSeniorRequestDto.getRegion() );
+        Region region = registerSeniorRequestDto.getRegion();
         String address = registerSeniorRequestDto.getAddress();
         String phone = registerSeniorRequestDto.getPhone();
         Sex sex = registerSeniorRequestDto.getSex();
@@ -132,7 +133,7 @@ public class SeniorVolunteerAdvancedService {
         String existedDate = TimeConverter.LocalDateTimeToString(existedActivity.getDtov()).split(" ")[0];
         String dov = registerSeniorRequestDto.getDate();
         if (!existedDate.equals(dov)){
-            Activity newActivity = activityService.findActivityByRegionAndDOV(region, dov);
+            Activity newActivity = activityBasicService.findActivityByRegionAndDOV(region, dov);
             volunteerServiceBasicService.replaceActivity(volunteerServiceId, newActivity);
         }
 
