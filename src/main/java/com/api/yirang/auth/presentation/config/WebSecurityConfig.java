@@ -68,11 +68,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             .authorizeRequests()
             .antMatchers("/v1/apis/auth/signin").permitAll()
             .antMatchers("/v1/apis/test/**").permitAll()
-            // h2-conosole
-            .antMatchers("/h2-console", "/h2", "/h2/").permitAll()
             // 임시로..
             .antMatchers("/v1/apis/admins").hasAnyAuthority("VOLUNTEER", "ADMIN")
-            .antMatchers("/v1/apis/admins/region/**").hasAnyAuthority("ADMIN")
+            .antMatchers("/v1/apis/admins/region/**").hasAuthority("ADMIN")
             .antMatchers("/v1/apis/auth/refresh").hasAnyAuthority("VOLUNTEER", "ADMIN")
             .antMatchers("/v1/apis/seniors", "/v1/apis/seniors/**").hasAnyAuthority("ADMIN")
             // 공고글 보는 건 Anonymous, User, admin 다 가능 해야함
