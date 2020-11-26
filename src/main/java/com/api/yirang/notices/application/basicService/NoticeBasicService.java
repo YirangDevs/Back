@@ -1,6 +1,5 @@
 package com.api.yirang.notices.application.basicService;
 
-
 import com.api.yirang.auth.domain.user.model.Admin;
 import com.api.yirang.notices.domain.activity.exception.ActivityNullException;
 import com.api.yirang.notices.domain.activity.model.Activity;

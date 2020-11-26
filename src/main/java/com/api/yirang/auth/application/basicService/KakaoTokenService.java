@@ -21,7 +21,6 @@ public class KakaoTokenService {
         kakaoTokenAPI.isValidKakaoAccessToken(kakaoAccessToken);
         return true;
     }
-
     // get or Find
     public Long getUserIdByToken(String kakaoAccessToken){
         return kakaoTokenAPI.getUserId(kakaoAccessToken);
