@@ -37,7 +37,7 @@ public class KakaoTokenAPI {
         this.kakaoAccessTokenInfoContentType = kakaoAccessTokenInfoContentType;
     }
 
-    private final KakaoTokenInfoDto connectAndGetKakaoTokenInfo(String kakaoAccessToken){
+    private KakaoTokenInfoDto connectAndGetKakaoTokenInfo(String kakaoAccessToken){
 
         try {
             HttpGet request = new HttpGet(kakaoAccessTokenInfoUrl);
@@ -65,7 +65,7 @@ public class KakaoTokenAPI {
         }
     }
 
-    public final void isValidKakaoAccessToken(String kakaoAccessToken) {
+    public void isValidKakaoAccessToken(String kakaoAccessToken) {
 
         KakaoTokenInfoDto kakaoTokenInfo = connectAndGetKakaoTokenInfo(kakaoAccessToken);
         // Kakao Token을 뜯어봤더니, 남은 시간이 없다!
@@ -74,7 +74,7 @@ public class KakaoTokenAPI {
         }
     }
 
-    public final Long getUserId(String kakaoAccessToken) {
+    public Long getUserId(String kakaoAccessToken) {
         KakaoTokenInfoDto kakaoTokenInfo = connectAndGetKakaoTokenInfo(kakaoAccessToken);
         return kakaoTokenInfo.getId();
     }

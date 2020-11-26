@@ -31,8 +31,9 @@ public class AuthService {
 
     @Transactional
     public SignInResponseVO signin(SignInRequestDto signInRequestDto) {
-        String kakaoAccessToken = signInRequestDto.getAccessToken();
+        final String kakaoAccessToken = signInRequestDto.getAccessToken();
 
+        System.out.println("[AuthService]: kakaoAccessToken은 " + kakaoAccessToken);
         // kakaoAccessToken의 유효성 검사
         kakaoTokenService.isValidAccessToken(kakaoAccessToken);
 
