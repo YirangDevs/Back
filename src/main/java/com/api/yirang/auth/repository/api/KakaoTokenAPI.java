@@ -44,13 +44,13 @@ public class KakaoTokenAPI {
             request.setHeader("Authorization", "Bearer " + kakaoAccessToken);
 
             // for debugging
-            System.out.println("request's Authorization: " + request.getHeaders("Authorization")[0]);
+            System.out.println("[kakaoTokenAPI] request's Authorization: " + request.getHeaders("Authorization")[0]);
 
             HttpResponse response = yirangHttpClient.execute(request);
             String responseString = EntityUtils.toString(response.getEntity());
 
             //for debugging
-            System.out.println("Code: " + response.getStatusLine().getStatusCode());
+            System.out.println("[kakaoTokenAPI] Code: " + response.getStatusLine().getStatusCode());
             System.out.println("response content: " + responseString);
 
             // Kakao Reponse이 실패하면 KAT가 Invalid 한 것
