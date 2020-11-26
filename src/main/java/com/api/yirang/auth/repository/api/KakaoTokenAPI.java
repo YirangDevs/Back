@@ -37,21 +37,21 @@ public class KakaoTokenAPI {
         this.kakaoAccessTokenInfoContentType = kakaoAccessTokenInfoContentType;
     }
 
-    private KakaoTokenInfoDto connectAndGetKakaoTokenInfo(String kakaoAccessToken){
+    private final KakaoTokenInfoDto connectAndGetKakaoTokenInfo(String kakaoAccessToken){
 
         try {
             HttpGet request = new HttpGet(kakaoAccessTokenInfoUrl);
             request.setHeader("Authorization", "Bearer " + kakaoAccessToken);
 
             // for debugging
-            System.out.println("[kakaoTokenAPI] request's Authorization: " + request.getHeaders("Authorization")[0]);
+            System.out.println("[KakaoTokenAPI] request's Authorization: " + request.getHeaders("Authorization")[0]);
 
             HttpResponse response = yirangHttpClient.execute(request);
             String responseString = EntityUtils.toString(response.getEntity());
 
             //for debugging
-            System.out.println("[kakaoTokenAPI] Code: " + response.getStatusLine().getStatusCode());
-            System.out.println("response content: " + responseString);
+            System.out.println("[KakaoTokenAPI] Code: " + response.getStatusLine().getStatusCode());
+            System.out.println("[KakaoTokenAPI] response content: " + responseString);
 
             // Kakao Reponse이 실패하면 KAT가 Invalid 한 것
             if (response.getStatusLine()
@@ -65,7 +65,7 @@ public class KakaoTokenAPI {
         }
     }
 
-    public void isValidKakaoAccessToken(String kakaoAccessToken) {
+    public final void isValidKakaoAccessToken(String kakaoAccessToken) {
 
         KakaoTokenInfoDto kakaoTokenInfo = connectAndGetKakaoTokenInfo(kakaoAccessToken);
         // Kakao Token을 뜯어봤더니, 남은 시간이 없다!
@@ -74,7 +74,7 @@ public class KakaoTokenAPI {
         }
     }
 
-    public Long getUserId(String kakaoAccessToken) {
+    public final Long getUserId(String kakaoAccessToken) {
         KakaoTokenInfoDto kakaoTokenInfo = connectAndGetKakaoTokenInfo(kakaoAccessToken);
         return kakaoTokenInfo.getId();
     }

@@ -34,7 +34,7 @@ public class AdminController {
     // /v1/apis/admin
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public void registerAdmin(@RequestHeader("Authorization") String header, HttpServletResponse response){
+    public final void registerAdmin(@RequestHeader("Authorization") String header, HttpServletResponse response){
         System.out.println("[AdminController]: 유저 권한 업그레이드를 원합니다");
         RefreshResponseVO refreshResponseVO = authService.refreshToAdmin(header);
         response.setHeader("Authorization", "Bearer " + refreshResponseVO.getYirangAccessToken());
@@ -44,7 +44,7 @@ public class AdminController {
     // /v1/apis/admin
     @DeleteMapping
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteAdmin(@RequestHeader("Authorization") String header, HttpServletResponse response){
+    public final void deleteAdmin(@RequestHeader("Authorization") String header, HttpServletResponse response){
         System.out.println("[AdminController]: 유저 권한 다운그레이드를 원합니다.");
         RefreshResponseVO refreshResponseVO = authService.refreshFromAdmin(header);
         response.setHeader("Authorization", "Bearer " + refreshResponseVO.getYirangAccessToken());
@@ -54,7 +54,7 @@ public class AdminController {
     // /v1/apis/admin/region
     @PostMapping(value="/region/{region}")
     @ResponseStatus(HttpStatus.CREATED)
-    public void registerMyRegion(@RequestHeader("Authorization") String header, @PathVariable @Valid Region region){
+    public final void registerMyRegion(@RequestHeader("Authorization") String header, @PathVariable @Valid Region region){
         Long userId = jwtParser.getUserIdFromJwt(ParsingHelper.parseHeader(header));
         adminService.addAreaByUserId(userId, region);
     }
@@ -62,7 +62,7 @@ public class AdminController {
     // /v1/apis/admin/region
     @DeleteMapping(value="/region/{region}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteMyRegion(@RequestHeader("Authorization") String header, @PathVariable @Valid Region region){
+    public final void deleteMyRegion(@RequestHeader("Authorization") String header, @PathVariable @Valid Region region){
         Long userId = jwtParser.getUserIdFromJwt(ParsingHelper.parseHeader(header));
         adminService.deleteAreaByUserId(userId, region);
     }
@@ -70,7 +70,7 @@ public class AdminController {
     // /v1/apis/admin/region
     @GetMapping(value="/region", produces = "application/json")
     @ResponseStatus(HttpStatus.OK)
-    public Map<String, Collection> getMyRegions(@RequestHeader("Authorization") String header){
+    public final Map<String, Collection> getMyRegions(@RequestHeader("Authorization") String header){
         Map<String, Collection> res = new HashMap<>();
         Long userId = jwtParser.getUserIdFromJwt(ParsingHelper.parseHeader(header));
         res.put("regions", adminService.findAreasByUserId(userId));

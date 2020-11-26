@@ -70,8 +70,8 @@ public class KakaoInfoAPI {
             String responseString = EntityUtils.toString(response.getEntity());
 
             // For debugging
-            System.out.println("Code: " + response.getStatusLine().getStatusCode());
-            System.out.println("response content: " + responseString);
+            System.out.println("[KakaoInfoAPI] Code: " + response.getStatusLine().getStatusCode());
+            System.out.println("[KakaoInfoAPI] response content: " + responseString);
 
             int status = response.getStatusLine().getStatusCode();
             if(status != 200){
