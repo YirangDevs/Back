@@ -20,10 +20,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.ConstraintViolationException;
 import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
+import java.util.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -51,30 +48,34 @@ public class SeniorController {
                                        BindingResult bindingResult){
         System.out.println("[SeniorController] 피봉사자 엑셀을 검사하는 API 요청 받았습니다: " + registerTotalSeniorRequestDtos);
 
+        Map<String, List<ErrorDto>> errorMap = new HashMap<>();
+        List<ErrorDto> errorDtos = new ArrayList<>();
+
         // 다 형식이 올바른 지 체크
         if(bindingResult.hasErrors()){
             bindingResult.getFieldErrors().forEach(e -> {
                 System.out.println(e.getField());
                 System.out.println(e.getDefaultMessage());
             });
-            return new ResponseEntity(HttpStatus.BAD_REQUEST);
         }
 
-        // 같은 날짜 인지 체크
-        if (!seniorVolunteerAdvancedService.checkSameDateAndSameRegion(registerTotalSeniorRequestDtos)){
-            return new ResponseEntity("Does not have Same Region and Date",
-                                      HttpStatus.NOT_ACCEPTABLE);
+        // 같은 날짜, 지역 인지 체크
+        else if (!seniorVolunteerAdvancedService.checkSameDateAndSameRegion(registerTotalSeniorRequestDtos)){
+            errorDtos.add( ErrorDto.builder()
+                                   .errorCode("099").errorName("Does not have Same data and region")
+                                   .build());
         }
         // 준 데이터 중에 중복되는 데이터들이 없는 지 체크
-        if (!seniorVolunteerAdvancedService.checkNotDuplicateAmongRequest(registerTotalSeniorRequestDtos)){
-            return
-        }
-        // 준 데이터 중에 기존의 것과 중복되는 거 없는 지 체크
-        if (!seniorVolunteerAdvancedService.checkNotDuplicateAmongExistedData(registerTotalSeniorRequestDtos)){
-            return
-        }
+//        if (!seniorVolunteerAdvancedService.checkNotDuplicateAmongRequest(registerTotalSeniorRequestDtos)){
+//            return new ResponseEntity()
+//        }
+//        // 준 데이터 중에 기존의 것과 중복되는 거 없는 지 체크
+//        if (!seniorVolunteerAdvancedService.checkNotDuplicateAmongExistedData(registerTotalSeniorRequestDtos)){
+//            return
+//        }
+        errorMap.put("Errors", errorDtos);
 
-        return new ResponseEntity(HttpStatus.OK);
+        return errorDtos.size() == 0 ? new ResponseEntity(HttpStatus.OK) : new ResponseEntity(errorMap, HttpStatus.BAD_REQUEST);
     }
 
     // 엑셀 파일을 저장하는 API

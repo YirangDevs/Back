@@ -148,7 +148,7 @@ public class SeniorControllerTest {
         MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.post(url + "/check")
                                                                 .content(content)
                                                                 .contentType(MediaType.APPLICATION_JSON)
-        ).andExpect(status().isNotAcceptable()).andReturn();
+        ).andExpect(status().isBadRequest()).andReturn();
 
         System.out.println("Response: " + mvcResult.getResponse().getContentAsString() );
     }
@@ -164,11 +164,10 @@ public class SeniorControllerTest {
                                                .date("2020-11-15")
                                                .build());
         String content = new JacksonJsonProvider().toJson(llist);
-        System.out.println("Content: " + content);
         MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.post(url + "/check")
                                                                 .content(content)
                                                                 .contentType(MediaType.APPLICATION_JSON)
-        ).andExpect(status().isNotAcceptable()).andReturn();
+        ).andExpect(status().isBadRequest()).andReturn();
 
         System.out.println("Response: " + mvcResult.getResponse().getContentAsString() );
     }
@@ -181,11 +180,10 @@ public class SeniorControllerTest {
                                                .priority(NumberRandomGenerator.generateLongValueWithRange(1 , 10))
                                                .type(EnumGenerator.generateRandomServiceType())
                                                .address(StringRandomGenerator.generateRandomKoreansWithLength(Long.valueOf(10)))
-                                               .phone(StringRandomGenerator.generateNumericStringWithLength(Long.valueOf(9)))
+                                               .phone("123ssdbc")
                                                .date("2020-1115")
                                                .build());
         String content = new JacksonJsonProvider().toJson(llist);
-        System.out.println("Content: " + content);
         MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.post(url + "/check")
                                                                 .content(content)
                                                                 .contentType(MediaType.APPLICATION_JSON)
@@ -206,6 +204,5 @@ public class SeniorControllerTest {
 
         System.out.println("Response: " + mvcResult.getResponse().getContentAsString() );
     }
-    @Test
-    public void
+
 }
