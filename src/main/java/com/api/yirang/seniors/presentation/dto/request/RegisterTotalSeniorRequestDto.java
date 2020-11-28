@@ -1,6 +1,5 @@
 package com.api.yirang.seniors.presentation.dto.request;
 
-
 import com.api.yirang.common.support.type.Region;
 import com.api.yirang.common.support.type.Sex;
 import com.api.yirang.seniors.support.custom.ServiceType;
@@ -9,13 +8,23 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.ToString;
 
-import javax.validation.constraints.*;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
 
+/**
+ * Created by JeongminYoo on 2020/11/28
+ * Work with Yirang
+ * Email: likemin0142@gmail.com
+ * Blog: http://Beewoom.github.io
+ * Github: http://github.com/Biewoom
+ */
 @Getter
 @ToString
 @Builder
 @AllArgsConstructor
-public class RegisterSeniorRequestDto {
+public class RegisterTotalSeniorRequestDto {
+
 
     @NotBlank
     private final String name;
@@ -37,10 +46,7 @@ public class RegisterSeniorRequestDto {
     @Min(value = 0)
     private final Long priority;
 
-    @Min(value = 0)
-    private final Long numsOfRequiredVolunteers;
-
-    public RegisterSeniorRequestDto() {
+    public RegisterTotalSeniorRequestDto() {
         this.name = null;
         this.region = null;
         this.address = null;
@@ -49,18 +55,5 @@ public class RegisterSeniorRequestDto {
         this.type = null;
         this.date = null;
         this.priority = null;
-        this.numsOfRequiredVolunteers = null;
-    }
-
-    public RegisterSeniorRequestDto(RegisterTotalSeniorRequestDto registerTotalSeniorRequestDto){
-        this.name = registerTotalSeniorRequestDto.getName();
-        this.region = registerTotalSeniorRequestDto.getRegion();
-        this.address = registerTotalSeniorRequestDto.getAddress();
-        this.phone = registerTotalSeniorRequestDto.getPhone();
-        this.sex = registerTotalSeniorRequestDto.getSex();
-        this.type = registerTotalSeniorRequestDto.getType();
-        this.date = registerTotalSeniorRequestDto.getDate();
-        this.priority = registerTotalSeniorRequestDto.getPriority();
-        this.numsOfRequiredVolunteers = Long.valueOf(2);
     }
 }

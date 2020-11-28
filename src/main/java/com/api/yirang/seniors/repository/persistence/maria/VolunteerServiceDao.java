@@ -12,10 +12,12 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
+import java.util.Optional;
 
 @Repository
 public interface VolunteerServiceDao extends JpaRepository<VolunteerService, Long> {
 
+    // find
     Collection<VolunteerService> findVolunteerServicesBySenior(Senior senior);
 
     @Transactional
@@ -25,6 +27,7 @@ public interface VolunteerServiceDao extends JpaRepository<VolunteerService, Lon
            "ORDER BY V.activity.dtov DESC, V.senior.seniorName ASC ")
     Collection<VolunteerService> findSortedVolunteerServiceInSeniors(Collection<Senior> seniors);
 
+    Optional<VolunteerService> findVolunteerServiceByActivityAndSenior(Activity activity, Senior senior);
 
     //update
     @Modifying
@@ -40,10 +43,10 @@ public interface VolunteerServiceDao extends JpaRepository<VolunteerService, Lon
     @Transactional
     @Query(
             "UPDATE VolunteerService V " +
-            "SET V.priority =:priority, V.serviceType =:serviceType " +
+            "SET V.priority =:priority, V.serviceType =:serviceType, V.numsOfRequiredVolunteers =:numsOfRequiredVolunteers " +
             "WHERE V.volunteerServiceId =:volunteerServiceId"
     )
-    void updateWithPriorityAndServiceType(Long volunteerServiceId, Long priority, ServiceType serviceType);
+    void updateWithPriorityAndServiceType(Long volunteerServiceId, Long priority, ServiceType serviceType, Long numsOfRequiredVolunteers);
 
 
     // delete
@@ -51,5 +54,8 @@ public interface VolunteerServiceDao extends JpaRepository<VolunteerService, Lon
     @Transactional
     @Override
     void delete(VolunteerService volunteerService);
+
+    // exist
+    boolean existsVolunteerServiceByActivityAndSenior(Activity activity, Senior senior);
 
 }

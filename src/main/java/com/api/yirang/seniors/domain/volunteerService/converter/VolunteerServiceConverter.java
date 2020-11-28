@@ -9,15 +9,15 @@ import com.api.yirang.seniors.support.custom.ServiceType;
 
 public class VolunteerServiceConverter {
 
-    public static final VolunteerService convertToModel(ServiceType serviceType, Long priority,
-                                                        Activity activity, Senior senior){
+    public static VolunteerService convertToModel(ServiceType serviceType, Long priority,
+                                                        Activity activity, Senior senior, Long numsOfRequiredVolunteers){
         return VolunteerService.builder()
                                .serviceType(serviceType).priority(priority)
-                                .activity(activity).senior(senior)
+                                .activity(activity).senior(senior).numsOfRequiredVolunteers(numsOfRequiredVolunteers)
                                .build();
     }
 
-    public static final SeniorResponseDto convertFromModelToSeniorResponseDto(VolunteerService volunteerService){
+    public static SeniorResponseDto convertFromModelToSeniorResponseDto(VolunteerService volunteerService){
         // Activity 구하기
         Activity activity = volunteerService.getActivity();
         // Senior 구하기
@@ -33,6 +33,7 @@ public class VolunteerServiceConverter {
                                 .region(senior.getRegion().getRegionName())
                                 .address(senior.getAddress()).phone(senior.getPhone())
                                 .type(volunteerService.getServiceType())
+                                .numsOfRequiredVolunteers(volunteerService.getNumsOfRequiredVolunteers())
                                 .date(dov).priority(volunteerService.getPriority())
                                 .build();
     }

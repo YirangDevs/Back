@@ -23,10 +23,16 @@ public class VolunteerServiceBasicService {
         volunteerServiceDao.save(volunteerService);
     }
 
+    // find
     public Collection<VolunteerService> findSortedVolunteerServiceInSeniors(Collection<Senior> seniors) {
         Collection<VolunteerService> volunteerServices = volunteerServiceDao.findSortedVolunteerServiceInSeniors(seniors);
-        if (volunteerServices.size() == 0) throw new VolunteerServiceNullException();
+        if (volunteerServices.size() == 0){
+            throw new VolunteerServiceNullException();
+        }
         return volunteerServices;
+    }
+    public VolunteerService findVolunteerServiceByActivityAndSenior(Activity activity, Senior senior){
+        return volunteerServiceDao.findVolunteerServiceByActivityAndSenior(activity, senior).orElseThrow(VolunteerServiceNullException::new);
     }
 
     public VolunteerService findById(Long volunteerServiceId){
@@ -38,8 +44,8 @@ public class VolunteerServiceBasicService {
         volunteerServiceDao.updateActivity(volunteerServiceId, newActivity);
     }
 
-    public void updateVolunteerService(Long volunteerServiceId, Long priority, ServiceType serviceType) {
-        volunteerServiceDao.updateWithPriorityAndServiceType(volunteerServiceId, priority, serviceType);
+    public void updateVolunteerService(Long volunteerServiceId, Long priority, ServiceType serviceType, Long numsOfRequiredVolunteers) {
+        volunteerServiceDao.updateWithPriorityAndServiceType(volunteerServiceId, priority, serviceType, numsOfRequiredVolunteers);
     }
 
     public void delete(Long volunteerServiceId) {
@@ -47,6 +53,10 @@ public class VolunteerServiceBasicService {
         VolunteerService volunteerService = findById(volunteerServiceId);
         // 삭제
         volunteerServiceDao.delete(volunteerService);
+    }
+    // exist method
+    public boolean existsVolunteerServiceByActivityAndSenior(Activity activity, Senior senior){
+        return volunteerServiceDao.existsVolunteerServiceByActivityAndSenior(activity, senior);
     }
 
 

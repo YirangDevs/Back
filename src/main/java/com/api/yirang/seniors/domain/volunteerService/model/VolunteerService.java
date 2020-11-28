@@ -22,12 +22,15 @@ public class VolunteerService {
     @Column(name = "volunteer_service_id")
     private Long volunteerServiceId;
 
-    @Enumerated(EnumType.STRING)
     @Column(name = "service_type")
     private ServiceType serviceType;
 
     @Column
     private Long priority;
+
+    //
+    @Column
+    private Long numsOfRequiredVolunteers;
 
     // relationships
     @ManyToOne
@@ -40,10 +43,11 @@ public class VolunteerService {
 
     @Builder
     public VolunteerService(ServiceType serviceType, Long priority,
-                            Activity activity, Senior senior) {
+                            Activity activity, Senior senior, Long numsOfRequiredVolunteers) {
         this.serviceType = serviceType;
         this.priority = priority;
         this.activity = activity;
         this.senior = senior;
+        this.numsOfRequiredVolunteers = numsOfRequiredVolunteers; // default -> 2
     }
 }
