@@ -11,6 +11,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.Optional;
 
@@ -26,6 +27,14 @@ public interface VolunteerServiceDao extends JpaRepository<VolunteerService, Lon
            "WHERE V.senior IN :seniors " +
            "ORDER BY V.activity.dtov DESC, V.senior.seniorName ASC ")
     Collection<VolunteerService> findSortedVolunteerServiceInSeniors(Collection<Senior> seniors);
+
+    @Transactional
+    @Query("SELECT V " +
+           "FROM VolunteerService V " +
+           "WHERE V.senior IN :seniors " +
+           "     AND V.activity.dtov >= :now " +
+           "ORDER BY V.activity.dtov DESC, V.senior.seniorName ASC ")
+    Collection<VolunteerService> findSortedVolunteerServiceInSeniorsAfterNow(Collection<Senior> seniors, LocalDateTime now);
 
     Optional<VolunteerService> findVolunteerServiceByActivityAndSenior(Activity activity, Senior senior);
 
@@ -59,4 +68,5 @@ public interface VolunteerServiceDao extends JpaRepository<VolunteerService, Lon
     boolean existsVolunteerServiceByActivityAndSenior(Activity activity, Senior senior);
 
     Collection<VolunteerService> findVolunteerServicesByActivity(Activity activity);
+
 }

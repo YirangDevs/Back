@@ -69,15 +69,16 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             .csrf().disable()
             .authorizeRequests()
             .antMatchers("/v1/apis/auth/signin").permitAll()
+            // test
             .antMatchers("/v1/apis/test/**").permitAll()
             // 임시로..
             .antMatchers("/v1/apis/admins").hasAnyAuthority("VOLUNTEER", "ADMIN")
-            .antMatchers("/v1/apis/admins/region/**").hasAuthority("ADMIN")
-            .antMatchers("/v1/apis/auth/refresh").hasAnyAuthority("VOLUNTEER", "ADMIN")
-            .antMatchers("/v1/apis/seniors", "/v1/apis/seniors/**").hasAnyAuthority("ADMIN")
+            .antMatchers("/v1/apis/admins/region/**").hasAnyAuthority("ADMIN", "SUPER_ADMIN")
+            .antMatchers("/v1/apis/auth/refresh").hasAnyAuthority("VOLUNTEER", "ADMIN", "SUPER_ADMIN")
+            .antMatchers("/v1/apis/seniors", "/v1/apis/seniors/**").hasAnyAuthority("ADMIN", "SUPER_ADMIN")
             // 공고글 보는 건 Anonymous, User, admin 다 가능 해야함
             .antMatchers(HttpMethod.GET, "/v1/apis/manage/notices", "/v1/apis/manage/notices/**").permitAll()
-            .antMatchers("/v1/apis/manage/notices", "/v1/apis/manage/notices/**").hasAuthority("ADMIN")
+            .antMatchers("/v1/apis/manage/notices", "/v1/apis/manage/notices/**").hasAnyAuthority("ADMIN", "SUPER_ADMIN")
             .anyRequest().authenticated()
             .and()
             .exceptionHandling()

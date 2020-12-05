@@ -1,6 +1,7 @@
 package com.api.yirang.seniors.application.advancedService;
 
 import com.api.yirang.auth.application.basicService.AdminService;
+import com.api.yirang.auth.support.type.Authority;
 import com.api.yirang.common.support.custom.ValidCollection;
 import com.api.yirang.common.support.time.TimeConverter;
 import com.api.yirang.common.support.type.Region;
@@ -127,21 +128,23 @@ public class SeniorVolunteerAdvancedService {
         return false;
     }
     // Find methods
-    public Collection<SeniorResponseDto> findSeniorsByRegion(final Region region) {
+    public Collection<SeniorResponseDto> findSeniorsByRegion(Region region, Authority authority) {
         System.out.println("[SeniorVolunteerAdvancedService]: findSeniorsByRegion를 실행하겠습니다.");
 
         // Region을 가지고 Seniors 찾기
         Collection<Senior> seniors = seniorBasicService.findSeniorsByRegion(region, false);
         // Seniors가 해당되는 봉사활동 이력 찾기
         Collection<VolunteerService> volunteerServices =
-                volunteerServiceBasicService.findSortedVolunteerServiceInSeniors(seniors);
+                (authority == Authority.ROLE_SUPER_ADMIN ?
+                        volunteerServiceBasicService.findSortedVolunteerServiceInSeniors(seniors) :
+                        volunteerServiceBasicService.findSortedVolunteerServiceInSeniorsAfterNow(seniors) );
 
         return volunteerServices.stream()
                                 .map(e -> VolunteerServiceConverter.convertFromModelToSeniorResponseDto(e))
                                 .collect(Collectors.toList());
     }
 
-    public Collection<SeniorResponseDto> findSeniorsByMyArea(Long userId) {
+    public Collection<SeniorResponseDto> findSeniorsByMyArea(Long userId, Authority authority) {
         System.out.println("[SeniorVolunteerAdvancedService]: findSeniorsByMyArea를 실행하겠습니다.");
         // 해당하는 지역 찾기
         Collection<Region> regions = adminService.findAreasByUserId(userId);
@@ -150,10 +153,11 @@ public class SeniorVolunteerAdvancedService {
         Collection<Senior> seniors = new ArrayList<>();
         regions.stream().forEach(e -> seniors.addAll(seniorBasicService.findSeniorsByRegion(e, true)));
 
-
         // Seniors에 해당하는 봉사활동 이력 찾기
         Collection<VolunteerService> volunteerServices =
-                volunteerServiceBasicService.findSortedVolunteerServiceInSeniors(seniors);
+                (authority == Authority.ROLE_SUPER_ADMIN ?
+                        volunteerServiceBasicService.findSortedVolunteerServiceInSeniors(seniors) :
+                        volunteerServiceBasicService.findSortedVolunteerServiceInSeniorsAfterNow(seniors) );
 
         return volunteerServices.stream()
                                 .map(e -> VolunteerServiceConverter.convertFromModelToSeniorResponseDto(e))

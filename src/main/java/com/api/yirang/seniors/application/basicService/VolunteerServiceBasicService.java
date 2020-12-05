@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
 
@@ -32,6 +33,15 @@ public class VolunteerServiceBasicService {
         }
         return volunteerServices;
     }
+
+    public Collection<VolunteerService> findSortedVolunteerServiceInSeniorsAfterNow(Collection<Senior> seniors) {
+        Collection<VolunteerService> volunteerServices = volunteerServiceDao.findSortedVolunteerServiceInSeniorsAfterNow(seniors, LocalDateTime.now());
+        if (volunteerServices.size() == 0){
+            throw new VolunteerServiceNullException();
+        }
+        return volunteerServices;
+    }
+
     public VolunteerService findVolunteerServiceByActivityAndSenior(Activity activity, Senior senior){
         return volunteerServiceDao.findVolunteerServiceByActivityAndSenior(activity, senior).orElseThrow(VolunteerServiceNullException::new);
     }
@@ -68,4 +78,6 @@ public class VolunteerServiceBasicService {
         }
         return volunteerServices;
     }
+
+
 }
