@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -60,5 +61,11 @@ public class VolunteerServiceBasicService {
     }
 
 
-
+    public Collection<VolunteerService> findVolunteerServicesByActivity(Activity activity) {
+        Collection<VolunteerService> volunteerServices = volunteerServiceDao.findVolunteerServicesByActivity(activity);
+        if (volunteerServices.size() == 0){
+            throw new VolunteerServiceNullException();
+        }
+        return volunteerServices;
+    }
 }

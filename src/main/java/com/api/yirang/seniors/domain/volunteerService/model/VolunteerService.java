@@ -28,7 +28,6 @@ public class VolunteerService {
     @Column
     private Long priority;
 
-    //
     @Column
     private Long numsOfRequiredVolunteers;
 

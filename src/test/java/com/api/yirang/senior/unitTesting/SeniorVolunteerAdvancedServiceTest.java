@@ -78,6 +78,10 @@ public class SeniorVolunteerAdvancedServiceTest {
                                                                                     .build();
         System.out.println(registerSeniorRequestDto);
 
+        int a = 5;
+        int b = 1;
+        int result = 6;
+
         when(activityBasicService.findActivityByRegionAndDOV(region, date)).thenReturn(activity);
         when(seniorBasicService.isExistByPhone(phone)).thenReturn(Boolean.FALSE);
         when(seniorBasicService.findSeniorByPhone(phone)).thenReturn(senior);

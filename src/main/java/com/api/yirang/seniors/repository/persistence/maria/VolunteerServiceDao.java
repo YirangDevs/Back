@@ -58,4 +58,5 @@ public interface VolunteerServiceDao extends JpaRepository<VolunteerService, Lon
     // exist
     boolean existsVolunteerServiceByActivityAndSenior(Activity activity, Senior senior);
 
+    Collection<VolunteerService> findVolunteerServicesByActivity(Activity activity);
 }

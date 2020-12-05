@@ -5,6 +5,7 @@ import com.api.yirang.common.support.custom.ValidCollection;
 import com.api.yirang.common.support.time.TimeConverter;
 import com.api.yirang.common.support.type.Region;
 import com.api.yirang.common.support.type.Sex;
+import com.api.yirang.notices.application.advancedService.ActivityVolunteerServiceAdvancedService;
 import com.api.yirang.notices.application.basicService.ActivityBasicService;
 import com.api.yirang.notices.domain.activity.model.Activity;
 import com.api.yirang.seniors.application.basicService.SeniorBasicService;
@@ -36,6 +37,7 @@ public class SeniorVolunteerAdvancedService {
     // DI Senior's features Services
     private final SeniorBasicService seniorBasicService;
     private final VolunteerServiceBasicService volunteerServiceBasicService;
+    private final ActivityVolunteerServiceAdvancedService activityVolunteerServiceAdvancedService;
 
     // DI other Basic features Services
     private final ActivityBasicService activityBasicService;
@@ -44,6 +46,8 @@ public class SeniorVolunteerAdvancedService {
     /** Activity required people update 하기
      * Senior Register, update, delete 후에는 Activity의 NOR을 Update 해야함
      * 누가 주체인가? 어디에 있어야 하는가 에 대한 고민 해보기
+     * < 사고 흐름 >
+     *  Senior에서 register, update, delete => activityBasicService toyProject
      */
 
     // Create Method
@@ -53,7 +57,7 @@ public class SeniorVolunteerAdvancedService {
         final Region region = registerSeniorRequestDto.getRegion();
 
         // date와 region 이용해서 등록되어있던 Activity 구하기
-        Activity activity = activityBasicService.findActivityByRegionAndDOV(region, registerSeniorRequestDto.getDate());
+        final Activity activity = activityBasicService.findActivityByRegionAndDOV(region, registerSeniorRequestDto.getDate());
 
         // Senior 만들기 혹은 기존의 있는 Senior을 구하기
         String phone = registerSeniorRequestDto.getPhone();
@@ -77,6 +81,8 @@ public class SeniorVolunteerAdvancedService {
         VolunteerService volunteerService = VolunteerServiceConverter.convertToModel(serviceType, priority, activity,
                                                                                      senior, numsOfRequiredVolunteers);
         volunteerServiceBasicService.save(volunteerService);
+        // activity
+        activityVolunteerServiceAdvancedService.updateActivityNOR(activity);
     }
 
     // Check method
@@ -91,6 +97,34 @@ public class SeniorVolunteerAdvancedService {
                                                 dates.add(e.getDate());
                                             });
         return regions.size() == 1 && dates.size() == 1;
+    }
+
+    public boolean checkNotDuplicateAmongRequest(ValidCollection<RegisterTotalSeniorRequestDto> registerTotalSeniorRequestDtos) {
+        Set<RegisterTotalSeniorRequestDto> setRegisterTotalSeniorRequestDto = new HashSet<>(registerTotalSeniorRequestDtos);
+        return registerTotalSeniorRequestDtos.size() == setRegisterTotalSeniorRequestDto.size();
+    }
+    public boolean checkNotDuplicateAmongExistedData(RegisterTotalSeniorRequestDto registerTotalSeniorRequestDto) {
+        final Region region = registerTotalSeniorRequestDto.getRegion();
+        final String dov = registerTotalSeniorRequestDto.getDate();
+        // Activity를 찾기, 없으면 True
+        if(!activityBasicService.existsActivityByRegionAndDov(region, dov)){
+            return true;
+        }
+        final Activity activity = activityBasicService.findActivityByRegionAndDOV(region, dov);
+
+        // Senior를 찾기
+        String phone = registerTotalSeniorRequestDto.getPhone();
+        // 없으면 True
+        if(!seniorBasicService.isExistByPhone(phone)){
+            return true;
+        }
+        final Senior senior = seniorBasicService.findSeniorByPhone(registerTotalSeniorRequestDto.getPhone() );
+
+        // 없으면 True
+        if(!volunteerServiceBasicService.existsVolunteerServiceByActivityAndSenior(activity, senior)){
+            return true;
+        }
+        return false;
     }
     // Find methods
     public Collection<SeniorResponseDto> findSeniorsByRegion(final Region region) {
@@ -138,10 +172,13 @@ public class SeniorVolunteerAdvancedService {
 
         String name = registerSeniorRequestDto.getName();
         Region region = registerSeniorRequestDto.getRegion();
+        String dov = registerSeniorRequestDto.getDate();
         String address = registerSeniorRequestDto.getAddress();
         String phone = registerSeniorRequestDto.getPhone();
         Sex sex = registerSeniorRequestDto.getSex();
         Long numsOfRequiredVolunteers = registerSeniorRequestDto.getNumsOfRequiredVolunteers();
+
+        final Activity activity = activityBasicService.findActivityByRegionAndDOV(region, dov);
 
         // name 또는 region 또는 address, phone 또는 sex가 변했을 경우
         if (!existedSenior.getSeniorName().equals(name) || !existedSenior.getAddress().equals(address) ||
@@ -153,7 +190,6 @@ public class SeniorVolunteerAdvancedService {
 
         // Date가 변했을 경우
         String existedDate = TimeConverter.LocalDateTimeToString(existedActivity.getDtov()).split(" ")[0];
-        String dov = registerSeniorRequestDto.getDate();
         if (!existedDate.equals(dov)){
             Activity newActivity = activityBasicService.findActivityByRegionAndDOV(region, dov);
             volunteerServiceBasicService.replaceActivity(volunteerServiceId, newActivity);
@@ -165,8 +201,13 @@ public class SeniorVolunteerAdvancedService {
 
         if (!existedVolunteerService.getPriority().equals(priority) ||
             existedVolunteerService.getServiceType() != serviceType ||
-            existedVolunteerService.getNumsOfRequiredVolunteers() != numsOfRequiredVolunteers ){
+            !existedVolunteerService.getNumsOfRequiredVolunteers().equals(numsOfRequiredVolunteers)){
             volunteerServiceBasicService.updateVolunteerService(volunteerServiceId, priority, serviceType, numsOfRequiredVolunteers);
+        }
+
+        // numsOfRequiredVolunteers가 변했을 경우
+        if (!existedVolunteerService.getNumsOfRequiredVolunteers().equals(numsOfRequiredVolunteers)){
+            activityVolunteerServiceAdvancedService.updateActivityNOR(activity);
         }
 
     }
@@ -178,6 +219,11 @@ public class SeniorVolunteerAdvancedService {
      */
     public void deleteVolunteerService(Long volunteerServiceId) {
         System.out.println("[SeniorVolunteerAdvancedService]: deleteSenior를 실행하겠습니다.");
+
+        final Activity activity = volunteerServiceBasicService.findById(volunteerServiceId).getActivity();
         volunteerServiceBasicService.delete(volunteerServiceId);
+        activityVolunteerServiceAdvancedService.updateActivityNOR(activity);
+
     }
+
 }

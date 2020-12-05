@@ -51,14 +51,23 @@ public class SeniorController {
         Map<String, List<ErrorDto>> errorMap = new HashMap<>();
         List<ErrorDto> errorDtos = new ArrayList<>();
 
+        // 빈 칸인지 체크
+        if(registerTotalSeniorRequestDtos.size() == 0){
+            errorDtos.add(
+                    ErrorDto.builder()
+                            .errorCode("100").errorName("RegisterSeniorRequests is Empty")
+                            .build()
+            );
+        }
         // 다 형식이 올바른 지 체크
-        if(bindingResult.hasErrors()){
+        else if(bindingResult.hasErrors()){
             bindingResult.getFieldErrors().forEach(e -> {
-                System.out.println(e.getField());
-                System.out.println(e.getDefaultMessage());
+                errorDtos.add(
+                        ErrorDto.builder()
+                                .errorCode("111").errorName(e.getField())
+                                .build());
             });
         }
-
         // 같은 날짜, 지역 인지 체크
         else if (!seniorVolunteerAdvancedService.checkSameDateAndSameRegion(registerTotalSeniorRequestDtos)){
             errorDtos.add( ErrorDto.builder()
@@ -66,13 +75,26 @@ public class SeniorController {
                                    .build());
         }
         // 준 데이터 중에 중복되는 데이터들이 없는 지 체크
-//        if (!seniorVolunteerAdvancedService.checkNotDuplicateAmongRequest(registerTotalSeniorRequestDtos)){
-//            return new ResponseEntity()
-//        }
+        else if (!seniorVolunteerAdvancedService.checkNotDuplicateAmongRequest(registerTotalSeniorRequestDtos)){
+            errorDtos.add ( ErrorDto.builder()
+                                    .errorCode("112").errorName("Have duplicated data in requests")
+                                    .build());
+        }
 //        // 준 데이터 중에 기존의 것과 중복되는 거 없는 지 체크
-//        if (!seniorVolunteerAdvancedService.checkNotDuplicateAmongExistedData(registerTotalSeniorRequestDtos)){
-//            return
-//        }
+        else {
+            int lineNumber = 0;
+            Iterator<RegisterTotalSeniorRequestDto> itr = registerTotalSeniorRequestDtos.iterator();
+            while (itr.hasNext()) {
+                RegisterTotalSeniorRequestDto registerTotalSeniorRequestDto = itr.next();
+                if (!seniorVolunteerAdvancedService.checkNotDuplicateAmongExistedData(registerTotalSeniorRequestDto)) {
+                    errorDtos.add(ErrorDto.builder()
+                                          .errorCode("113")
+                                          .errorName("[" + lineNumber + "]" + " Have duplicated data in existed data")
+                                          .build());
+                }
+                lineNumber++;
+            }
+        }
         errorMap.put("Errors", errorDtos);
 
         return errorDtos.size() == 0 ? new ResponseEntity(HttpStatus.OK) : new ResponseEntity(errorMap, HttpStatus.BAD_REQUEST);

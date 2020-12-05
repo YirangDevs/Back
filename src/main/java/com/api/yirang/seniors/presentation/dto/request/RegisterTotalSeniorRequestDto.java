@@ -3,10 +3,7 @@ package com.api.yirang.seniors.presentation.dto.request;
 import com.api.yirang.common.support.type.Region;
 import com.api.yirang.common.support.type.Sex;
 import com.api.yirang.seniors.support.custom.ServiceType;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.ToString;
+import lombok.*;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
@@ -22,6 +19,7 @@ import javax.validation.constraints.Pattern;
 @Getter
 @ToString
 @Builder
+@EqualsAndHashCode
 @AllArgsConstructor
 public class RegisterTotalSeniorRequestDto {
 
