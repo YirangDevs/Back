@@ -18,7 +18,7 @@ public class KakaoTokenService {
 
     // check Validation
     public boolean isValidAccessToken(String kakaoAccessToken){
-        System.out.println("[KakaoTokenService]: Token을 Validate합니다.");
+        System.out.println("[KakaoTokenService]: kakaoToken의 Validity를 측정합니다.");
         kakaoTokenAPI.isValidKakaoAccessToken(kakaoAccessToken);
         return true;
     }
