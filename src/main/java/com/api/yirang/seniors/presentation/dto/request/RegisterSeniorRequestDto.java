@@ -4,10 +4,7 @@ package com.api.yirang.seniors.presentation.dto.request;
 import com.api.yirang.common.support.type.Region;
 import com.api.yirang.common.support.type.Sex;
 import com.api.yirang.seniors.support.custom.ServiceType;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.ToString;
+import lombok.*;
 
 import javax.validation.constraints.*;
 
@@ -36,4 +33,15 @@ public class RegisterSeniorRequestDto {
 
     @Min(value = 0)
     private final Long priority;
+
+    public RegisterSeniorRequestDto() {
+        this.name = null;
+        this.region = null;
+        this.address = null;
+        this.phone = null;
+        this.sex = null;
+        this.type = null;
+        this.date = null;
+        this.priority = null;
+    }
 }
