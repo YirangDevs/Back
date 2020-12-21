@@ -13,6 +13,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -45,10 +46,20 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         return new JwtAuthenticationFilter(jwtUserDetailsService, jwtValidator);
     }
 
+    // Swagger 를 위해서
+    @Override
+    public void configure(WebSecurity web) throws Exception{
+        super.configure(web);
+        web.ignoring().antMatchers("/v2/api-docs", "/configuration/ui", "/swagger-resources",
+                                   "/configuration/security", "/swagger-ui.html", "/webjars/**","/swagger/**",
+                                   "/swagger-resources/**", "/csrf");
+    }
+
     @Override
     public void configure(AuthenticationManagerBuilder authenticationManagerBuilder) throws Exception {
         authenticationManagerBuilder.userDetailsService(jwtUserDetailsService).passwordEncoder(passwordEncoder());
     }
+
 
     @Bean
     @Override
@@ -68,8 +79,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             .cors().and()
             .csrf().disable()
             .authorizeRequests()
-            .antMatchers("/v1/apis/auth/signin").permitAll()
-            // test
+            .antMatchers("/api-ui.html", "/swagger-ui/**", "/swagger-ui.html", "/v2/api-docs", "/api-ui").permitAll()
+            .antMatchers("/v1/apis/auth/signin", "/v1/apis/auth/signin/**").permitAll()
             .antMatchers("/v1/apis/test/**").permitAll()
             // 임시로..
             .antMatchers("/v1/apis/admins").hasAnyAuthority("VOLUNTEER", "ADMIN")
@@ -87,6 +98,5 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
         httpSecurity.addFilterBefore(authenticationFilter(), UsernamePasswordAuthenticationFilter.class);
-        // h2-console 위해서 설정
     }
 }
