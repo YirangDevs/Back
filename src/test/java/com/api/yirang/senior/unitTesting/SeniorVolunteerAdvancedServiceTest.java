@@ -1,5 +1,6 @@
 package com.api.yirang.senior.unitTesting;
 
+import com.api.yirang.auth.support.type.Authority;
 import com.api.yirang.common.generator.EnumGenerator;
 import com.api.yirang.common.generator.NumberRandomGenerator;
 import com.api.yirang.common.generator.StringRandomGenerator;
@@ -124,7 +125,7 @@ public class SeniorVolunteerAdvancedServiceTest {
         when(seniorBasicService.findSeniorsByRegion(region, false)).thenReturn(seniors);
         when(volunteerServiceBasicService.findSortedVolunteerServiceInSeniors(seniors)).thenReturn(volunteerServices);
 
-        Collection<SeniorResponseDto> res = seniorVolunteerAdvancedService.findSeniorsByRegion(region);
+        Collection<SeniorResponseDto> res = seniorVolunteerAdvancedService.findSeniorsByRegion(region, Authority.ROLE_ADMIN);
         System.out.println(res);
     }
 
