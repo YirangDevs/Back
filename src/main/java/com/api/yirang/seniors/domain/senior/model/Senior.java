@@ -25,7 +25,6 @@ public class Senior {
     @Column(name = "senior_name")
     private String seniorName;
 
-    @Enumerated(EnumType.STRING)
     @Column
     private Sex sex;
 

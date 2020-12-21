@@ -18,7 +18,7 @@ public class VolunteerServiceGenerator {
         rand = new Random();
     }
 
-    public static final VolunteerService createRandomVolunteerService(Senior senior, Activity activity){
+    public static VolunteerService createRandomVolunteerService(Senior senior, Activity activity){
         ServiceType serviceType = EnumGenerator.generateRandomServiceType();
         Long priority = Long.valueOf(rand.nextInt(PRIORITY_RIGHT_LIMIT));
 
@@ -28,17 +28,17 @@ public class VolunteerServiceGenerator {
                                .build();
     }
 
-    public static final VolunteerService createRandomVolunteerService(){
+    public static VolunteerService createRandomVolunteerService(){
         Senior senior = SeniorGenerator.createRandomSenior();
         Activity activity = ActivityGenerator.createRandomActivity();
         return createRandomVolunteerService(senior, activity);
     }
 
-    public static final VolunteerService createRandomVolunteerService(Activity activity){
+    public static VolunteerService createRandomVolunteerService(Activity activity){
         Senior senior = SeniorGenerator.createRandomSenior();
         return createRandomVolunteerService(senior, activity);
     }
-    public static final VolunteerService createRandomVolunteerService(Senior senior){
+    public static VolunteerService createRandomVolunteerService(Senior senior){
         Activity activity = ActivityGenerator.createRandomActivity();
         return createRandomVolunteerService(senior, activity);
     }

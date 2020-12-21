@@ -33,7 +33,7 @@ public class StringRandomGenerator {
         rand = new Random();
     }
 
-    public static final String generateAlphabetStringWithLength(Long length){
+    public static String generateAlphabetStringWithLength(Long length){
         int leftLimit = 97;
         int rightLimit = 122;
 
@@ -42,7 +42,7 @@ public class StringRandomGenerator {
                    .collect(StringBuffer::new, StringBuffer::appendCodePoint, StringBuffer::append)
                    .toString();
     }
-    public static final String generateNumericStringWithLength(Long length){
+    public static String generateNumericStringWithLength(Long length){
         StringBuffer stringBuffer = new StringBuffer();
 
         for(int i = 0; i < length; i++){
@@ -51,7 +51,7 @@ public class StringRandomGenerator {
         return stringBuffer.toString();
     }
 
-    public static final String generateKoreanNameWithLength(Long length){
+    public static String generateKoreanNameWithLength(Long length){
         StringBuffer stringBuffer = new StringBuffer();
 
         stringBuffer.append(성.get(rand.nextInt(성.size())));
@@ -63,7 +63,7 @@ public class StringRandomGenerator {
         return stringBuffer.toString();
     }
 
-    public static final String generateRandomKoreansWithLength(Long length) {
+    public static String generateRandomKoreansWithLength(Long length) {
         StringBuffer buffer = new StringBuffer();
 
         for (int i = 0; i < length; i++) {
@@ -72,7 +72,7 @@ public class StringRandomGenerator {
         }
         return buffer.toString();
     }
-    public static final String generateRandomKoreanGu(){
+    public static String generateRandomKoreanGu(){
         return 구.get(rand.nextInt(구.size()));
     }
 

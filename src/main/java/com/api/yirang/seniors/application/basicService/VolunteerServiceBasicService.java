@@ -10,7 +10,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.Collection;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -23,10 +25,25 @@ public class VolunteerServiceBasicService {
         volunteerServiceDao.save(volunteerService);
     }
 
+    // find
     public Collection<VolunteerService> findSortedVolunteerServiceInSeniors(Collection<Senior> seniors) {
         Collection<VolunteerService> volunteerServices = volunteerServiceDao.findSortedVolunteerServiceInSeniors(seniors);
-        if (volunteerServices.size() == 0) throw new VolunteerServiceNullException();
+        if (volunteerServices.size() == 0){
+            throw new VolunteerServiceNullException();
+        }
         return volunteerServices;
+    }
+
+    public Collection<VolunteerService> findSortedVolunteerServiceInSeniorsAfterNow(Collection<Senior> seniors) {
+        Collection<VolunteerService> volunteerServices = volunteerServiceDao.findSortedVolunteerServiceInSeniorsAfterNow(seniors, LocalDateTime.now());
+        if (volunteerServices.size() == 0){
+            throw new VolunteerServiceNullException();
+        }
+        return volunteerServices;
+    }
+
+    public VolunteerService findVolunteerServiceByActivityAndSenior(Activity activity, Senior senior){
+        return volunteerServiceDao.findVolunteerServiceByActivityAndSenior(activity, senior).orElseThrow(VolunteerServiceNullException::new);
     }
 
     public VolunteerService findById(Long volunteerServiceId){
@@ -38,8 +55,8 @@ public class VolunteerServiceBasicService {
         volunteerServiceDao.updateActivity(volunteerServiceId, newActivity);
     }
 
-    public void updateVolunteerService(Long volunteerServiceId, Long priority, ServiceType serviceType) {
-        volunteerServiceDao.updateWithPriorityAndServiceType(volunteerServiceId, priority, serviceType);
+    public void updateVolunteerService(Long volunteerServiceId, Long priority, ServiceType serviceType, Long numsOfRequiredVolunteers) {
+        volunteerServiceDao.updateWithPriorityAndServiceType(volunteerServiceId, priority, serviceType, numsOfRequiredVolunteers);
     }
 
     public void delete(Long volunteerServiceId) {
@@ -48,7 +65,19 @@ public class VolunteerServiceBasicService {
         // 삭제
         volunteerServiceDao.delete(volunteerService);
     }
+    // exist method
+    public boolean existsVolunteerServiceByActivityAndSenior(Activity activity, Senior senior){
+        return volunteerServiceDao.existsVolunteerServiceByActivityAndSenior(activity, senior);
+    }
 
+
+    public Collection<VolunteerService> findVolunteerServicesByActivity(Activity activity) {
+        Collection<VolunteerService> volunteerServices = volunteerServiceDao.findVolunteerServicesByActivity(activity);
+        if (volunteerServices.size() == 0){
+            throw new VolunteerServiceNullException();
+        }
+        return volunteerServices;
+    }
 
 
 }

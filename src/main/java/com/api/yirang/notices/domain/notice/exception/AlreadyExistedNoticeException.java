@@ -5,6 +5,6 @@ import com.api.yirang.common.exceptions.AlreadyException;
 public class AlreadyExistedNoticeException extends AlreadyException {
 
     public AlreadyExistedNoticeException() {
-        super("Notice Already exist");
+        super("Notice Already Exist");
     }
 }

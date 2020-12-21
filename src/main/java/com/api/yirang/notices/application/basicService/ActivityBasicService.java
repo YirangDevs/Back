@@ -31,7 +31,16 @@ public class ActivityBasicService {
         return returnedActivity.getActivityId();
     }
 
-    public Activity findActivityByRegionAndDTOV(Region region, String dov, String tov){
+    public boolean existsActivityByRegionAndDov(Region region, String dov) {
+        String startDtovStr = dov + " " + "00:00:00";
+        String endDtovSTr = dov + " " + "23:59:59";
+
+        LocalDateTime startDtov = TimeConverter.StringToLocalDateTime(startDtovStr);
+        LocalDateTime endDtov = TimeConverter.StringToLocalDateTime(endDtovSTr);
+        return activityDao.existsActivityByRegionAndRangeOfDTOV(region, startDtov, endDtov);
+    }
+
+        public Activity findActivityByRegionAndDTOV(Region region, String dov, String tov){
         String dtovStr = dov + " " + tov;
         LocalDateTime dtov = TimeConverter.StringToLocalDateTime(dtovStr);
         return activityDao.findActivityByRegionAndDTOV(region, dtov).orElseThrow(ActivityNullException::new);
@@ -48,7 +57,7 @@ public class ActivityBasicService {
     public Activity findActivityByActivityId(Long activityId){
         return activityDao.findById(activityId).orElseThrow(ActivityNullException::new);
     }
-
+    // update
     public void update(Long activityId, Activity toBeUpdatedActivity) {
         // Activity 찾기
         Activity activity = findActivityByActivityId(activityId);
@@ -66,6 +75,10 @@ public class ActivityBasicService {
                            newDtov, newDtod, newRegion);
     }
 
+    public void updateActivityWithRequiredVolunteer(Long activityId, Long numsOfRequiredVolunteers) {
+        activityDao.updateWithNumsOfRequiredVolunteer(activityId, numsOfRequiredVolunteers);
+    }
+
     public void deleteOnlyActivityById(Long activityId){
         activityDao.deleteById(activityId);
     }
@@ -77,10 +90,12 @@ public class ActivityBasicService {
         return activityDao.existsById(activityId);
     }
 
+
     public void deleteActivityById(Long activityId) {
         // 나중에 구현할 거지만 관련된 모든 걸 삭제하는 것
         // 봉사 매칭, 신청, service, notice 등
         // 지금은 그냥 삭제랑 같음
         deleteOnlyActivityById(activityId);
     }
+
 }
