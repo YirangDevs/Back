@@ -101,10 +101,12 @@ public class SeniorVolunteerAdvancedService {
     }
 
     public boolean checkNotDuplicateAmongRequest(ValidCollection<RegisterTotalSeniorRequestDto> registerTotalSeniorRequestDtos) {
+        System.out.println("[SeniorVolunteerAdvancedService]: checkNotDuplicateAmongRequest을 실행하겠습니다.");
         Set<RegisterTotalSeniorRequestDto> setRegisterTotalSeniorRequestDto = new HashSet<>(registerTotalSeniorRequestDtos);
         return registerTotalSeniorRequestDtos.size() == setRegisterTotalSeniorRequestDto.size();
     }
     public boolean checkNotDuplicateAmongExistedData(RegisterTotalSeniorRequestDto registerTotalSeniorRequestDto) {
+        System.out.println("[SeniorVolunteerAdvancedService]: checkNotDuplicateAmongExistedData을 실행하겠습니다.");
         final Region region = registerTotalSeniorRequestDto.getRegion();
         final String dov = registerTotalSeniorRequestDto.getDate();
         // Activity를 찾기, 없으면 True
