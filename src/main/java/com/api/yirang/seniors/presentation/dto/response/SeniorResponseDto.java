@@ -26,8 +26,9 @@ public class SeniorResponseDto {
 
     private final String date;
     private final Long priority;
+    private final Long numsOfRequiredVolunteers;
 
-    public SeniorResponseDto() {
+    public SeniorResponseDto(Long numsOfRequiredVolunteers) {
         this.id = null;
         this.name = null;
         this.sex = null;
@@ -37,5 +38,6 @@ public class SeniorResponseDto {
         this.type = null;
         this.date = null;
         this.priority = null;
+        this.numsOfRequiredVolunteers = null;
     }
 }

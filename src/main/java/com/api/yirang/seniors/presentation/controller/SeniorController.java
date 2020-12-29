@@ -1,6 +1,7 @@
 package com.api.yirang.seniors.presentation.controller;
 
 import com.api.yirang.auth.domain.jwt.components.JwtParser;
+import com.api.yirang.auth.support.type.Authority;
 import com.api.yirang.auth.support.utils.ParsingHelper;
 import com.api.yirang.common.exceptions.ApiException;
 import com.api.yirang.common.exceptions.Dto.ErrorDto;
@@ -8,9 +9,11 @@ import com.api.yirang.common.support.custom.ValidCollection;
 import com.api.yirang.common.support.type.Region;
 import com.api.yirang.seniors.application.advancedService.SeniorVolunteerAdvancedService;
 import com.api.yirang.seniors.presentation.dto.request.RegisterSeniorRequestDto;
+import com.api.yirang.seniors.presentation.dto.request.RegisterTotalSeniorRequestDto;
 import com.api.yirang.seniors.presentation.dto.response.SeniorResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -18,10 +21,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.ConstraintViolationException;
 import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
+import java.util.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -42,53 +42,89 @@ public class SeniorController {
         System.out.println("[SeniorController] 피봉사자를 낱개씩 추가하는 API 요청 받았습니다: " + registerSeniorRequestDto);
         seniorVolunteerAdvancedService.registerSenior(registerSeniorRequestDto);
     }
-    // 엑셀로 피봉사자들을 업로드하는 API
-    @PostMapping(value = "/total", consumes = "application/json")
-    @ResponseStatus(HttpStatus.CREATED)
-    public Map<String, Map> registerSeniors(@RequestBody @NotEmpty @Valid ValidCollection<RegisterSeniorRequestDto> registerSeniors,
-                                            BindingResult bindingResult){
-        System.out.println("[SeniorController] 피봉사자를 한 번에 추가하는 API 요청 받았습니다: " + registerSeniors);
 
-        if(bindingResult.hasErrors()){
-            bindingResult.getFieldErrors().stream().forEach(e -> {
-                System.out.println(e.getField());
-                System.out.println(e.isBindingFailure());
-                System.out.println(e.getDefaultMessage());
+    // 엑셀 파일들을 검사하는 API
+    @PostMapping(value = "/check", consumes = "application/json")
+    public ResponseEntity checkSeniors(@RequestBody @NotEmpty @Valid ValidCollection<RegisterTotalSeniorRequestDto> registerTotalSeniorRequestDtos,
+                                       BindingResult bindingResult){
+        System.out.println("[SeniorController] 피봉사자 엑셀을 검사하는 API 요청 받았습니다: " + registerTotalSeniorRequestDtos);
+
+        Map<String, List<ErrorDto>> errorMap = new HashMap<>();
+        List<ErrorDto> errorDtos = new ArrayList<>();
+
+        // 빈 칸인지 체크
+        if(registerTotalSeniorRequestDtos.size() == 0){
+            errorDtos.add(
+                    ErrorDto.builder()
+                            .errorCode("100").errorName("RegisterSeniorRequests is Empty")
+                            .build()
+            );
+        }
+        // 다 형식이 올바른 지 체크
+        else if(bindingResult.hasErrors()){
+            bindingResult.getFieldErrors().forEach(e -> {
+                errorDtos.add(
+                        ErrorDto.builder()
+                                .errorCode("111").errorName(e.getField())
+                                .build());
             });
         }
+        // 같은 날짜, 지역 인지 체크
+        else if (!seniorVolunteerAdvancedService.checkSameDateAndSameRegion(registerTotalSeniorRequestDtos)){
+            errorDtos.add( ErrorDto.builder()
+                                   .errorCode("099").errorName("Does not have Same data and region")
+                                   .build());
+        }
+        // 준 데이터 중에 중복되는 데이터들이 없는 지 체크
+        else if (!seniorVolunteerAdvancedService.checkNotDuplicateAmongRequest(registerTotalSeniorRequestDtos)){
+            errorDtos.add ( ErrorDto.builder()
+                                    .errorCode("112").errorName("Have duplicated data in requests")
+                                    .build());
+        }
+//        // 준 데이터 중에 기존의 것과 중복되는 거 없는 지 체크
+        else {
+            int lineNumber = 0;
+            Iterator<RegisterTotalSeniorRequestDto> itr = registerTotalSeniorRequestDtos.iterator();
+            while (itr.hasNext()) {
+                RegisterTotalSeniorRequestDto registerTotalSeniorRequestDto = itr.next();
+                if (!seniorVolunteerAdvancedService.checkNotDuplicateAmongExistedData(registerTotalSeniorRequestDto)) {
+                    errorDtos.add(ErrorDto.builder()
+                                          .errorCode("113")
+                                          .errorName("[" + lineNumber + "]" + " Have duplicated data in existed data")
+                                          .build());
+                }
+                lineNumber++;
+            }
+        }
+        errorMap.put("Errors", errorDtos);
 
-        // 실패 리스트 저장
-        Map<String, Map> res = new HashMap<>();
-        Map<RegisterSeniorRequestDto, ErrorDto> mapInput = new HashMap<>();
-        Iterator<RegisterSeniorRequestDto> itr = registerSeniors.iterator();
-        while(itr.hasNext()){
-            RegisterSeniorRequestDto registerSeniorRequestDto = itr.next();
-            try {
-                seniorVolunteerAdvancedService.registerSenior(registerSeniorRequestDto);
-            }catch (ConstraintViolationException coe){
-                throw new ApiException("011", coe.getMessage());
-            }
-            catch (ApiException e){
-                mapInput.put(registerSeniorRequestDto, e.buildErrorDto());
-            }
-        }
-        if (mapInput.size() == 0){
-            res.put("failed_dtos", null);
-        }
-        else{
-            res.put("failed_dtos", mapInput);
-        }
-        return res;
+        return errorDtos.size() == 0 ? new ResponseEntity(HttpStatus.OK) : new ResponseEntity(errorMap, HttpStatus.BAD_REQUEST);
     }
+
+    // 엑셀 파일을 저장하는 API
+    @PostMapping(value = "/total", consumes = "application/json")
+    @ResponseStatus(HttpStatus.CREATED)
+    public void registerSeniors(@RequestBody @NotEmpty @Valid ValidCollection<RegisterTotalSeniorRequestDto> registerTotalSeniorRequestDtos){
+        System.out.println("[SeniorController] 피봉사자 엑셀을 저장하는 API 요청 받았습니다: " + registerTotalSeniorRequestDtos);
+
+        Iterator<RegisterTotalSeniorRequestDto> itr= registerTotalSeniorRequestDtos.iterator();
+        while(itr.hasNext()){
+            RegisterSeniorRequestDto registerSeniorRequestDto = new RegisterSeniorRequestDto(itr.next());
+            seniorVolunteerAdvancedService.registerSenior(registerSeniorRequestDto);
+        }
+    }
+
     /** Get method **/
     // 해당 지역 관련 피봉사자 GET API
     // 지역에 해당하는 히스토리를 줘야함
     @GetMapping(value = "/area", produces = "application/json")
     @ResponseStatus(HttpStatus.OK)
-    public Map<String, Collection<SeniorResponseDto>> getSpecificRegionSeniors(@RequestParam("region") Region region){
+    public Map<String, Collection<SeniorResponseDto>> getSpecificRegionSeniors(@RequestHeader("Authorization") String header,
+                                                                               @RequestParam("region") Region region){
         System.out.println("[SeniorController] 해당 지역의 피봉사자 리스트를 원하는 API 요청 받았습니다: ");
+        Authority authority = jwtParser.getRoleFromJwt(ParsingHelper.parseHeader(header));
         Map<String, Collection<SeniorResponseDto>> res = new HashMap<>();
-        res.put("seniors", seniorVolunteerAdvancedService.findSeniorsByRegion(region));
+        res.put("seniors", seniorVolunteerAdvancedService.findSeniorsByRegion(region, authority));
         return res;
     }
     // 관리자 관할 구역 피봉사자 GET API
@@ -96,9 +132,10 @@ public class SeniorController {
     @ResponseStatus(HttpStatus.OK)
     public Map<String, Collection<SeniorResponseDto>> getMyRegionSeniors(@RequestHeader("Authorization") String header){
         System.out.println("[SeniorController] 자신 관할 구역의 피봉사자 리스트를 원하는 API 요청 받았습니다: ");
+        Authority authority = jwtParser.getRoleFromJwt(ParsingHelper.parseHeader(header));
         Long userId = jwtParser.getUserIdFromJwt(ParsingHelper.parseHeader(header));
         Map<String, Collection<SeniorResponseDto> > res = new HashMap<>();
-        res.put("seniors", seniorVolunteerAdvancedService.findSeniorsByMyArea(userId) );
+        res.put("seniors", seniorVolunteerAdvancedService.findSeniorsByMyArea(userId, authority) );
         return res;
     }
     /** UPDATE **/

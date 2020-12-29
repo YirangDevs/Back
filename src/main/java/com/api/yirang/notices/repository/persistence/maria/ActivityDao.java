@@ -27,6 +27,14 @@ public interface ActivityDao extends JpaRepository<Activity, Long> {
     boolean existsActivityByRegionAndDTOV(Region region, LocalDateTime dtov);
 
     @Transactional
+    @Query("SELECT ( COUNT(A) > 0 ) " +
+           "FROM Activity A " +
+           "WHERE A.region = :region " +
+           "      AND A.dtov > :startDtov " +
+           "      AND A.dtov < :endDtov")
+    boolean existsActivityByRegionAndRangeOfDTOV(Region region, LocalDateTime startDtov, LocalDateTime endDtov);
+
+    @Transactional
     @Query("SELECT A " +
            "FROM Activity A " +
            "WHERE A.region =:region AND A.dtov =:dtov")
@@ -58,5 +66,12 @@ public interface ActivityDao extends JpaRepository<Activity, Long> {
     @Transactional
     @Override
     void deleteById(Long activityId);
+
+    @Modifying
+    @Transactional
+    @Query("UPDATE Activity A " +
+           "SET A.nor = :numsOfRequiredVolunteers " +
+           "WHERE A.activityId =:activityId")
+    void updateWithNumsOfRequiredVolunteer(Long activityId, Long numsOfRequiredVolunteers);
 
 }

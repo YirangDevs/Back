@@ -8,6 +8,7 @@ import com.api.yirang.auth.presentation.errorEntryPoint.RestAuthenticationEntryP
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -22,6 +23,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 @Configuration
 @EnableWebSecurity
+@Profile("dev")
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 
@@ -82,12 +84,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             .antMatchers("/v1/apis/test/**").permitAll()
             // 임시로..
             .antMatchers("/v1/apis/admins").hasAnyAuthority("VOLUNTEER", "ADMIN")
-            .antMatchers("/v1/apis/admins/region/**").hasAuthority("ADMIN")
-            .antMatchers("/v1/apis/auth/refresh").hasAnyAuthority("VOLUNTEER", "ADMIN")
-            .antMatchers("/v1/apis/seniors", "/v1/apis/seniors/**").hasAnyAuthority("ADMIN")
+            .antMatchers("/v1/apis/admins/region/**").hasAnyAuthority("ADMIN", "SUPER_ADMIN")
+            .antMatchers("/v1/apis/auth/refresh").hasAnyAuthority("VOLUNTEER", "ADMIN", "SUPER_ADMIN")
+            .antMatchers("/v1/apis/seniors", "/v1/apis/seniors/**").hasAnyAuthority("ADMIN", "SUPER_ADMIN")
             // 공고글 보는 건 Anonymous, User, admin 다 가능 해야함
             .antMatchers(HttpMethod.GET, "/v1/apis/manage/notices", "/v1/apis/manage/notices/**").permitAll()
-            .antMatchers("/v1/apis/manage/notices", "/v1/apis/manage/notices/**").hasAuthority("ADMIN")
+            .antMatchers("/v1/apis/manage/notices", "/v1/apis/manage/notices/**").hasAnyAuthority("ADMIN", "SUPER_ADMIN")
             .anyRequest().authenticated()
             .and()
             .exceptionHandling()
@@ -96,6 +98,5 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
         httpSecurity.addFilterBefore(authenticationFilter(), UsernamePasswordAuthenticationFilter.class);
-        // h2-console 위해서 설정
     }
 }

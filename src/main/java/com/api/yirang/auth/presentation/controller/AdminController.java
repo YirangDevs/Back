@@ -2,7 +2,6 @@ package com.api.yirang.auth.presentation.controller;
 
 import com.api.yirang.auth.application.advancedService.AuthService;
 import com.api.yirang.auth.application.basicService.AdminService;
-import com.api.yirang.auth.application.intermediateService.UserService;
 import com.api.yirang.auth.domain.jwt.components.JwtParser;
 import com.api.yirang.auth.presentation.VO.RefreshResponseVO;
 import com.api.yirang.auth.support.utils.ParsingHelper;
@@ -16,7 +15,6 @@ import javax.validation.Valid;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
-
 
 @RestController
 @RequestMapping("/v1/apis/admins")
@@ -76,5 +74,4 @@ public class AdminController {
         res.put("regions", adminService.findAreasByUserId(userId));
         return res;
     }
-
 }

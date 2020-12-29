@@ -1,6 +1,10 @@
 package com.api.yirang.senior.unitTesting;
 
+import com.api.yirang.auth.support.type.Authority;
 import com.api.yirang.common.generator.EnumGenerator;
+import com.api.yirang.common.generator.NumberRandomGenerator;
+import com.api.yirang.common.generator.StringRandomGenerator;
+import com.api.yirang.common.support.custom.ValidCollection;
 import com.api.yirang.common.support.time.TimeConverter;
 import com.api.yirang.common.support.type.Region;
 import com.api.yirang.common.support.type.Sex;
@@ -15,6 +19,7 @@ import com.api.yirang.seniors.application.basicService.VolunteerServiceBasicServ
 import com.api.yirang.seniors.domain.senior.model.Senior;
 import com.api.yirang.seniors.domain.volunteerService.model.VolunteerService;
 import com.api.yirang.seniors.presentation.dto.request.RegisterSeniorRequestDto;
+import com.api.yirang.seniors.presentation.dto.request.RegisterTotalSeniorRequestDto;
 import com.api.yirang.seniors.presentation.dto.response.SeniorResponseDto;
 import com.api.yirang.seniors.support.custom.ServiceType;
 import org.junit.Test;
@@ -25,8 +30,11 @@ import org.mockito.junit.MockitoJUnitRunner;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Random;
 import java.util.stream.Collectors;
 
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -71,6 +79,10 @@ public class SeniorVolunteerAdvancedServiceTest {
                                                                                     .build();
         System.out.println(registerSeniorRequestDto);
 
+        int a = 5;
+        int b = 1;
+        int result = 6;
+
         when(activityBasicService.findActivityByRegionAndDOV(region, date)).thenReturn(activity);
         when(seniorBasicService.isExistByPhone(phone)).thenReturn(Boolean.FALSE);
         when(seniorBasicService.findSeniorByPhone(phone)).thenReturn(senior);
@@ -113,8 +125,75 @@ public class SeniorVolunteerAdvancedServiceTest {
         when(seniorBasicService.findSeniorsByRegion(region, false)).thenReturn(seniors);
         when(volunteerServiceBasicService.findSortedVolunteerServiceInSeniors(seniors)).thenReturn(volunteerServices);
 
-        Collection<SeniorResponseDto> res = seniorVolunteerAdvancedService.findSeniorsByRegion(region);
+        Collection<SeniorResponseDto> res = seniorVolunteerAdvancedService.findSeniorsByRegion(region, Authority.ROLE_ADMIN);
         System.out.println(res);
+    }
+
+    @Test
+    public void 같은_지역_같은_날짜인_경우(){
+        Region region = Region.SOOSEONG_DISTRICT;
+        String date = "2020-11-20";
+        long length = 10;
+
+        ValidCollection<RegisterTotalSeniorRequestDto> registerTotalSeniorRequestDtos = new ValidCollection<>();
+        for(int i = 0; i < length; i++){
+            RegisterTotalSeniorRequestDto registerTotalSeniorRequestDto = RegisterTotalSeniorRequestDto.builder()
+                                                                                                       .name(StringRandomGenerator.generateKoreanNameWithLength(Long.valueOf(3)))
+                                                                                                       .region(region)
+                                                                                                       .phone(StringRandomGenerator.generateNumericStringWithLength(Long.valueOf(9)))
+                                                                                                       .address(StringRandomGenerator.generateRandomKoreansWithLength(Long.valueOf(10)))
+                                                                                                       .sex(EnumGenerator.generateRandomSex())
+                                                                                                       .type(EnumGenerator.generateRandomServiceType())
+                                                                                                       .date(date).priority(Long.valueOf(NumberRandomGenerator.generateLongValueWithRange(1, 10)))
+                                                                                                       .build();
+            registerTotalSeniorRequestDtos.add(registerTotalSeniorRequestDto);
+        }
+        boolean value = seniorVolunteerAdvancedService.checkSameDateAndSameRegion(registerTotalSeniorRequestDtos);
+        assertTrue(value);
+    }
+    @Test
+    public void 랜덤_지역의_경우(){
+        String date = "2020-11-20";
+        long length = 10;
+
+        ValidCollection<RegisterTotalSeniorRequestDto> registerTotalSeniorRequestDtos = new ValidCollection<>();
+        for(int i = 0; i < length; i++){
+            RegisterTotalSeniorRequestDto registerTotalSeniorRequestDto = RegisterTotalSeniorRequestDto.builder()
+                                                                                                       .name(StringRandomGenerator.generateKoreanNameWithLength(Long.valueOf(3)))
+                                                                                                       .region(EnumGenerator.generateRandomRegion())
+                                                                                                       .phone(StringRandomGenerator.generateNumericStringWithLength(Long.valueOf(9)))
+                                                                                                       .address(StringRandomGenerator.generateRandomKoreansWithLength(Long.valueOf(10)))
+                                                                                                       .sex(EnumGenerator.generateRandomSex())
+                                                                                                       .type(EnumGenerator.generateRandomServiceType())
+                                                                                                       .date(date).priority(Long.valueOf(NumberRandomGenerator.generateLongValueWithRange(1, 10)))
+                                                                                                       .build();
+            registerTotalSeniorRequestDtos.add(registerTotalSeniorRequestDto);
+        }
+        boolean value = seniorVolunteerAdvancedService.checkSameDateAndSameRegion(registerTotalSeniorRequestDtos);
+        assertFalse(value);
+    }
+
+    @Test
+    public void 다른_날짜의_경우(){
+        Region region = Region.SOOSEONG_DISTRICT;
+        long length = 10;
+
+        ValidCollection<RegisterTotalSeniorRequestDto> registerTotalSeniorRequestDtos = new ValidCollection<>();
+        for(int i = 0; i < length; i++){
+            String date = i % 2 == 0 ? "2020-11-15" : "2020-10-10";
+            RegisterTotalSeniorRequestDto registerTotalSeniorRequestDto = RegisterTotalSeniorRequestDto.builder()
+                                                                                                       .name(StringRandomGenerator.generateKoreanNameWithLength(Long.valueOf(3)))
+                                                                                                       .region(region)
+                                                                                                       .phone(StringRandomGenerator.generateNumericStringWithLength(Long.valueOf(9)))
+                                                                                                       .address(StringRandomGenerator.generateRandomKoreansWithLength(Long.valueOf(10)))
+                                                                                                       .sex(EnumGenerator.generateRandomSex())
+                                                                                                       .type(EnumGenerator.generateRandomServiceType())
+                                                                                                       .date(date).priority(Long.valueOf(NumberRandomGenerator.generateLongValueWithRange(1, 10)))
+                                                                                                       .build();
+            registerTotalSeniorRequestDtos.add(registerTotalSeniorRequestDto);
+        }
+        boolean value = seniorVolunteerAdvancedService.checkSameDateAndSameRegion(registerTotalSeniorRequestDtos);
+        assertFalse(value);
     }
 
 

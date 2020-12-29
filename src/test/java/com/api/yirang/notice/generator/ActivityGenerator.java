@@ -21,11 +21,10 @@ public class ActivityGenerator {
         rand = new Random();
     }
 
-    public static final Activity createRandomActivity(Region region){
+    public static Activity createRandomActivity(Region region, LocalDateTime dtov){
         Long nor = Long.valueOf(rand.nextInt(MAX_NOR));
         String content = StringRandomGenerator.generateRandomKoreansWithLength(Long.valueOf(MAX_CONTENT_LENGTH));
 
-        LocalDateTime dtov = TimeGenerator.generateRandomLocalDateTime();
         LocalDateTime dtod = TimeGenerator.generateRandomLocalDateTime();
 
         return Activity.builder()
@@ -33,11 +32,22 @@ public class ActivityGenerator {
                        .dtov(dtov).dtod(dtod)
                        .region(region)
                        .build();
+
     }
 
-    public static final Activity createRandomActivity(){
+    public static Activity createRandomActivity(Region region){
+        LocalDateTime dtov = TimeGenerator.generateRandomLocalDateTime();
+        return createRandomActivity(region, dtov);
+    }
+    public static Activity createRandomActivity(LocalDateTime dtov){
         Region region = EnumGenerator.generateRandomRegion();
-        return createRandomActivity(region);
+        return createRandomActivity(region, dtov);
+    }
+
+    public static Activity createRandomActivity(){
+        Region region = EnumGenerator.generateRandomRegion();
+        LocalDateTime dtov = TimeGenerator.generateRandomLocalDateTime();
+        return createRandomActivity(region, dtov);
     }
 
 }
