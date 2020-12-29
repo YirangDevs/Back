@@ -1,10 +1,16 @@
 package com.api.yirang.apply.domain.model;
 
+import com.api.yirang.auth.domain.user.model.Volunteer;
+import com.api.yirang.notices.domain.activity.model.Activity;
+import com.api.yirang.seniors.support.custom.ServiceType;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.ToString;
 
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import java.time.LocalDateTime;
 
 /**
  * Created by JeongminYoo on 2020/12/9
@@ -17,7 +23,39 @@ import javax.persistence.Table;
 @Table(name = "apply")
 @Getter
 @ToString
+@NoArgsConstructor
 public class Apply {
 
-    
+    // my fields
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "apply_id")
+    private Long applyId;
+
+    // 신청한 시간
+    @Column(name = "datetime_of_apply")
+    private LocalDateTime dtoa;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "service_type")
+    @NotNull
+    private ServiceType serviceType;
+
+    // relationships
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "volunteer_number", foreignKey = @ForeignKey(name = "fk_volunteer_number"))
+    private Volunteer volunteer;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "activty_id", foreignKey = @ForeignKey(name = "fk_activity_id"))
+    private Activity activity;
+
+    @Builder
+    public Apply(Long applyId, LocalDateTime dtoa, @NotNull ServiceType serviceType,
+                 Volunteer volunteer, Activity activity) {
+        this.dtoa = LocalDateTime.now(); // 객체를 만든 시간이 Apply 시간
+        this.serviceType = serviceType;
+        this.volunteer = volunteer;
+        this.activity = activity;
+    }
 }
