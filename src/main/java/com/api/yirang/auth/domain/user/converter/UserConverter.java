@@ -7,7 +7,7 @@ import com.api.yirang.auth.support.type.Authority;
 
 public class UserConverter {
 
-    public static final UserInfoResponseDto toUserInfoResponseDto(User user){
+    public static UserInfoResponseDto toUserInfoResponseDto(User user){
         return UserInfoResponseDto.builder()
                                   .username(user.getUsername())
                                   .email(user.getEmail())
@@ -15,7 +15,7 @@ public class UserConverter {
                                   .build();
     }
 
-    public static final User fromKakaoUserInfo(Long userId, KakaoUserInfo kakaoUserInfo, Authority authority){
+    public static User fromKakaoUserInfo(Long userId, KakaoUserInfo kakaoUserInfo, Authority authority){
         return User.builder()
                    .userId(userId)
                    .username(kakaoUserInfo.getUsername())

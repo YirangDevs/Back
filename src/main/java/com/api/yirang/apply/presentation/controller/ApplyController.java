@@ -1,6 +1,7 @@
 package com.api.yirang.apply.presentation.controller;
 
 import com.api.yirang.apply.application.ApplyAdvancedService;
+import com.api.yirang.apply.presentation.dto.ApplyRegisterRequestDto;
 import com.api.yirang.auth.domain.jwt.components.JwtParser;
 import com.api.yirang.auth.support.utils.ParsingHelper;
 import lombok.RequiredArgsConstructor;
@@ -25,13 +26,11 @@ import java.util.Map;
 @RequestMapping("/v1/apis/apply")
 public class ApplyController {
 
-
     // DI 할 Field
     private final ApplyAdvancedService applyAdvancedService;
     private final JwtParser jwtParser;
 
     // GET
-
     /** [TO-DO]
      * 관리자는 해당하는 게시글에 신청한 봉사자의 정보를 얻는다.
      */
@@ -41,16 +40,25 @@ public class ApplyController {
         System.out.println("[ApplyController] 봉사자 신청목록 조회 요청이 왔습니다.");
         // make return
         Map<String, Collection> res = new HashMap<>();
-        res.put("Applicants", applyAdvancedService.getVolunteersFromNoticeId(noticeId));
+        res.put("volunteers", applyAdvancedService.getVolunteersFromNoticeId(noticeId));
         return res;
     }
 
     /** [TO-DO]
      *  봉사자는 자신이 신청한 봉사들을 본다.
      */
+    @GetMapping(produces = "application/json")
+    @ResponseStatus(HttpStatus.OK)
+    public Map<String, Collection> getMyApplicants(@RequestHeader("Authorization") String header){
+        System.out.println("[ApplyController] 자신의 봉사 신청 목록들을 봅니다.");
+
+        Long userId = jwtParser.getUserIdFromJwt(ParsingHelper.parseHeader(header));
+        Map<String, Collection> res = new HashMap<>();
+        res.put("Applicants", applyAdvancedService.getMyApplicants(userId));
+        return res;
+    }
 
     // POST
-
     /** [TO-DO]
      * 봉사자는 Notice ID 를 입력해서 해당 게시글에 해당하는 봉사활동을 신청한다.
      */
@@ -61,6 +69,6 @@ public class ApplyController {
         System.out.println("[ApplyController] 봉사활동 신청 요청이 왔습니다.");
         Long userId = jwtParser.getUserIdFromJwt(ParsingHelper.parseHeader(header));
 
-
+        applyAdvancedService.applyToNotice(userId, applyRegisterRequestDto);
     }
 }

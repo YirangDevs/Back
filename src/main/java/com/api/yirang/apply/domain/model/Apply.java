@@ -51,7 +51,7 @@ public class Apply {
     private Activity activity;
 
     @Builder
-    public Apply(Long applyId, LocalDateTime dtoa, @NotNull ServiceType serviceType,
+    public Apply(@NotNull ServiceType serviceType,
                  Volunteer volunteer, Activity activity) {
         this.dtoa = LocalDateTime.now(); // 객체를 만든 시간이 Apply 시간
         this.serviceType = serviceType;

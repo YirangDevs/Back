@@ -1,6 +1,8 @@
 package com.api.yirang.apply.application;
 
-import lombok.AccessLevel;
+import com.api.yirang.apply.domain.model.Apply;
+import com.api.yirang.apply.repository.persistence.maria.ApplyDao;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -12,7 +14,14 @@ import org.springframework.transaction.annotation.Transactional;
  * Github: http://github.com/Biewoom
  */
 @Service
+@RequiredArgsConstructor
+@Transactional
 public class ApplyBasicService {
 
+    // DI field
+    private final ApplyDao applyDao;
 
+    public void save(Apply apply) {
+        applyDao.save(apply);
+    }
 }
