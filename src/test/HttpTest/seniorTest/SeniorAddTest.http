@@ -1,14 +1,15 @@
-POST http://ec2-3-35-99-114.ap-northeast-2.compute.amazonaws.com:8080/v1/apis/seniors
+POST http://localhost:8080/v1/apis/seniors
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6IuycoOygleuvvCIsImltZ1VybCI6Imh0dHA6Ly9rLmtha2FvY2RuLm5ldC9kbi9oQTFWdS9idHFGS1h4ZlFzWC95MGhIalpsNlhaVWVScFdPa3lrTGtLL2ltZ182NDB4NjQwLmpwZyIsInVzZXJJZCI6IjE0Njg0MTYxMzkiLCJyb2xlIjoiQURNSU4iLCJpYXQiOjE2MDQ1Nzc1ODIsImV4cCI6MTYwNDY2Mzk4Mn0.p72QtGBNjkxaLjfjPg5WLA3Y_DG5foceSaY_J68GcDk
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6IuycoOygleuvvCIsImltZ1VybCI6Imh0dHA6Ly9rLmtha2FvY2RuLm5ldC9kbi9oQTFWdS9idHFGS1h4ZlFzWC95MGhIalpsNlhaVWVScFdPa3lrTGtLL2ltZ182NDB4NjQwLmpwZyIsInVzZXJJZCI6IjE0Njg0MTYxMzkiLCJyb2xlIjoiU1VQRVJfQURNSU4iLCJpYXQiOjE2MDkzMzY5NzQsImV4cCI6MTYwOTQyMzM3NH0.4NvpMomcaQBaoRPp1Fa6JGSBIHS7kJXJXvvFRox7g5s
 
 {
-  "name": "만자",
-  "region": "수성구",
+  "name": "유자",
+  "region": "동구",
   "address": "이곡공원로",
-  "phone": "1234",
+  "phone": "0105523412",
   "sex": "female",
   "type": "work",
-  "date": "2020-11-11",
-  "priority": 1
+  "date": "2021-01-01",
+  "priority": 1,
+  "numsOfRequiredVolunteers": 6
 }

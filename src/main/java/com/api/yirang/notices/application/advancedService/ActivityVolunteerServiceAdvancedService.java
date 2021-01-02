@@ -28,11 +28,13 @@ public class ActivityVolunteerServiceAdvancedService {
 
 
     // util class
-
     public void updateActivityNOR(Activity activity) {
 
         // Activity에 해당하는 VolunteerService 들을 구하기
         Collection<VolunteerService> volunteerServices = volunteerServiceBasicService.findVolunteerServicesByActivity(activity);
+
+        System.out.println("[ActivityVolunteerServiceAdvancedService] volunteerServices: " + volunteerServices);
+
         Long numsOfRequiredVolunteers = volunteerServices.stream().mapToLong(e -> e.getNumsOfRequiredVolunteers()).sum();
 
         Long activityId = activity.getActivityId();
