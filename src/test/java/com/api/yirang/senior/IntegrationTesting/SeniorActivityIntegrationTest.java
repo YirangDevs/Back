@@ -32,7 +32,7 @@ import java.time.LocalDateTime;
 @ActiveProfiles("test")
 public class SeniorActivityIntegrationTest {
 
-    // Test 하고 싶은 테스트
+    // Test 하고 싶은 서비스
     @Autowired
     SeniorVolunteerAdvancedService seniorVolunteerAdvancedService;
 

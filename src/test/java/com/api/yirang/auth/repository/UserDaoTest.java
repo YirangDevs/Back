@@ -3,6 +3,7 @@ package com.api.yirang.auth.repository;
 import com.api.yirang.auth.domain.user.model.User;
 import com.api.yirang.auth.repository.persistence.maria.UserDao;
 import com.api.yirang.auth.support.type.Authority;
+import com.api.yirang.common.support.type.Sex;
 import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -28,7 +29,7 @@ public class UserDaoTest {
     public void 유저데이터_저장_후_불러오기(){
         long userId = 123;
         String username = "jeongminYoo";
-        String sex = "male";
+        Sex sex = Sex.SEX_MALE;
         String email = "likemin0142@naver.com";
         Authority authority = Authority.ROLE_ADMIN;
 

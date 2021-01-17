@@ -179,4 +179,5 @@ public class NoticeActivityService {
         activityBasicService.deleteActivityById(activity.getActivityId());
         noticeBasicService.deleteNoticeByNoticeId(noticeId);
     }
+
 }

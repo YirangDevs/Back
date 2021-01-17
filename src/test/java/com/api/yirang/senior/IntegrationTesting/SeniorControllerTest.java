@@ -200,7 +200,7 @@ public class SeniorControllerTest {
                                                .priority(NumberRandomGenerator.generateLongValueWithRange(1 , 10))
                                                .type(EnumGenerator.generateRandomServiceType())
                                                .address(StringRandomGenerator.generateRandomKoreansWithLength(Long.valueOf(10)))
-                                               .phone("0105518239")
+                                               .phone("0105518239abc")
                                                .date("2020-1115")
                                                .build());
         llist.add(RegisterTotalSeniorRequestDto.builder()
