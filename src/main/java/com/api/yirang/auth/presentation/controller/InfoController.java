@@ -2,6 +2,7 @@ package com.api.yirang.auth.presentation.controller;
 
 
 import com.api.yirang.auth.application.intermediateService.UserService;
+import com.api.yirang.auth.domain.jwt.components.JwtParser;
 import com.api.yirang.auth.presentation.dto.UserInfoResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -18,11 +19,19 @@ public class InfoController {
 
     // Serivces DI
     private final UserService userService;
+    private final JwtParser jwtParser;
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping(value="/users/{userId}", produces = "application/json")
     public UserInfoResponseDto getUserInfo(@PathVariable("userId") String userId){
         System.out.println("[InfoController] User정보 요청 왔습니다.");
         return userService.findUserInfoByUserId(Long.parseLong(userId));
+    }
+
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping(value = "/myinfo", produces = "application/json")
+    public UserInfoResponseDto getMyInfo(@RequestHeader("Authorization") String header){
+        System.out.println("[InfoController] 내 정보 조회 요청 왔습니다." );
+        return null;
     }
 }
