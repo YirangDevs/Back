@@ -28,6 +28,7 @@ import java.util.Properties;
         basePackages = { "com.api.yirang.auth.repository.persistence.maria",
                          "com.api.yirang.notices.repository.persistence.maria",
                          "com.api.yirang.seniors.repository.persistence.maria",
+                         "com.api.yirang.apply.repository.persistence.maria",
                          "com.api.yirang.test.dao"}
 )
 @PropertySource("classpath:properties/application-test.properties")

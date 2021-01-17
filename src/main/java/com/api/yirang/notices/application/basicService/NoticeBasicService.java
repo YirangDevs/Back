@@ -29,12 +29,12 @@ public class NoticeBasicService {
     private final ActivityBasicService activityBasicService;
 
     // Methods
-    public Long save(Notice notice) {
+    public Notice save(Notice notice) {
         if (isExistedNoticeByNoticeTitle(notice.getTitle())){
             throw new AlreadyExistedNoticeException();
         }
         Notice returnedNotice = noticeDao.save(notice);
-        return returnedNotice.getNoticeId();
+        return returnedNotice;
     }
 
     public boolean isExistedNoticeByNoticeId(Long noticeId){

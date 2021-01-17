@@ -23,7 +23,6 @@ import javax.validation.constraints.Pattern;
 @AllArgsConstructor
 public class RegisterTotalSeniorRequestDto {
 
-
     @NotBlank
     private final String name;
 

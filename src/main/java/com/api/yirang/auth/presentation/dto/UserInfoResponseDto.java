@@ -1,6 +1,7 @@
 package com.api.yirang.auth.presentation.dto;
 
 
+import com.api.yirang.common.support.type.Sex;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -9,7 +10,7 @@ public class UserInfoResponseDto {
 
     private final String username;
     private final String imageUrl;
-    private final String sex;
+    private final Sex sex;
     private final String email;
 
     public UserInfoResponseDto() {
@@ -20,7 +21,7 @@ public class UserInfoResponseDto {
     }
 
     @Builder
-    public UserInfoResponseDto(String username, String imageUrl, String sex, String email) {
+    public UserInfoResponseDto(String username, String imageUrl, Sex sex, String email) {
         this.username = username;
         this.imageUrl = imageUrl;
         this.sex = sex;

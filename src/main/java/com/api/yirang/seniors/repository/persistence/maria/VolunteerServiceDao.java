@@ -57,7 +57,6 @@ public interface VolunteerServiceDao extends JpaRepository<VolunteerService, Lon
     )
     void updateWithPriorityAndServiceType(Long volunteerServiceId, Long priority, ServiceType serviceType, Long numsOfRequiredVolunteers);
 
-
     // delete
     @Modifying
     @Transactional

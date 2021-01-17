@@ -64,6 +64,13 @@ public interface ActivityDao extends JpaRepository<Activity, Long> {
 
     @Modifying
     @Transactional
+    @Query("UPDATE Activity  A " +
+           "SET A.noa =:newNoa " +
+           "WHERE A.activityId =:activityId ")
+    void updateNoa(Long activityId, Long newNoa);
+
+    @Modifying
+    @Transactional
     @Override
     void deleteById(Long activityId);
 

@@ -25,7 +25,7 @@ public class RestAuthenticationEntryPoint implements AuthenticationEntryPoint {
 
         ErrorDto errorDto = ErrorDto.builder()
                                     .errorCode("012")
-                                    .errorName("Invalid Jwt or Missing Jwt")
+                                    .errorName("Invalid YAT or Missing YAT")
                                     .build();
         httpServletResponse.setContentType("application/json");
         httpServletResponse.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
