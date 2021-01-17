@@ -22,6 +22,7 @@ public class VolunteerService {
     @Column(name = "volunteer_service_id")
     private Long volunteerServiceId;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "service_type")
     private ServiceType serviceType;
 

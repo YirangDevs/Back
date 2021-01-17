@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class InfoController {
 
-
     // Serivces DI
     private final UserService userService;
 
