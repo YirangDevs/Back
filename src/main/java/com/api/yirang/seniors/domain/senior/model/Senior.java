@@ -25,6 +25,7 @@ public class Senior {
     @Column(name = "senior_name")
     private String seniorName;
 
+    @Enumerated(EnumType.STRING)
     @Column
     private Sex sex;
 
@@ -34,6 +35,8 @@ public class Senior {
     @Column(columnDefinition = "VARCHAR(20)")
     private String phone;
 
+    @Enumerated(EnumType.STRING)
+    @Column
     private Region region;
 
     @Builder
