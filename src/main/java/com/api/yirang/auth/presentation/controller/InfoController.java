@@ -7,10 +7,15 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+
+/**
+ * 사용자의 정보를 조회 하거나, 수정하는 Controller
+ */
 @RestController
 @RequestMapping("/v1/apis/info")
 @RequiredArgsConstructor
 public class InfoController {
+
 
     // Serivces DI
     private final UserService userService;
