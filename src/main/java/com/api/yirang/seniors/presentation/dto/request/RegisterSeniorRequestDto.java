@@ -34,6 +34,8 @@ public class RegisterSeniorRequestDto {
     @Min(value = 0)
     private final Long priority;
 
+    @NotNull
+    @Min(value = 0)
     private final Long numsOfRequiredVolunteers;
 
     public RegisterSeniorRequestDto() {

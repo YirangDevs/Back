@@ -39,6 +39,7 @@ public class Activity {
     @Column(name = "datetime_of_deadline")
     private LocalDateTime dtod;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "region")
     private Region region;
 

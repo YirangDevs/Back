@@ -7,6 +7,7 @@ import lombok.*;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
 /**
@@ -23,14 +24,16 @@ import javax.validation.constraints.Pattern;
 @AllArgsConstructor
 public class RegisterTotalSeniorRequestDto {
 
+    @NotNull
     @NotBlank
     private final String name;
 
     private final Region region;
+
     private final String address;
 
     @Pattern(regexp = "^[0-9]*$",
-             message = "Phone shoudl be numbers!")
+             message = "Phone should be numbers!")
     private final String phone;
 
     private final Sex sex;
