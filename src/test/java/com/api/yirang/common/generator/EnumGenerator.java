@@ -1,5 +1,7 @@
 package com.api.yirang.common.generator;
 
+import com.api.yirang.apply.support.type.MatchingState;
+import com.api.yirang.auth.support.type.Authority;
 import com.api.yirang.common.support.type.Region;
 import com.api.yirang.common.support.type.Sex;
 import com.api.yirang.seniors.support.custom.ServiceType;
@@ -13,6 +15,7 @@ public class EnumGenerator {
     private static final List<Sex> SEXES = Arrays.asList(Sex.values());
     private static final List<ServiceType> SERVICE_TYPES = Arrays.asList(ServiceType.values());
     private static final List<Region> REGIONS = Arrays.asList(Region.values());
+
     private static Random rand;
 
     static{

@@ -24,12 +24,12 @@ public class AdminService {
     // DI Dao
     private final AdminDao adminDao;
 
-    public void save(User user){
-        adminDao.save(
-          Admin.builder()
-               .user(user)
-               .build()
-        );
+    public Admin save(User user){
+        return adminDao.save(
+                Admin.builder()
+                     .user(user)
+                     .build()
+            );
     }
     public void delete(User user){
         adminDao.deleteByUser(user);
@@ -88,4 +88,7 @@ public class AdminService {
         return adminDao.existsAdminByUser_UserId(userId);
     }
 
+    public void deleteAll() {
+        adminDao.deleteAll();
+    }
 }

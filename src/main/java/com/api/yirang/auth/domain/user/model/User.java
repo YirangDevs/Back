@@ -1,6 +1,7 @@
 package com.api.yirang.auth.domain.user.model;
 
 import com.api.yirang.auth.support.type.Authority;
+import com.api.yirang.common.support.type.Sex;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -22,8 +23,9 @@ public class User {
     @Column
     private String username; // Base64로 인코딩 한 값
 
-    @Column(columnDefinition = "VARCHAR(255) default 'unknown'")
-    private String sex;
+    @Enumerated(EnumType.STRING)
+    @Column
+    private Sex sex;
 
     @Column(columnDefinition = "VARCHAR(255) default 'unknown'")
     private String email;
@@ -33,8 +35,8 @@ public class User {
     private Authority authority;
 
     @Builder
-    public User(Long userId, String username, String fileUrl,
-                String sex, String email, Authority authority) {
+    public User(Long userId, String username,
+                Sex sex, String email, Authority authority) {
         this.userId = userId;
         this.username = username;
         this.sex = sex;

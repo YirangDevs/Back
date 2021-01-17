@@ -1,4 +1,4 @@
-POST http://localhost:8080/v1/apis/admins/region/달서
+POST http://ec2-3-35-99-114.ap-northeast-2.compute.amazonaws.com:8080/v1/apis/admins/region/동구
 Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6IuycoOygleuvvCIsImltZ1VybCI6Imh0dHA6Ly9rLmtha2FvY2RuLm5ldC9kbi9oQTFWdS9idHFGS1h4ZlFzWC95MGhIalpsNlhaVWVScFdPa3lrTGtLL2ltZ182NDB4NjQwLmpwZyIsInVzZXJJZCI6IjE0Njg0MTYxMzkiLCJyb2xlIjoiQURNSU4iLCJpYXQiOjE2MDU0MzM3MjEsImV4cCI6MTYwNTUyMDEyMX0.6Mhyh1enkFJBoclS3EqSGNEMSwLX5wO0PFzREeQHP0c
 ###
 DELETE http://localhost:8080/v1/apis/admins/region/중구

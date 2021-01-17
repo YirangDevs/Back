@@ -1,5 +1,6 @@
 package com.api.yirang.apply.domain.model;
 
+import com.api.yirang.apply.support.type.MatchingState;
 import com.api.yirang.auth.domain.user.model.Volunteer;
 import com.api.yirang.notices.domain.activity.model.Activity;
 import com.api.yirang.seniors.support.custom.ServiceType;
@@ -41,6 +42,10 @@ public class Apply {
     @NotNull
     private ServiceType serviceType;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "matching_state")
+    private MatchingState matchingState;
+
     // relationships
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "volunteer_number", foreignKey = @ForeignKey(name = "fk_volunteer_number"))
@@ -54,6 +59,7 @@ public class Apply {
     public Apply(@NotNull ServiceType serviceType,
                  Volunteer volunteer, Activity activity) {
         this.dtoa = LocalDateTime.now(); // 객체를 만든 시간이 Apply 시간
+        this.matchingState = MatchingState.MATCHING_READY; // 처음 만들면 Ready인 상태
         this.serviceType = serviceType;
         this.volunteer = volunteer;
         this.activity = activity;

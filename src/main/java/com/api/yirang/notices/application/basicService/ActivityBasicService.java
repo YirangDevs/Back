@@ -1,6 +1,7 @@
 package com.api.yirang.notices.application.basicService;
 
 
+import com.api.yirang.apply.domain.exception.NoaNegativeException;
 import com.api.yirang.common.support.time.TimeConverter;
 import com.api.yirang.common.support.type.Region;
 import com.api.yirang.notices.domain.activity.exception.ActivityNullException;
@@ -20,7 +21,7 @@ public class ActivityBasicService {
 
     private final ActivityDao activityDao;
 
-    public Long save(Activity activity) {
+    public Activity save(Activity activity) {
         // 있던 Activity가 중복되면 에러
         Region region = activity.getRegion();
         LocalDateTime dtov = activity.getDtov();
@@ -28,7 +29,7 @@ public class ActivityBasicService {
             throw new AlreadyExistedActivityException();
         }
         Activity returnedActivity = activityDao.save(activity);
-        return returnedActivity.getActivityId();
+        return returnedActivity;
     }
 
     public boolean existsActivityByRegionAndDov(Region region, String dov) {
@@ -59,9 +60,6 @@ public class ActivityBasicService {
     }
     // update
     public void update(Long activityId, Activity toBeUpdatedActivity) {
-        // Activity 찾기
-        Activity activity = findActivityByActivityId(activityId);
-
         // (Noa:= apply 숫자는 바뀔 수 없음)
         Long newNor = toBeUpdatedActivity.getNor();
 
@@ -98,4 +96,40 @@ public class ActivityBasicService {
         deleteOnlyActivityById(activityId);
     }
 
+    // 봉사 신청자 수 늘리기
+
+    public void addNumberOfApplicants(Activity activity, Long number) {
+        Long activityId = activity.getActivityId();
+        Long newNoa = activity.getNoa() + number; // 한 명 추가
+
+        activityDao.updateNoa(activityId, newNoa);
+    }
+
+    public void addNumberOfApplicants(Activity activity) {
+        addNumberOfApplicants(activity, Long.valueOf(1) );
+    }
+
+    // 봉사 신청자 수 줄이기
+
+    public void subtractNumberOfApplicants(Activity activity, Long number){
+        Long activityId = activity.getActivityId();
+        Long newNoa = activity.getNoa() - number; // 한 명 추가
+
+        // 0 보다 적으면 이상한 것
+        if (newNoa < 0){
+            throw new NoaNegativeException();
+        }
+
+        String content = activity.getContent();
+        LocalDateTime dtov = activity.getDtov();
+        LocalDateTime dtod = activity.getDtod();
+
+        Region region = activity.getRegion();
+
+        activityDao.updateNoa(activityId, newNoa);
+    }
+
+    public void subtractNumberOfApplicants(Activity activity) {
+        subtractNumberOfApplicants(activity, Long.valueOf(1));
+    }
 }

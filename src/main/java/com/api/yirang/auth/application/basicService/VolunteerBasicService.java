@@ -17,8 +17,8 @@ public class VolunteerBasicService {
     // DI dao
     private final VolunteerDao volunteerDao;
 
-    public void save(User user){
-        volunteerDao.save(
+    public Volunteer save(User user){
+        return volunteerDao.save(
                 Volunteer.builder()
                          .user(user)
                          .build()
@@ -26,5 +26,9 @@ public class VolunteerBasicService {
     }
     public Volunteer findVolunteerByUserId(Long userId) {
         return volunteerDao.findVolunteerByUserId(userId).orElseThrow(VolunteerNullException::new);
+    }
+
+    public void deleteAll() {
+        volunteerDao.deleteAll();
     }
 }

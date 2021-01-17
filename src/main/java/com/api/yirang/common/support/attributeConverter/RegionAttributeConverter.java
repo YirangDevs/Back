@@ -5,6 +5,7 @@ import com.api.yirang.common.support.type.Region;
 import javax.persistence.AttributeConverter;
 import javax.persistence.Converter;
 
+@Converter(autoApply = true)
 public class RegionAttributeConverter implements AttributeConverter<Region, String> {
 
     @Override
