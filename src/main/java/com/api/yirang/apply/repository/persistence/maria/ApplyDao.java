@@ -4,6 +4,7 @@ import com.api.yirang.apply.domain.model.Apply;
 import com.api.yirang.auth.domain.user.model.Volunteer;
 import com.api.yirang.notices.domain.activity.model.Activity;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,7 +29,7 @@ public interface ApplyDao extends JpaRepository<Apply, Long> {
     @Transactional
     @Query("SELECT A " +
            "FROM Apply A " +
-           "WHERE A.volunteer = :volunteer " +
+           "WHERE A.volunteer =:volunteer " +
            "ORDER BY A.dtoa DESC ")
     Collection<Apply> findAppliesByVolunteerOrdOrderByDtoa(Volunteer volunteer);
 
@@ -36,4 +37,10 @@ public interface ApplyDao extends JpaRepository<Apply, Long> {
 
 
     Optional<Apply> findApplyByApplyId(Long applyId);
+
+    @Transactional
+    @Modifying
+    @Query("DELETE FROM Apply A " +
+           "WHERE A.volunteer =:volunteer ")
+    void deleteAllWithVolunteer(Volunteer volunteer);
 }
