@@ -27,6 +27,9 @@ public class User {
     @Column
     private Sex sex;
 
+    @Column
+    private String phone;
+
     @Column(columnDefinition = "VARCHAR(255) default 'unknown'")
     private String email;
 

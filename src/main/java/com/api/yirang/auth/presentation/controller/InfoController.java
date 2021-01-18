@@ -4,6 +4,7 @@ package com.api.yirang.auth.presentation.controller;
 import com.api.yirang.auth.application.intermediateService.UserService;
 import com.api.yirang.auth.domain.jwt.components.JwtParser;
 import com.api.yirang.auth.presentation.dto.UserInfoResponseDto;
+import com.api.yirang.auth.support.utils.ParsingHelper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -32,6 +33,7 @@ public class InfoController {
     @GetMapping(value = "/myinfo", produces = "application/json")
     public UserInfoResponseDto getMyInfo(@RequestHeader("Authorization") String header){
         System.out.println("[InfoController] 내 정보 조회 요청 왔습니다." );
+        Long userId = jwtParser.getUserIdFromJwt(ParsingHelper.parseHeader(header));
         return null;
     }
 }
