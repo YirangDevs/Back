@@ -87,6 +87,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             .antMatchers("/v1/apis/admins/region/**").hasAnyAuthority("ADMIN", "SUPER_ADMIN")
             .antMatchers("/v1/apis/auth/refresh").hasAnyAuthority("VOLUNTEER", "ADMIN", "SUPER_ADMIN")
             .antMatchers("/v1/apis/seniors", "/v1/apis/seniors/**").hasAnyAuthority("ADMIN", "SUPER_ADMIN")
+            // 다른 유저들의 정보 조회나 Kick은 Super Admin만
+            .antMatchers("/v1/apis/info/users/**").hasAuthority("SUPER_ADMIN")
             // Info
             .antMatchers("/v1/apis/info/myinfo").hasAnyAuthority("ADMIN", "VOLUNTEER", "SUPER_ADMIN")
             // 공고글 보는 건 Anonymous, User, admin 다 가능 해야함

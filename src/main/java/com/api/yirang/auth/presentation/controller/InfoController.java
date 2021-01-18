@@ -23,6 +23,7 @@ public class InfoController {
     private final UserService userService;
     private final JwtParser jwtParser;
 
+    // Super Admin 만 가능
     @ResponseStatus(HttpStatus.OK)
     @GetMapping(value="/users/{userId}", produces = "application/json")
     public UserInfoResponseDto getUserInfo(@PathVariable("userId") Long userId){
@@ -54,6 +55,15 @@ public class InfoController {
         System.out.println("[InfoController] 내 정보 업데이트 요청이 왔습니다. ");
         Long userId = jwtParser.getUserIdFromJwt(ParsingHelper.parseHeader(header));
         userService.updateUserInfoWithUserId(userId, userInfoRequestDto);
+    }
+
+    // Delete
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @DeleteMapping(value = "/myinfo")
+    public void deleteMyInfo(@RequestHeader("Authorization") String header){
+        System.out.println("[InfoController] 내 정보 삭제 요청이 왔습니다.");
+        Long userId = jwtParser.getUserIdFromJwt(ParsingHelper.parseHeader(header));
+        userService.deleteUser(userId);
     }
 
 

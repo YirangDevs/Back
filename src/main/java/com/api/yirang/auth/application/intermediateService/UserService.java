@@ -119,7 +119,6 @@ public class UserService {
     public void deleteUser(Long userId) {
         User user = findUserByUserId(userId);
 
-
         // 1. Admin이나 Volunteer Data 지우기
         if (user.getAuthority() == Authority.ROLE_ADMIN){
             adminService.delete(user);
@@ -127,8 +126,7 @@ public class UserService {
         else{
             volunteerBasicService.delete(user);
         }
-
-        // 3. User 삭제
+        // 2. User 삭제
         userDao.delete(user);
     }
 }

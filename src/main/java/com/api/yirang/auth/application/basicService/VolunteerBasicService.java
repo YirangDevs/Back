@@ -43,7 +43,6 @@ public class VolunteerBasicService {
         /** TO-DO
          * 매칭 data 지우기
          */
-
         applyBasicService.deleteAllWithVolunteer(volunteer);
         volunteerDao.deleteByUser(user);
     }

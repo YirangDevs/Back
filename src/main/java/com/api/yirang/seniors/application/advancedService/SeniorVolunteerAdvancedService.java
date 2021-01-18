@@ -219,7 +219,6 @@ public class SeniorVolunteerAdvancedService {
     }
 
     // Delete
-
     /**
      *  활동이력만 삭제하지, Senior 정보나 봉사활동 정보는 이상이 없다.
      */
