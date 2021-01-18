@@ -33,9 +33,6 @@ public class User {
     @Column(columnDefinition = "VARCHAR(255) default 'unknown'")
     private String email;
 
-    @Column
-    private String phone;
-
     @Enumerated(EnumType.STRING)
     @Column
     private Authority authority;

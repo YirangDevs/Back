@@ -38,7 +38,7 @@ public class UserService {
         return (user == null) ? Authority.ROLE_VOLUNTEER: user.getAuthority();
     }
 
-    private User findUserByUserId(Long userId) {
+    public User findUserByUserId(Long userId) {
         return userDao.findByUserId(userId).orElseThrow(UserNullException::new);
     }
 
