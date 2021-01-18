@@ -84,7 +84,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             .antMatchers("/v1/apis/test/**").permitAll()
             // 임시로..
             .antMatchers("/v1/apis/admins").hasAnyAuthority("VOLUNTEER", "ADMIN")
-            .antMatchers("/v1/apis/admins/region/**").hasAnyAuthority("ADMIN", "SUPER_ADMIN")
+            .antMatchers("/v1/apis/admins/region","/v1/apis/admins/region/**").hasAnyAuthority("ADMIN", "SUPER_ADMIN")
             .antMatchers("/v1/apis/auth/refresh").hasAnyAuthority("VOLUNTEER", "ADMIN", "SUPER_ADMIN")
             .antMatchers("/v1/apis/seniors", "/v1/apis/seniors/**").hasAnyAuthority("ADMIN", "SUPER_ADMIN")
             // 공고글 보는 건 Anonymous, User, admin 다 가능 해야함

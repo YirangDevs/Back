@@ -57,7 +57,7 @@ public class AdminController {
         adminService.addAreaByUserId(userId, region);
     }
     // 기존의 Admin에 관리 지역 삭제
-    // /v1/apis/admin/region
+    // /v1/apis/admins/region
     @DeleteMapping(value="/region/{region}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public final void deleteMyRegion(@RequestHeader("Authorization") String header, @PathVariable @Valid Region region){
@@ -65,13 +65,13 @@ public class AdminController {
         adminService.deleteAreaByUserId(userId, region);
     }
     // 기존 Admin 관리 지역 조회
-    // /v1/apis/admin/region
+    // /v1/apis/admins/region
     @GetMapping(value="/region", produces = "application/json")
     @ResponseStatus(HttpStatus.OK)
     public final Map<String, Collection> getMyRegions(@RequestHeader("Authorization") String header){
         Map<String, Collection> res = new HashMap<>();
         Long userId = jwtParser.getUserIdFromJwt(ParsingHelper.parseHeader(header));
-        res.put("regions", adminService.findAreasByUserId(userId));
+        res.put("regions", adminService.findAreasByUserId(userId)); // {regions: ["중구", "동구"]}
         return res;
     }
 }
