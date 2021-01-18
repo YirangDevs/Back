@@ -24,10 +24,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -128,6 +125,15 @@ public class SeniorVolunteerAdvancedService {
             return true;
         }
         return false;
+    }
+
+    public boolean checkMyArea(final Long userId, ValidCollection<RegisterTotalSeniorRequestDto> registerTotalSeniorRequestDtos) {
+        System.out.println("[SeniorVolunteerAdvancedService]: checkMyArea을 실행하겠습니다.");
+
+        Collection<Region> myAreas = adminService.findAreasByUserId(userId);
+
+        Boolean result = registerTotalSeniorRequestDtos.getCollection().stream().map(e -> myAreas.contains(e.getRegion())).reduce(true, (a,b) -> a&b);
+        return result;
     }
     // Find methods
     public Collection<SeniorResponseDto> findSeniorsByRegion(Region region, Authority authority) {
@@ -231,5 +237,6 @@ public class SeniorVolunteerAdvancedService {
         activityVolunteerServiceAdvancedService.updateActivityNOR(activity);
 
     }
+
 
 }

@@ -1,5 +1,6 @@
 package com.api.yirang.senior.unitTesting;
 
+import com.api.yirang.auth.application.basicService.AdminService;
 import com.api.yirang.auth.support.type.Authority;
 import com.api.yirang.common.generator.EnumGenerator;
 import com.api.yirang.common.generator.NumberRandomGenerator;
@@ -9,6 +10,7 @@ import com.api.yirang.common.support.time.TimeConverter;
 import com.api.yirang.common.support.type.Region;
 import com.api.yirang.common.support.type.Sex;
 import com.api.yirang.notice.generator.ActivityGenerator;
+import com.api.yirang.notices.application.advancedService.ActivityVolunteerServiceAdvancedService;
 import com.api.yirang.notices.application.basicService.ActivityBasicService;
 import com.api.yirang.notices.domain.activity.model.Activity;
 import com.api.yirang.senior.generator.SeniorGenerator;
@@ -30,6 +32,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 import java.util.Random;
 import java.util.stream.Collectors;
 
@@ -53,6 +56,11 @@ public class SeniorVolunteerAdvancedServiceTest {
     @Mock
     ActivityBasicService activityBasicService;
 
+    @Mock
+    ActivityVolunteerServiceAdvancedService activityVolunteerServiceAdvancedService;
+
+    @Mock
+    AdminService adminService;
 
     @Test
     public void 새로운_시니어_등록(){
@@ -196,5 +204,63 @@ public class SeniorVolunteerAdvancedServiceTest {
         assertFalse(value);
     }
 
+    @Test
+    public void 내_지방_체크해서_맞아야함(){
+        Long userId = Long.valueOf(50);
+
+        List<Region> myAreas = Arrays.asList(Region.SOOSEONG_DISTRICT, Region.CENTRAL_DISTRICT);
+
+        Region region = Region.SOOSEONG_DISTRICT;
+        String date = "2020-11-20";
+
+        long length = 10;
+
+        ValidCollection<RegisterTotalSeniorRequestDto> registerTotalSeniorRequestDtos = new ValidCollection<>();
+        for(int i = 0; i < length; i++){
+            RegisterTotalSeniorRequestDto registerTotalSeniorRequestDto = RegisterTotalSeniorRequestDto.builder()
+                                                                                                       .name(StringRandomGenerator.generateKoreanNameWithLength(Long.valueOf(3)))
+                                                                                                       .region(region)
+                                                                                                       .phone(StringRandomGenerator.generateNumericStringWithLength(Long.valueOf(9)))
+                                                                                                       .address(StringRandomGenerator.generateRandomKoreansWithLength(Long.valueOf(10)))
+                                                                                                       .sex(EnumGenerator.generateRandomSex())
+                                                                                                       .type(EnumGenerator.generateRandomServiceType())
+                                                                                                       .date(date).priority(Long.valueOf(NumberRandomGenerator.generateLongValueWithRange(1, 10)))
+                                                                                                       .build();
+            registerTotalSeniorRequestDtos.add(registerTotalSeniorRequestDto);
+        }
+
+        when(adminService.findAreasByUserId(userId)).thenReturn(myAreas);
+        boolean value = seniorVolunteerAdvancedService.checkMyArea(userId, registerTotalSeniorRequestDtos);
+        assertTrue(value);
+    }
+    @Test
+    public void 내_지방_체크해서_틀려야함(){
+        Long userId = Long.valueOf(50);
+
+        List<Region> myAreas = Arrays.asList(Region.SOOSEONG_DISTRICT, Region.CENTRAL_DISTRICT);
+
+        Region region = Region.EAST_DISTRICT;
+        String date = "2020-11-20";
+
+        long length = 10;
+
+        ValidCollection<RegisterTotalSeniorRequestDto> registerTotalSeniorRequestDtos = new ValidCollection<>();
+        for(int i = 0; i < length; i++){
+            RegisterTotalSeniorRequestDto registerTotalSeniorRequestDto = RegisterTotalSeniorRequestDto.builder()
+                                                                                                       .name(StringRandomGenerator.generateKoreanNameWithLength(Long.valueOf(3)))
+                                                                                                       .region(region)
+                                                                                                       .phone(StringRandomGenerator.generateNumericStringWithLength(Long.valueOf(9)))
+                                                                                                       .address(StringRandomGenerator.generateRandomKoreansWithLength(Long.valueOf(10)))
+                                                                                                       .sex(EnumGenerator.generateRandomSex())
+                                                                                                       .type(EnumGenerator.generateRandomServiceType())
+                                                                                                       .date(date).priority(Long.valueOf(NumberRandomGenerator.generateLongValueWithRange(1, 10)))
+                                                                                                       .build();
+            registerTotalSeniorRequestDtos.add(registerTotalSeniorRequestDto);
+        }
+
+        when(adminService.findAreasByUserId(userId)).thenReturn(myAreas);
+        boolean value = seniorVolunteerAdvancedService.checkMyArea(userId, registerTotalSeniorRequestDtos);
+        assertFalse(value);
+    }
 
 }

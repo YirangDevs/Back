@@ -1,5 +1,6 @@
 package com.api.yirang.seniors.presentation.controller;
 
+import com.api.yirang.auth.application.basicService.AdminService;
 import com.api.yirang.auth.domain.jwt.components.JwtParser;
 import com.api.yirang.auth.support.type.Authority;
 import com.api.yirang.auth.support.utils.ParsingHelper;
@@ -45,10 +46,12 @@ public class SeniorController {
 
     // 엑셀 파일들을 검사하는 API
     @PostMapping(value = "/check", consumes = "application/json")
-    public ResponseEntity checkSeniors(@RequestBody @NotEmpty @Valid ValidCollection<RegisterTotalSeniorRequestDto> registerTotalSeniorRequestDtos,
+    public ResponseEntity checkSeniors(@RequestHeader("Authorization") String header,
+                                       @RequestBody @NotEmpty @Valid ValidCollection<RegisterTotalSeniorRequestDto> registerTotalSeniorRequestDtos,
                                        BindingResult bindingResult){
         System.out.println("[SeniorController] 피봉사자 엑셀을 검사하는 API 요청 받았습니다: " + registerTotalSeniorRequestDtos);
 
+        Long userId = jwtParser.getUserIdFromJwt(ParsingHelper.parseHeader(header));
         Map<String, List<ErrorDto>> errorMap = new HashMap<>();
         List<ErrorDto> errorDtos = new ArrayList<>();
 
@@ -75,6 +78,13 @@ public class SeniorController {
                                    .errorCode("099").errorName("Does not have Same data and region")
                                    .build());
         }
+        // 관리자의 관할 구역 인지 체크
+        else if (!seniorVolunteerAdvancedService.checkMyArea(userId, registerTotalSeniorRequestDtos)){
+            errorDtos.add( ErrorDto.builder()
+                                   .errorCode("119").errorName("Not my Area")
+                                   .build());
+        }
+
         // 준 데이터 중에 중복되는 데이터들이 없는 지 체크
         else if (!seniorVolunteerAdvancedService.checkNotDuplicateAmongRequest(registerTotalSeniorRequestDtos)){
             errorDtos.add ( ErrorDto.builder()
