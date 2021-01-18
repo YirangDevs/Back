@@ -72,10 +72,6 @@ public class AdminService {
         return admin.getRegions();
     }
 
-    public Admin findAdminByUser(User user){
-        return adminDao.findAdminByUser(user).orElseThrow(UserNullException::new);
-    }
-
     public Admin findAdminByUserId(Long userId) {
         return adminDao.findAdminByUserId(userId).orElseThrow(AdminNullException::new);
     }

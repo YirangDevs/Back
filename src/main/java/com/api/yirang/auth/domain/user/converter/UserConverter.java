@@ -11,6 +11,7 @@ public class UserConverter {
     public static UserInfoResponseDto toUserInfoResponseDto(User user){
         return UserInfoResponseDto.builder()
                                   .username(user.getUsername())
+                                  .phone(user.getPhone())
                                   .email(user.getEmail())
                                   .sex(user.getSex())
                                   .build();

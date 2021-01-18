@@ -31,9 +31,7 @@ public class ApplyBasicService {
         return applyDao.save(apply);
     }
 
-    public void delete(Apply apply) {
-        applyDao.delete(apply);
-    }
+
 
     public Collection<Apply> getAppliesFromActivity(Activity activity) {
         // null exception 제외
@@ -65,6 +63,16 @@ public class ApplyBasicService {
 
     public Boolean existApplyByVolunteerAndActivity(Volunteer volunteer, Activity activity){
         return applyDao.existsApplyByVolunteerAndActivity(volunteer, activity);
+    }
+
+
+    // Delete
+    public void delete(Apply apply) {
+        applyDao.delete(apply);
+    }
+
+    public void deleteAllWithVolunteer(Volunteer volunteer){
+        applyDao.deleteAllWithVolunteer(volunteer);
     }
 
     public void deleteAll() {

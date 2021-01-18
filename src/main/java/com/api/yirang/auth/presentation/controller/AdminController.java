@@ -56,6 +56,7 @@ public class AdminController {
         Long userId = jwtParser.getUserIdFromJwt(ParsingHelper.parseHeader(header));
         adminService.addAreaByUserId(userId, region);
     }
+
     // 기존의 Admin에 관리 지역 삭제
     // /v1/apis/admins/region
     @DeleteMapping(value="/region/{region}")
@@ -64,6 +65,7 @@ public class AdminController {
         Long userId = jwtParser.getUserIdFromJwt(ParsingHelper.parseHeader(header));
         adminService.deleteAreaByUserId(userId, region);
     }
+
     // 기존 Admin 관리 지역 조회
     // /v1/apis/admins/region
     @GetMapping(value="/region", produces = "application/json")
@@ -74,4 +76,5 @@ public class AdminController {
         res.put("regions", adminService.findAreasByUserId(userId)); // {regions: ["중구", "동구"]}
         return res;
     }
+
 }
