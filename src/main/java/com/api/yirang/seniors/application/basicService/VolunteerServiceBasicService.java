@@ -59,12 +59,20 @@ public class VolunteerServiceBasicService {
         volunteerServiceDao.updateWithPriorityAndServiceType(volunteerServiceId, priority, serviceType, numsOfRequiredVolunteers);
     }
 
+    // delete
     public void delete(Long volunteerServiceId) {
         // 찾았는데 없다.
         VolunteerService volunteerService = findById(volunteerServiceId);
         // 삭제
         volunteerServiceDao.delete(volunteerService);
     }
+    public void deleteAllWithActivity(Activity activity){
+        volunteerServiceDao.deleteAllWithActivity(activity);
+    }
+    public void deleteAllWithSenior(Senior senior){
+        volunteerServiceDao.deleteAllWithSenior(senior);
+    }
+
     // exist method
     public boolean existsVolunteerServiceByActivityAndSenior(Activity activity, Senior senior){
         return volunteerServiceDao.existsVolunteerServiceByActivityAndSenior(activity, senior);

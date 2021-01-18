@@ -68,4 +68,17 @@ public interface VolunteerServiceDao extends JpaRepository<VolunteerService, Lon
 
     Collection<VolunteerService> findVolunteerServicesByActivity(Activity activity);
 
+    @Transactional
+    @Modifying
+    @Query("DELETE FROM VolunteerService V " +
+           "WHERE V.activity =:activity ")
+    void deleteAllWithActivity(Activity activity);
+
+    @Transactional
+    @Modifying
+    @Query("DELETE FROM VolunteerService V " +
+           "WHERE V.senior =:senior ")
+    void deleteAllWithSenior(Senior senior);
+
+
 }

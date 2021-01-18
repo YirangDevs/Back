@@ -39,7 +39,6 @@ public class SeniorBasicService {
         return seniors;
     }
     // update
-
     public void updateSenior(Senior existedSenior, String name, Sex sex,
                              String address, String phone, Region region) {
         seniorDao.updateSenior(existedSenior, name, sex, address, phone, region);

@@ -74,6 +74,9 @@ public class ApplyBasicService {
     public void deleteAllWithVolunteer(Volunteer volunteer){
         applyDao.deleteAllWithVolunteer(volunteer);
     }
+    public void deleteAllWithActivity(Activity activity){
+        applyDao.deleteAllWithActivity(activity);
+    }
 
     public void deleteAll() {
         applyDao.deleteAll();

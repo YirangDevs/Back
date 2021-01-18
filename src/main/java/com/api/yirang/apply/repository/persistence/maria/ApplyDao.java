@@ -43,4 +43,10 @@ public interface ApplyDao extends JpaRepository<Apply, Long> {
     @Query("DELETE FROM Apply A " +
            "WHERE A.volunteer =:volunteer ")
     void deleteAllWithVolunteer(Volunteer volunteer);
+
+    @Transactional
+    @Modifying
+    @Query("DELETE FROM Apply A " +
+           "WHERE A.activity =:activity ")
+    void deleteAllWithActivity(Activity activity);
 }

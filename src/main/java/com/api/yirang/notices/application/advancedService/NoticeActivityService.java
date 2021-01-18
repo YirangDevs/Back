@@ -176,8 +176,8 @@ public class NoticeActivityService {
     }
     public void deleteOneNoticeWithForce(Long noticeId){
         Activity activity = noticeBasicService.findActivityNoticeId(noticeId);
-        activityBasicService.deleteActivityById(activity.getActivityId());
         noticeBasicService.deleteNoticeByNoticeId(noticeId);
+        activityBasicService.deleteActivityById(activity.getActivityId());
     }
 
 }

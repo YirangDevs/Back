@@ -1,13 +1,16 @@
 package com.api.yirang.notices.application.basicService;
 
 
+import com.api.yirang.apply.application.ApplyBasicService;
 import com.api.yirang.apply.domain.exception.NoaNegativeException;
+import com.api.yirang.auth.application.basicService.VolunteerBasicService;
 import com.api.yirang.common.support.time.TimeConverter;
 import com.api.yirang.common.support.type.Region;
 import com.api.yirang.notices.domain.activity.exception.ActivityNullException;
 import com.api.yirang.notices.domain.activity.exception.AlreadyExistedActivityException;
 import com.api.yirang.notices.domain.activity.model.Activity;
 import com.api.yirang.notices.repository.persistence.maria.ActivityDao;
+import com.api.yirang.seniors.application.basicService.VolunteerServiceBasicService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,6 +23,10 @@ import java.time.LocalDateTime;
 public class ActivityBasicService {
 
     private final ActivityDao activityDao;
+
+    // DI Service
+    private final ApplyBasicService applyBasicService;
+    private final VolunteerServiceBasicService volunteerServiceBasicService;
 
     public Activity save(Activity activity) {
         // 있던 Activity가 중복되면 에러
@@ -84,15 +91,15 @@ public class ActivityBasicService {
         activityDao.deleteAll();
     }
 
-    public boolean isExistedActivityById(Long activityId){
-        return activityDao.existsById(activityId);
-    }
-
-
     public void deleteActivityById(Long activityId) {
         // 나중에 구현할 거지만 관련된 모든 걸 삭제하는 것
-        // 봉사 매칭, 신청, service, notice 등
-        // 지금은 그냥 삭제랑 같음
+        Activity activity = findActivityByActivityId(activityId);
+        // 1. Apply 삭제
+        applyBasicService.deleteAllWithActivity(activity);
+        // 2. volunteerService 삭제
+        volunteerServiceBasicService.deleteAllWithActivity(activity);
+        /** TO-DO 매칭 삭제 */
+        // 3. 매칭 삭제
         deleteOnlyActivityById(activityId);
     }
 
