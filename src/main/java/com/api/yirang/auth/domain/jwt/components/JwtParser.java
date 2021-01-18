@@ -28,7 +28,8 @@ public class JwtParser {
                                             .getBody()
                                             .get("role");
 
-            return authority.equals("VOLUNTEER") ? Authority.ROLE_VOLUNTEER : Authority.ROLE_ADMIN;
+            return  authority.equals("VOLUNTEER") ? Authority.ROLE_VOLUNTEER :
+                    authority.equals("ADMIN") ? Authority.ROLE_ADMIN : Authority.ROLE_SUPER_ADMIN;
         }
         catch (Exception ex){
             throw new InvalidJwtException();
