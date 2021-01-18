@@ -56,7 +56,7 @@ public class ApplyController {
     }
 
     /** [TO-DO]
-     * 사용자는 해당하는 게시글을 신청할 수 있는 지 아닌 지 정보를 얻는다.
+     * 봉사자는 해당하는 게시글을 신청할 수 있는 지 아닌 지 정보를 얻는다.
      */
     @GetMapping(value = "/apply-check/notices/{notice_id}", produces = "application/json")
     @ResponseStatus(HttpStatus.OK)

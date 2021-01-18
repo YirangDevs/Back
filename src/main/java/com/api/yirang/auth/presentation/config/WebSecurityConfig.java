@@ -87,6 +87,15 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             .antMatchers("/v1/apis/admins/region","/v1/apis/admins/region/**").hasAnyAuthority("ADMIN", "SUPER_ADMIN")
             .antMatchers("/v1/apis/auth/refresh").hasAnyAuthority("VOLUNTEER", "ADMIN", "SUPER_ADMIN")
             .antMatchers("/v1/apis/seniors", "/v1/apis/seniors/**").hasAnyAuthority("ADMIN", "SUPER_ADMIN")
+            /** Apply */
+            // Apply 조회 및 신청하는 건 Volunteer 만 가능하다
+            .antMatchers(HttpMethod.GET, "/v1/apis/apply", "/v1/apis/apply/apply-check/notices/**").hasAuthority("VOLUNTEER")
+            .antMatchers(HttpMethod.POST, "/v1/apis/apply/notices").hasAuthority("VOLUNTEER")
+            // Apply 삭제는 관리자와 봉사자 모두 가능하다.
+            .antMatchers(HttpMethod.DELETE, "/v1/apis/apply/**").hasAnyAuthority("VOLUNTEER", "ADMIN", "SUPER_ADMIN")
+            // 해당 게시물을 신청한 봉사자 정보 얻기
+            .antMatchers(HttpMethod.GET, "/v1/apis/apply/notices/**").hasAnyAuthority("ADMIN", "SUPER_ADMIN")
+            /** INFO */
             // 다른 유저들의 정보 조회나 Kick은 Super Admin만
             .antMatchers("/v1/apis/info/users/**").hasAuthority("SUPER_ADMIN")
             // Info
