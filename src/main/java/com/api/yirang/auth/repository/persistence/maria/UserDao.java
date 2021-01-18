@@ -22,4 +22,10 @@ public interface UserDao extends JpaRepository<User, Long> {
            "WHERE u.userId =:userId")
     void updateAuthority(Long userId, Authority authority);
 
+    @Modifying
+    @Transactional
+    @Query("UPDATE User u " +
+           "set u.email =:email, u.phone =:phone, u.username =:username " +
+           "WHERE u.userId =:userId")
+    void updateUserInfo(Long userId, String email, String phone, String username);
 }
