@@ -32,7 +32,6 @@ public class ApplyBasicService {
     }
 
 
-
     public Collection<Apply> getAppliesFromActivity(Activity activity) {
         // null exception 제외
         Collection<Apply> applies = applyDao.findAppliesByActivity(activity);
@@ -64,7 +63,6 @@ public class ApplyBasicService {
     public Boolean existApplyByVolunteerAndActivity(Volunteer volunteer, Activity activity){
         return applyDao.existsApplyByVolunteerAndActivity(volunteer, activity);
     }
-
 
     // Delete
     public void delete(Apply apply) {

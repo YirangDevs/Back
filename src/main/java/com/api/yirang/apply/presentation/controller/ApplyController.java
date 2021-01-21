@@ -31,7 +31,7 @@ public class ApplyController {
     private final JwtParser jwtParser;
 
     // GET
-    /** [TO-DO]
+    /**
      * 관리자는 해당하는 게시글에 신청한 봉사자의 정보를 얻는다.
      */
     @GetMapping(value = "/notices/{notice_id}", produces = "application/json")
@@ -43,7 +43,6 @@ public class ApplyController {
         return res;
     }
     /**
-     * [TO-DO]
      * 해당하는 게시글에 신청한 사람의 수를 구한다.
      */
     @GetMapping(value= "/applicant-nums/notices/{notice_id}", produces = "application/json")
@@ -55,7 +54,7 @@ public class ApplyController {
         return res;
     }
 
-    /** [TO-DO]
+    /**
      * 봉사자는 해당하는 게시글을 신청할 수 있는 지 아닌 지 정보를 얻는다.
      */
     @GetMapping(value = "/apply-check/notices/{notice_id}", produces = "application/json")
@@ -70,7 +69,7 @@ public class ApplyController {
         return res;
     }
 
-    /** [TO-DO]
+    /**
      *  봉사자는 자신이 신청한 봉사들을 본다.
      */
     @GetMapping(produces = "application/json")
@@ -84,7 +83,7 @@ public class ApplyController {
     }
 
     // POST
-    /** [TO-DO]
+    /**
      * 봉사자는 Notice ID를 입력해서 해당 게시글에 해당하는 봉사활동을 신청한다.
      */
     @PostMapping(value = "/notices", consumes = "application/json")
@@ -97,7 +96,7 @@ public class ApplyController {
     }
 
     // DELETE
-    /** [TO-DO]
+    /**
      * 봉사자나 관리자는 해당 Apply 신청을 취소 할 수 있다.
      */
     @DeleteMapping(value = "/{apply_id}")
