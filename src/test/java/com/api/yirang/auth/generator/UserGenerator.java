@@ -26,10 +26,11 @@ public class UserGenerator {
     }
 
     public static User createRandomUser(Long userId, String username,
-                                        Sex sex, String email, Authority authority){
+                                        Sex sex, String email, String phone,
+                                        Authority authority){
         return User.builder()
                    .userId(userId).username(username)
-                   .sex(sex).email(email).authority(authority)
+                   .sex(sex).email(email).authority(authority).phone(phone)
                    .build();
     }
 
@@ -38,7 +39,8 @@ public class UserGenerator {
         String username= StringRandomGenerator.generateKoreanNameWithLength(Long.valueOf(3));
         Sex sex = EnumGenerator.generateRandomSex();
         String email = StringRandomGenerator.generateRandomKoreansWithLength(Long.valueOf(100));
+        String phone = StringRandomGenerator.generateNumericStringWithLength(Long.valueOf(11));
 
-        return createRandomUser(userId, username, sex, email, authority);
+        return createRandomUser(userId, username, sex, email, phone, authority);
     }
 }

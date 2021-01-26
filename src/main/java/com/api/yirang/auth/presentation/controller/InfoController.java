@@ -6,9 +6,13 @@ import com.api.yirang.auth.domain.jwt.components.JwtParser;
 import com.api.yirang.auth.presentation.dto.UserInfoRequestDto;
 import com.api.yirang.auth.presentation.dto.UserInfoResponseDto;
 import com.api.yirang.auth.support.utils.ParsingHelper;
+import com.api.yirang.common.exceptions.Dto.ErrorDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
 
 
 /**
@@ -51,7 +55,7 @@ public class InfoController {
     @ResponseStatus(HttpStatus.OK)
     @PutMapping(value = "/myinfo", consumes = "application/json")
     public void updateMyInfo(@RequestHeader("Authorization") String header,
-                             @RequestBody UserInfoRequestDto userInfoRequestDto){
+                             @RequestBody @Valid UserInfoRequestDto userInfoRequestDto){
         System.out.println("[InfoController] 내 정보 업데이트 요청이 왔습니다. ");
         Long userId = jwtParser.getUserIdFromJwt(ParsingHelper.parseHeader(header));
         userService.updateUserInfoWithUserId(userId, userInfoRequestDto);

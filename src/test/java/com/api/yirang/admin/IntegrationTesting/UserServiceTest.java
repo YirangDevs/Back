@@ -1,4 +1,4 @@
-package com.api.yirang.admin.services;
+package com.api.yirang.admin.IntegrationTesting;
 
 import com.api.yirang.auth.application.basicService.AdminService;
 import com.api.yirang.auth.application.intermediateService.UserService;

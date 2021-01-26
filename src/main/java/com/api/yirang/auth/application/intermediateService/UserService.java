@@ -28,8 +28,6 @@ public class UserService {
     private final AdminService adminService;
     private final VolunteerBasicService volunteerBasicService;
 
-    private final ApplyBasicService applyBasicService;
-
     /*-------------------------------------*/
 
     // Methods For get or find
@@ -53,7 +51,7 @@ public class UserService {
 
 
     public void updateUserInfoWithUserId(Long userId, UserInfoRequestDto userInfoRequestDto) {
-        System.out.println("[UserService] User를 찾았습니다");
+        System.out.println("[UserService] User를 업데이트 합니다.");
 
         String email = userInfoRequestDto.getEmail();
         String phone = userInfoRequestDto.getPhone();
