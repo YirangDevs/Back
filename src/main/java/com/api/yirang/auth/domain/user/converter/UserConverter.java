@@ -2,9 +2,13 @@ package com.api.yirang.auth.domain.user.converter;
 
 import com.api.yirang.auth.domain.kakaoToken.dto.KakaoUserInfo;
 import com.api.yirang.auth.domain.user.model.User;
+import com.api.yirang.auth.presentation.dto.UserAuthResponseDto;
 import com.api.yirang.auth.presentation.dto.UserInfoResponseDto;
 import com.api.yirang.auth.support.type.Authority;
+import com.api.yirang.common.support.type.Region;
 import com.api.yirang.common.support.type.Sex;
+
+import java.util.Collection;
 
 public class UserConverter {
 
@@ -14,6 +18,15 @@ public class UserConverter {
                                   .phone(user.getPhone())
                                   .email(user.getEmail())
                                   .sex(user.getSex())
+                                  .build();
+    }
+
+    public static UserAuthResponseDto toUserAuthResponseDto(User user, Collection<Region> regions){
+        return UserAuthResponseDto.builder()
+                                  .userId(user.getUserId()).authority(user.getAuthority())
+                                  .userName(user.getUsername()).sex(user.getSex())
+                                  .phone(user.getPhone()).email(user.getEmail())
+                                  .regions(regions)
                                   .build();
     }
 

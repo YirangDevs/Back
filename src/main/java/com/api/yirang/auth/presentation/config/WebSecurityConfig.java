@@ -80,12 +80,15 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             .csrf().disable()
             .authorizeRequests()
             .antMatchers("/api-ui.html", "/swagger-ui/**", "/swagger-ui.html", "/v2/api-docs", "/api-ui").permitAll()
+            /** sign In */
             .antMatchers("/v1/apis/auth/signin", "/v1/apis/auth/signin/**").permitAll()
-            .antMatchers("/v1/apis/test/**").permitAll()
-            // 임시로..
-            .antMatchers("/v1/apis/admins").hasAnyAuthority("VOLUNTEER", "ADMIN")
-            .antMatchers("/v1/apis/admins/region","/v1/apis/admins/region/**").hasAnyAuthority("ADMIN", "SUPER_ADMIN")
             .antMatchers("/v1/apis/auth/refresh").hasAnyAuthority("VOLUNTEER", "ADMIN", "SUPER_ADMIN")
+            // Test
+            .antMatchers("/v1/apis/test/**").permitAll()
+            /** Admin */
+            .antMatchers("/v1/apis/admins/region").hasAnyAuthority("ADMIN", "SUPER_ADMIN")
+            .antMatchers("/v1/apis/admins/**").hasAuthority("SUPER_ADMIN")
+            /** Seniors */
             .antMatchers("/v1/apis/seniors", "/v1/apis/seniors/**").hasAnyAuthority("ADMIN", "SUPER_ADMIN")
             /** Apply */
             // Apply 조회 및 신청하는 건 Volunteer 만 가능하다
