@@ -19,4 +19,7 @@ public interface RegionListTestDao extends JpaRepository<RegionListTestModel, Lo
            "SET R.regions =:regions " +
            "WHERE R.id =:id")
     void updateRegionsByUserId(Long id, String regions);
+
+    @Override
+    <S extends RegionListTestModel> S save(S s);
 }
