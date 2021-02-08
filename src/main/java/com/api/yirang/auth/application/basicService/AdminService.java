@@ -36,6 +36,7 @@ public class AdminService {
     }
 
     public void updateRegionsByUserId(Long userId, List<Region> regions){
+        findAdminByUserId(userId);
         adminDao.updateRegionsByUserId(userId,
                                        RegionListConverter.convertFromListToString(regions));
     }

@@ -33,6 +33,11 @@ public class VolunteerBasicService {
         return volunteerDao.findVolunteerByUserId(userId).orElseThrow(VolunteerNullException::new);
     }
 
+
+    public Boolean existVolunteerByUserId(Long userId){
+        return volunteerDao.existsByUser_UserId(userId);
+    }
+
     public void deleteAll() {
         volunteerDao.deleteAll();
     }

@@ -34,10 +34,10 @@ public class UserGenerator {
     }
 
     public static User createRandomUser(Authority authority){
-        Long userId = NumberRandomGenerator.generateLongValueWithRange(1, 100);
+        Long userId = NumberRandomGenerator.generateLongValueWithRange(1, 100000);
         String username= StringRandomGenerator.generateKoreanNameWithLength(Long.valueOf(3));
         Sex sex = EnumGenerator.generateRandomSex();
-        String email = StringRandomGenerator.generateRandomKoreansWithLength(Long.valueOf(100));
+        String email = StringRandomGenerator.generateAlphabetStringWithLength(Long.valueOf(10));
 
         return createRandomUser(userId, username, sex, email, authority);
     }

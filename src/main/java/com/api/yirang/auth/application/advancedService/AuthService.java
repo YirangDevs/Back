@@ -1,5 +1,6 @@
 package com.api.yirang.auth.application.advancedService;
 
+import com.api.yirang.auth.application.basicService.AdminService;
 import com.api.yirang.auth.application.basicService.KakaoTokenService;
 import com.api.yirang.auth.application.intermediateService.UserService;
 import com.api.yirang.auth.domain.jwt.components.JwtParser;
@@ -7,6 +8,8 @@ import com.api.yirang.auth.domain.jwt.components.JwtProvider;
 import com.api.yirang.auth.domain.jwt.components.JwtValidator;
 import com.api.yirang.auth.domain.kakaoToken.dto.KakaoUserInfo;
 import com.api.yirang.auth.domain.user.converter.UserConverter;
+import com.api.yirang.auth.domain.user.exceptions.AlreadyExistedAdmin;
+import com.api.yirang.auth.domain.user.exceptions.AlreadyExistedVolunteer;
 import com.api.yirang.auth.domain.user.model.User;
 import com.api.yirang.auth.presentation.VO.RefreshResponseVO;
 import com.api.yirang.auth.presentation.VO.SignInResponseVO;
@@ -94,33 +97,19 @@ public class AuthService {
 
     }
     @Transactional
-    public RefreshResponseVO refreshAuthority(String header, Authority authority){
-        String YAT = ParsingHelper.parseHeader(header);
-
-        String username = jwtParser.getUsernameFromJwt(YAT);
-        String imageUrl = jwtParser.getImageUrlFromJwt(YAT);
-        Long userId = jwtParser.getUserIdFromJwt(YAT);
-
-        System.out.println("[AuthService]: 새로운 Authority 입니다: " + authority);
-
-        String newYAT = jwtProvider.generateJwtToken(username, imageUrl, userId, authority);
-        return RefreshResponseVO.builder()
-                                .yirangAccessToken(newYAT)
-                                .build();
-    }
-
-    @Transactional
-    public RefreshResponseVO refreshToAdmin(String header){
-        Long userId = jwtParser.getUserIdFromJwt(ParsingHelper.parseHeader(header));
+    public void changeToAdmin(Long userId){
+        if(userService.getAuthorityByUserId(userId)!=Authority.ROLE_VOLUNTEER){
+            throw new AlreadyExistedAdmin();
+        }
         userService.registerAdmin(userId);
-        return refreshAuthority(header, Authority.ROLE_ADMIN);
     }
 
     @Transactional
-    public RefreshResponseVO refreshFromAdmin(String header){
-        Long userId = jwtParser.getUserIdFromJwt(ParsingHelper.parseHeader(header));
+    public void changeToVolunteer(Long userId){
+        if(userService.getAuthorityByUserId(userId)!=Authority.ROLE_ADMIN){
+            throw new AlreadyExistedVolunteer();
+        }
         userService.fireAdmin(userId);
-        return refreshAuthority(header, Authority.ROLE_VOLUNTEER);
     }
 
 }

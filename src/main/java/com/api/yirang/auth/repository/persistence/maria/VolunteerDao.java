@@ -20,6 +20,9 @@ public interface VolunteerDao extends JpaRepository<Volunteer, Long> {
            "WHERE V.user.userId = :userId ")
     Optional<Volunteer> findVolunteerByUserId(Long userId);
 
+
+    Boolean existsByUser_UserId(Long userId);
+
     @Modifying
     @Transactional
     @Query("DELETE FROM Volunteer v WHERE v.user =:user")
