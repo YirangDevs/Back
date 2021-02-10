@@ -81,13 +81,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             .authorizeRequests()
             /** swagger UI */
             .antMatchers("/api-ui.html", "/swagger-ui/**", "/swagger-ui.html", "/v2/api-docs", "/api-ui").permitAll()
-            /** Sign In & Token **/
+            /** sign In */
             .antMatchers("/v1/apis/auth/signin", "/v1/apis/auth/signin/**").permitAll()
             .antMatchers("/v1/apis/auth/refresh").hasAnyAuthority("VOLUNTEER", "ADMIN", "SUPER_ADMIN")
-            /** 이스터 에그 **/
-            .antMatchers("/v1/apis/admins").hasAnyAuthority("VOLUNTEER", "ADMIN")
-            /** Admin Region */
-            .antMatchers("/v1/apis/admins/region","/v1/apis/admins/region/**").hasAnyAuthority("ADMIN", "SUPER_ADMIN")
+            /** Admin */
+            .antMatchers("/v1/apis/admins/region").hasAnyAuthority("ADMIN", "SUPER_ADMIN")
+            .antMatchers("/v1/apis/admins/**").hasAuthority("SUPER_ADMIN")
             /** Seniors */
             .antMatchers("/v1/apis/seniors", "/v1/apis/seniors/**").hasAnyAuthority("ADMIN", "SUPER_ADMIN")
             /** Apply */

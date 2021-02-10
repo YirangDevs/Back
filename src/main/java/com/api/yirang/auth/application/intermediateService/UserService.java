@@ -8,6 +8,7 @@ import com.api.yirang.auth.domain.user.exceptions.AlreadyExistedAdmin;
 import com.api.yirang.auth.domain.user.exceptions.UserNullException;
 import com.api.yirang.auth.domain.user.model.Admin;
 import com.api.yirang.auth.domain.user.model.User;
+import com.api.yirang.auth.presentation.dto.UserAuthResponseDto;
 import com.api.yirang.auth.presentation.dto.UserInfoRequestDto;
 import com.api.yirang.auth.presentation.dto.UserInfoResponseDto;
 import com.api.yirang.auth.repository.persistence.maria.UserDao;
@@ -15,6 +16,11 @@ import com.api.yirang.auth.support.type.Authority;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.ArrayDeque;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
 
 @Service
 @RequiredArgsConstructor
@@ -49,6 +55,19 @@ public class UserService {
         return UserConverter.toUserInfoResponseDto(foundedUser);
     }
 
+    public Collection<UserAuthResponseDto> findAllUserAuthInfos() {
+
+        Collection<UserAuthResponseDto> res = new ArrayList<>();
+
+        for(User user: userDao.findAll()){
+            res.add(
+                    (user.getAuthority() == Authority.ROLE_VOLUNTEER) ?
+                            UserConverter.toUserAuthResponseDto(user, null) :
+                            UserConverter.toUserAuthResponseDto(user, adminService.findAreasByUserId(user.getUserId()))
+            );
+        }
+        return res;
+    }
 
     public void updateUserInfoWithUserId(Long userId, UserInfoRequestDto userInfoRequestDto) {
         System.out.println("[UserService] User를 업데이트 합니다.");
@@ -83,7 +102,7 @@ public class UserService {
         }
     }
 
-    // 일반 user -> admin 추가하기
+    // Volunteer -> Admin로 승급
     public void registerAdmin(Long userId){
 
         // userId에 해당하는 User가 있는 지 검사
@@ -92,13 +111,13 @@ public class UserService {
         updateAuthority(userId, Authority.ROLE_ADMIN);
 
         // Admin에 아이디 추가
-        // 예전에 있었떤 Admin이면 그 Number를 계속 씀
+        // 예전에 있었 Admin이면 그 Number를 계속 씀
         if (!adminService.isExistedByUserId(userId)) {
             adminService.save(user);
         }
     }
 
-    // admin -> 일반 User로 강등
+    // admin -> Volunteer 로 강등
     public void fireAdmin(Long userId) {
 
         // userId에 해당하는 User가 있는 지 검사
@@ -127,4 +146,5 @@ public class UserService {
         // 2. User 삭제
         userDao.delete(user);
     }
+
 }
