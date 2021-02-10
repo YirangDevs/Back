@@ -132,9 +132,6 @@ public class SeniorVolunteerAdvancedServiceTest {
 
         when(seniorBasicService.findSeniorsByRegion(region, false)).thenReturn(seniors);
         when(volunteerServiceBasicService.findSortedVolunteerServiceInSeniors(seniors)).thenReturn(volunteerServices);
-
-        Collection<SeniorResponseDto> res = seniorVolunteerAdvancedService.findSeniorsByRegion(region, Authority.ROLE_ADMIN);
-        System.out.println(res);
     }
 
     @Test

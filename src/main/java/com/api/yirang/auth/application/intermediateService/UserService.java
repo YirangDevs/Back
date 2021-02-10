@@ -42,6 +42,11 @@ public class UserService {
         return (user == null) ? Authority.ROLE_VOLUNTEER: user.getAuthority();
     }
 
+    public String getEmailByUserId(Long userId){
+        User user = userDao.findByUserId(userId).orElse(null);
+        return (user == null) ? null : user.getEmail();
+    }
+
     public User findUserByUserId(Long userId) {
         return userDao.findByUserId(userId).orElseThrow(UserNullException::new);
     }

@@ -1,6 +1,7 @@
 package com.api.yirang.seniors.application.advancedService;
 
 import com.api.yirang.auth.application.basicService.AdminService;
+import com.api.yirang.auth.application.intermediateService.UserService;
 import com.api.yirang.auth.support.type.Authority;
 import com.api.yirang.common.support.custom.ValidCollection;
 import com.api.yirang.common.support.time.TimeConverter;
@@ -36,6 +37,7 @@ public class SeniorVolunteerAdvancedService {
     private final SeniorBasicService seniorBasicService;
     private final VolunteerServiceBasicService volunteerServiceBasicService;
     private final ActivityVolunteerServiceAdvancedService activityVolunteerServiceAdvancedService;
+    private final UserService userService;
 
     // DI other Basic features Services
     private final ActivityBasicService activityBasicService;
@@ -136,11 +138,15 @@ public class SeniorVolunteerAdvancedService {
         return result;
     }
     // Find methods
-    public Collection<SeniorResponseDto> findSeniorsByRegion(Region region, Authority authority) {
+    public Collection<SeniorResponseDto> findSeniorsByRegion(Region region, Long userId) {
         System.out.println("[SeniorVolunteerAdvancedService]: findSeniorsByRegion를 실행하겠습니다.");
 
         // Region을 가지고 Seniors 찾기
         Collection<Senior> seniors = seniorBasicService.findSeniorsByRegion(region, false);
+
+        // Authority 찾기
+        final Authority authority = userService.getAuthorityByUserId(userId);
+
         // Seniors가 해당되는 봉사활동 이력 찾기
         Collection<VolunteerService> volunteerServices =
                 (authority == Authority.ROLE_SUPER_ADMIN ?
@@ -152,10 +158,12 @@ public class SeniorVolunteerAdvancedService {
                                 .collect(Collectors.toList());
     }
 
-    public Collection<SeniorResponseDto> findSeniorsByMyArea(Long userId, Authority authority) {
+    public Collection<SeniorResponseDto> findSeniorsByMyArea(Long userId) {
         System.out.println("[SeniorVolunteerAdvancedService]: findSeniorsByMyArea를 실행하겠습니다.");
         // 해당하는 지역 찾기
         Collection<Region> regions = adminService.findAreasByUserId(userId);
+        // Authority 찾기
+        Authority authority = userService.getAuthorityByUserId(userId);
 
         // regions로 해당하는 Seniors 찾기
         Collection<Senior> seniors = new ArrayList<>();
