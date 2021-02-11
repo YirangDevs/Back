@@ -113,4 +113,7 @@ public class AuthService {
         userService.fireAdmin(userId);
     }
 
+    // For Test
+    // Super Admin은 DB 담당자가 주관합니다.
+
 }

@@ -137,6 +137,16 @@ public class UserService {
         // admin을 지우진 않음
     }
 
+    // [TEST]용
+    // Admin -> Super Admin
+    public void upgradeSuper(Long userId){
+        User user = findUserByUserId(userId);
+
+        // Admin으로 등록된 사람이 맞는지 확인
+        Admin admin = adminService.findAdminByUserId(userId);
+        updateAuthority(userId, Authority.ROLE_SUPER_ADMIN);
+    }
+
     // DELETE
     public void deleteUser(Long userId) {
         User user = findUserByUserId(userId);
@@ -151,5 +161,6 @@ public class UserService {
         // 2. User 삭제
         userDao.delete(user);
     }
+
 
 }
