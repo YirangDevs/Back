@@ -47,7 +47,6 @@ public class AdminController {
         Collection<UserAuthResponseDto> userAuthResponseDtos = userService.findAllUserAuthInfos();
         res.put("userAuthorities", userAuthResponseDtos);
         return res;
-
     }
 
     /**
@@ -102,7 +101,7 @@ public class AdminController {
      * 목적: 자신의 권한 조회
      * 사용자: 로그인한 사용자
      */
-    @GetMapping(value = "/autohrity", produces = "application/json")
+    @GetMapping(value = "/authority", produces = "application/json")
     @ResponseStatus(HttpStatus.OK)
     public Map<String, String> getMyAuthority(@RequestHeader("Authorization") String header){
         Map<String, String> res = new HashMap<>();

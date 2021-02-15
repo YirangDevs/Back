@@ -36,6 +36,7 @@ public class JwtTest {
         assertThat(jwtParser.getUsernameFromJwt(jwt)).isEqualTo(username);
         assertThat(jwtParser.getImageUrlFromJwt(jwt)).isEqualTo(imageUrl);
         assertThat(jwtParser.getUserIdFromJwt(jwt)).isEqualTo(id);
+        assertThat(jwtParser.getEmailFromJwt(jwt)).isEqualTo(email);
     }
 
 }

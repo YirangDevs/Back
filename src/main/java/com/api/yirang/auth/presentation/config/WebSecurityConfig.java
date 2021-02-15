@@ -23,7 +23,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 @Configuration
 @EnableWebSecurity
-@Profile("dev")
+@Profile({"dev", "test-security"})
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 
