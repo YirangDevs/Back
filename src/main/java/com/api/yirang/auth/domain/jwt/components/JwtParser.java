@@ -11,7 +11,6 @@ import org.springframework.stereotype.Component;
 import java.io.IOException;
 
 @Component
-@PropertySource("classpath:properties/application-jwt.properties")
 public class JwtParser {
 
     private final String JWT_SECRET;
