@@ -126,6 +126,9 @@ public class UserService {
         // Admin으로 등록된 사람이 맞는지 확인
         Admin admin = adminService.findAdminByUserId(userId);
 
+        // Admin 지역 초기화
+        adminService.updateRegionsByUserId(userId, null);
+
         // User 권한 바꾸기
         updateAuthority(userId, Authority.ROLE_VOLUNTEER);
 
