@@ -132,9 +132,10 @@ public class SeniorController {
     public Map<String, Collection<SeniorResponseDto>> getSpecificRegionSeniors(@RequestHeader("Authorization") String header,
                                                                                @RequestParam("region") Region region){
         System.out.println("[SeniorController] 해당 지역의 피봉사자 리스트를 원하는 API 요청 받았습니다: ");
-        Authority authority = jwtParser.getRoleFromJwt(ParsingHelper.parseHeader(header));
+
+        Long userId = jwtParser.getUserIdFromJwt(ParsingHelper.parseHeader(header));
         Map<String, Collection<SeniorResponseDto>> res = new HashMap<>();
-        res.put("seniors", seniorVolunteerAdvancedService.findSeniorsByRegion(region, authority));
+        res.put("seniors", seniorVolunteerAdvancedService.findSeniorsByRegion(region, userId));
         return res;
     }
     // 관리자 관할 구역 피봉사자 GET API
@@ -142,10 +143,9 @@ public class SeniorController {
     @ResponseStatus(HttpStatus.OK)
     public Map<String, Collection<SeniorResponseDto>> getMyRegionSeniors(@RequestHeader("Authorization") String header){
         System.out.println("[SeniorController] 자신 관할 구역의 피봉사자 리스트를 원하는 API 요청 받았습니다: ");
-        Authority authority = jwtParser.getRoleFromJwt(ParsingHelper.parseHeader(header));
         Long userId = jwtParser.getUserIdFromJwt(ParsingHelper.parseHeader(header));
         Map<String, Collection<SeniorResponseDto> > res = new HashMap<>();
-        res.put("seniors", seniorVolunteerAdvancedService.findSeniorsByMyArea(userId, authority) );
+        res.put("seniors", seniorVolunteerAdvancedService.findSeniorsByMyArea(userId) );
         return res;
     }
     /** UPDATE **/
