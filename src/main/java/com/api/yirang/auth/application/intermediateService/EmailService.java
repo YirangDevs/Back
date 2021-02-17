@@ -29,12 +29,12 @@ public class EmailService {
         String content = "보낸다 [[name]],<br>"
                                + "너의 강함을 뽑내주기 바란다.:)<br>"
                                + "<h3><a href=\"[[URL]]\" target=\"_self\">VERIFY</a></h3>"
-                               + "고맙다...,<br>"
+                               + "고맙다...,<br> "
                                + "이랑";
 
         // Content
         content = content.replace("[[name]]", "너에게~");
-//        content = content.replace("[[URL]]", siteUrl+"/verify?code="+)
+//        content = content.replace("[[URL]]", siteUrl+"/verify?code="+ 암호);
 
         MimeMessage message = javaMailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(message);
@@ -47,7 +47,5 @@ public class EmailService {
         javaMailSender.send(message);
 
     }
-
-
 
 }

@@ -22,6 +22,6 @@ public class ServiceTest {
 
     @Test
     public void 이메일_보내기() throws UnsupportedEncodingException, MessagingException {
-        emailService.sendVerificationEmail("likemin5517@naver.com");
+        emailService.sendVerificationEmail("likemin0142@naver.com");
     }
 }
