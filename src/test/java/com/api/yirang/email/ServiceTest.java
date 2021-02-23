@@ -1,7 +1,9 @@
 package com.api.yirang.email;
 
 
+import com.api.yirang.auth.domain.user.model.User;
 import com.api.yirang.email.application.EmailService;
+import com.api.yirang.email.model.Email;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +24,6 @@ public class ServiceTest {
 
     @Test
     public void 이메일_보내기() throws UnsupportedEncodingException, MessagingException {
-        emailService.sendVerificationEmail("likemin0142@naver.com");
+        emailService.sendVerificationEmail(Long.valueOf(1));
     }
 }

@@ -27,6 +27,7 @@ public class Email {
     @Column
     private String emailAddress;
 
+    @Nullable
     @Column
     private String certificationNumbers;
 
@@ -43,12 +44,11 @@ public class Email {
     private User user;
 
     @Builder
-    public Email(String emailAddress, String certificationNumbers, Consent notifiable,
-                 Validation validation, User user) {
+    public Email(String emailAddress, String certificationNumbers, User user) {
         this.emailAddress = emailAddress;
-        this.certificationNumbers = certificationNumbers;
-        this.notifiable = notifiable;
-        this.validation = validation;
+        this.certificationNumbers = null;
+        this.notifiable = Consent.CONSENT_YES;
+        this.validation = Validation.VALIDATION_NO;
         this.user = user;
     }
 }
