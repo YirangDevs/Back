@@ -27,7 +27,6 @@ public class ApplicantResponseDto {
     private final String email;
 
     // 프사를 주려고 해도.. 없다...
-
     public ApplicantResponseDto() {
         this.sex = null;
         this.name = null;

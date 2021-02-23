@@ -1,5 +1,6 @@
-package com.api.yirang.auth.application.intermediateService;
+package com.api.yirang.email.application;
 
+import com.api.yirang.auth.application.intermediateService.UserService;
 import lombok.RequiredArgsConstructor;
 import net.bytebuddy.utility.RandomString;
 import org.springframework.context.annotation.PropertySource;

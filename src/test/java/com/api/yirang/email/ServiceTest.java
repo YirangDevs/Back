@@ -1,7 +1,7 @@
 package com.api.yirang.email;
 
 
-import com.api.yirang.auth.application.intermediateService.EmailService;
+import com.api.yirang.email.application.EmailService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;

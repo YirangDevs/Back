@@ -29,7 +29,7 @@ import java.util.Properties;
                          "com.api.yirang.notices.repository.persistence.maria",
                          "com.api.yirang.seniors.repository.persistence.maria",
                          "com.api.yirang.apply.repository.persistence.maria",
-                         "com.api.yirang.test.dao"}
+                         "com.api.yirang.email.repository"}
 )
 @PropertySource("classpath:properties/application-test.properties")
 @Profile("test")
