@@ -26,17 +26,17 @@ public class JwtTest {
     String username = "likemin0142";
     String imageUrl = "123@sdf";
     Long id = Long.valueOf(123);
-    Authority authority = Authority.ROLE_ADMIN;
+    String email = "1234@naver.com";
 
     @Test
     public void JWT_생성_후_파싱(){
-        String jwt = jwtProvider.generateJwtToken(username, imageUrl, id, authority);
+        String jwt = jwtProvider.generateJwtToken(username, imageUrl, id, email);
 
         System.out.println("JWT: " + jwt);
         assertThat(jwtParser.getUsernameFromJwt(jwt)).isEqualTo(username);
         assertThat(jwtParser.getImageUrlFromJwt(jwt)).isEqualTo(imageUrl);
         assertThat(jwtParser.getUserIdFromJwt(jwt)).isEqualTo(id);
-        assertThat(jwtParser.getRoleFromJwt(jwt)).isEqualTo(authority);
+        assertThat(jwtParser.getEmailFromJwt(jwt)).isEqualTo(email);
     }
 
 }

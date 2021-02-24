@@ -32,7 +32,7 @@ import java.util.Properties;
                          "com.api.yirang.email.repository"}
 )
 @PropertySource("classpath:properties/application-test.properties")
-@Profile("test")
+@Profile({"test","test-security"})
 public class H2DataBaseConfig {
 
     @Value("${spring.h2.datasource.driver-class-name}")

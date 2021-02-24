@@ -45,6 +45,11 @@ public class UserService {
         return (user == null) ? Authority.ROLE_VOLUNTEER: user.getAuthority();
     }
 
+    public String getEmailByUserId(Long userId){
+        User user = userDao.findByUserId(userId).orElse(null);
+        return (user == null) ? null : user.getEmail();
+    }
+
     public User findUserByUserId(Long userId) {
         return userDao.findByUserId(userId).orElseThrow(UserNullException::new);
     }
@@ -135,10 +140,23 @@ public class UserService {
         // Admin으로 등록된 사람이 맞는지 확인
         Admin admin = adminService.findAdminByUserId(userId);
 
+        // Admin 지역 초기화
+        adminService.updateRegionsByUserId(userId, null);
+
         // User 권한 바꾸기
         updateAuthority(userId, Authority.ROLE_VOLUNTEER);
 
         // admin을 지우진 않음
+    }
+
+    // [TEST]용
+    // Admin -> Super Admin
+    public void upgradeSuper(Long userId){
+        User user = findUserByUserId(userId);
+
+        // Admin으로 등록된 사람이 맞는지 확인
+        Admin admin = adminService.findAdminByUserId(userId);
+        updateAuthority(userId, Authority.ROLE_SUPER_ADMIN);
     }
 
     // DELETE
@@ -155,5 +173,6 @@ public class UserService {
         // 2. User 삭제
         userDao.delete(user);
     }
+
 
 }

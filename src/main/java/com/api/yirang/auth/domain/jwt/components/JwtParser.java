@@ -19,22 +19,6 @@ public class JwtParser {
         this.JWT_SECRET = JWT_SECRET;
     }
 
-    public Authority getRoleFromJwt(String token) {
-        try {
-            String authority = (String) Jwts.parser()
-                                            .setSigningKey(JWT_SECRET)
-                                            .parseClaimsJws(token)
-                                            .getBody()
-                                            .get("role");
-
-            return  authority.equals("VOLUNTEER") ? Authority.ROLE_VOLUNTEER :
-                    authority.equals("ADMIN") ? Authority.ROLE_ADMIN : Authority.ROLE_SUPER_ADMIN;
-        }
-        catch (Exception ex){
-            throw new InvalidJwtException();
-        }
-    }
-
     public Long getUserIdFromJwt(String token) {
         try {
             return Long.parseLong(
@@ -60,13 +44,25 @@ public class JwtParser {
             throw new InvalidJwtException();
         }
     }
-    public String getImageUrlFromJwt(String token){
+    public String getImageUrlFromJwt(String token) {
         try {
             return (String) Jwts.parser()
                                 .setSigningKey(JWT_SECRET)
                                 .parseClaimsJws(token)
                                 .getBody()
                                 .get("imgUrl");
+        } catch (Exception ex) {
+            throw new InvalidJwtException();
+        }
+    }
+
+    public String getEmailFromJwt(String token){
+        try {
+            return (String) Jwts.parser()
+                                .setSigningKey(JWT_SECRET)
+                                .parseClaimsJws(token)
+                                .getBody()
+                                .get("email");
        }
         catch (Exception ex){
             throw new InvalidJwtException();

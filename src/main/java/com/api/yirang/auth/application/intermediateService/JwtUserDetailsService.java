@@ -17,6 +17,7 @@ public class JwtUserDetailsService implements UserDetailsService {
 
     // DI jwt
     private final JwtParser jwtParser;
+    private final UserService userService;
 
     @Override
     @Transactional
@@ -25,7 +26,8 @@ public class JwtUserDetailsService implements UserDetailsService {
         Long userId = jwtParser.getUserIdFromJwt(YAT);
         String username = jwtParser.getUsernameFromJwt(YAT);
         String password = "1234";
-        Authority authority = jwtParser.getRoleFromJwt(YAT);
+        // user ID를 DB에서 검사
+        Authority authority = userService.getAuthorityByUserId(userId);
 
         UserDetailsVO userDetailsVO = UserDetailsVO.builder()
                                                    .userId(userId).username(username)
