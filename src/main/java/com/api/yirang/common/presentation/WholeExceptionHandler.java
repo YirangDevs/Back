@@ -6,6 +6,8 @@ import com.api.yirang.common.exceptions.Dto.ErrorDto;
 import com.api.yirang.common.exceptions.NullException;
 import com.api.yirang.email.exception.CustomMessagingException;
 import com.api.yirang.email.exception.EmailAlreadyValidException;
+import com.api.yirang.email.exception.EmailCertificationFailException;
+import com.api.yirang.email.exception.EmailDuplicatedException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -32,11 +34,12 @@ public class WholeExceptionHandler{
         return apiException.buildErrorDto();
     }
 
-    @ExceptionHandler(value = {EmailAlreadyValidException.class})
+    @ExceptionHandler(value = {EmailAlreadyValidException.class, EmailCertificationFailException.class, EmailDuplicatedException.class})
     @ResponseStatus(HttpStatus.NOT_ACCEPTABLE)
     public final ErrorDto handleAlreadyValidException(ApiException apiException){
         return apiException.buildErrorDto();
     }
+
 
 
 }

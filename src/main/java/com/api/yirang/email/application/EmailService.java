@@ -3,12 +3,13 @@ package com.api.yirang.email.application;
 import com.api.yirang.auth.application.intermediateService.UserService;
 import com.api.yirang.auth.domain.user.model.User;
 import com.api.yirang.common.support.generator.RandomGenerator;
-import com.api.yirang.email.exception.CustomMessagingException;
-import com.api.yirang.email.exception.EmailAddressNullException;
-import com.api.yirang.email.exception.EmailAlreadyValidException;
-import com.api.yirang.email.exception.EmailNullException;
+import com.api.yirang.email.dto.EmailRequestDto;
+import com.api.yirang.email.dto.EmailValidationRequestDto;
+import com.api.yirang.email.dto.EmailValidationResponseDto;
+import com.api.yirang.email.exception.*;
 import com.api.yirang.email.model.Email;
 import com.api.yirang.email.repository.EmailRepository;
+import com.api.yirang.email.util.Validation;
 import com.google.common.hash.Hashing;
 import lombok.RequiredArgsConstructor;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -29,6 +30,23 @@ public class EmailService {
 
     private final String emailHost = "yirang@gmail.com";
     private final String senderName = "Yirang";
+
+    // Privates
+    private void sendEmail(String toEmail, String subject, String content){
+        MimeMessage message = javaMailSender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(message);
+
+        try {
+            helper.setFrom(emailHost, senderName);
+            helper.setTo(toEmail);
+            helper.setSubject(subject);
+            helper.setText(content, true);
+        }
+        catch (Exception ex){
+            throw new CustomMessagingException();
+        }
+        javaMailSender.send(message);
+    }
 
 
     public void sendVerificationEmail(Long userId){
@@ -61,22 +79,26 @@ public class EmailService {
         sendEmail(toEmail, subject, content);
     }
 
-    private void sendEmail(String toEmail, String subject, String content){
-        MimeMessage message = javaMailSender.createMimeMessage();
-        MimeMessageHelper helper = new MimeMessageHelper(message);
 
-        try {
-            helper.setFrom(emailHost, senderName);
-            helper.setTo(toEmail);
-            helper.setSubject(subject);
-            helper.setText(content, true);
-        }
-        catch (Exception ex){
-            throw new CustomMessagingException();
-        }
-        javaMailSender.send(message);
+    public EmailValidationResponseDto checkMyValidation(Long userId) {
+        User user = userService.findUserByUserId(userId);
+        Email email = emailRepository.findEmailByUser_UserId(userId).orElseThrow(new EmailNullException(userId));
+        return new EmailValidationResponseDto(email.getValidation());
     }
 
-
-
+    public void verifyMyEmail(Long userId, EmailValidationRequestDto emailValidationRequestDto) {
+        User user = userService.findUserByUserId(userId);
+        Email email = emailRepository.findEmailByUser_UserId(userId).orElseThrow(new EmailNullException(userId));
+        String certification = Hashing.sha256().hashString(emailValidationRequestDto.getCertificationNumbers(), StandardCharsets.UTF_8).toString();
+        // 이미 검증이 되어있는 경우
+        if (email.getValidation().isValid()){
+            throw new EmailAlreadyValidException();
+        }
+        // 만약 Certification number가 일치 하지 않으면 Error
+        if (!email.getCertificationNumbers().equals(certification)){
+            throw new EmailCertificationFailException();
+        }
+        // 다 괜찮으면 validation_YES로 바꾸기
+        emailRepository.updateEmailVerificationWithUserId(userId, Validation.VALIDATION_YES);
+    }
 }
