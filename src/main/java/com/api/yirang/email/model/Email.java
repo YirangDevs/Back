@@ -25,10 +25,6 @@ public class Email {
 
     @Nullable
     @Column
-    private String emailAddress;
-
-    @Nullable
-    @Column
     private String certificationNumbers;
 
     @Enumerated(EnumType.STRING)
@@ -44,8 +40,7 @@ public class Email {
     private User user;
 
     @Builder
-    public Email(String emailAddress, String certificationNumbers, User user) {
-        this.emailAddress = emailAddress;
+    public Email(User user) {
         this.certificationNumbers = null;
         this.notifiable = Consent.CONSENT_YES;
         this.validation = Validation.VALIDATION_NO;

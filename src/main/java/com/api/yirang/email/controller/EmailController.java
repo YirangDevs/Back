@@ -4,14 +4,9 @@ package com.api.yirang.email.controller;
 import com.api.yirang.auth.domain.jwt.components.JwtParser;
 import com.api.yirang.auth.support.utils.ParsingHelper;
 import com.api.yirang.email.application.EmailService;
-import com.api.yirang.email.dto.EmailRequestDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-
-import javax.mail.MessagingException;
-import java.io.UnsupportedEncodingException;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/v1/apis/emails")

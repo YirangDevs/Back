@@ -56,7 +56,6 @@ public class AuthService {
         if (!userService.isRegisteredUserByUserId(userId)){
 
             User user = UserConverter.fromKakaoUserInfo(userId, kakaoUserInfo, Authority.ROLE_VOLUNTEER);
-            // for debugging
             userService.saveUser(user);
         }
         else{

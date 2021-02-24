@@ -44,7 +44,7 @@ public class EmailService {
         }
 
         // Email이 비었거나 Null 이면 에러
-        if (email.getEmailAddress() == null || email.getEmailAddress().equals("")){
+        if (user.getEmail() == null || user.getEmail().equals("")){
             throw new EmailAddressNullException();
         }
 
@@ -54,7 +54,7 @@ public class EmailService {
         // Email 업데이트 하기
         emailRepository.updateEmailCertificationWithUserId(userId, Hashing.sha256().hashString(certificationNumbers, StandardCharsets.UTF_8).toString());
 
-        final String toEmail = email.getEmailAddress();
+        final String toEmail = user.getEmail();
         final String subject = "[Yirang 재가봉사] 본인 이메일을 인증해주세요";
         final String content = mailContentHelper.generateVerifyMailContent(user, certificationNumbers);
 

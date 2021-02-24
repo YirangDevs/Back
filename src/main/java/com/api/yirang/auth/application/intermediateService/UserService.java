@@ -13,6 +13,8 @@ import com.api.yirang.auth.presentation.dto.UserInfoRequestDto;
 import com.api.yirang.auth.presentation.dto.UserInfoResponseDto;
 import com.api.yirang.auth.repository.persistence.maria.UserDao;
 import com.api.yirang.auth.support.type.Authority;
+import com.api.yirang.email.model.Email;
+import com.api.yirang.email.repository.EmailRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,6 +31,7 @@ public class UserService {
 
     // DI Dao
     private final UserDao userDao;
+    private final EmailRepository emailRepository;
 
     // DI service
     private final AdminService adminService;
@@ -90,9 +93,15 @@ public class UserService {
 
 
     // 유저 저장하기
-    public void saveUser(User user){
+    public void saveUser(User newUser){
         // 유저의 권한 확인하기
-        Authority authority = user.getAuthority();
+        Authority authority = newUser.getAuthority();
+        // 유저 저장
+        User user = userDao.save(newUser);
+        // 유저 Email 테이블 추가
+        emailRepository.save(Email.builder()
+                                  .user(user)
+                                  .build());
 
         if (authority == Authority.ROLE_VOLUNTEER) {
             volunteerBasicService.save(user);
