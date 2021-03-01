@@ -86,6 +86,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             .antMatchers("/v1/apis/auth/refresh").hasAnyAuthority("VOLUNTEER", "ADMIN", "SUPER_ADMIN")
             /** Admin */
             .antMatchers("/v1/apis/admins/region").hasAnyAuthority("ADMIN", "SUPER_ADMIN")
+            .antMatchers("/v1/apis/admins/authority").hasAnyAuthority("VOLUNTEER", "ADMIN", "SUPER_ADMIN")
             .antMatchers("/v1/apis/admins/**").hasAuthority("SUPER_ADMIN")
             /** Seniors */
             .antMatchers("/v1/apis/seniors", "/v1/apis/seniors/**").hasAnyAuthority("ADMIN", "SUPER_ADMIN")
