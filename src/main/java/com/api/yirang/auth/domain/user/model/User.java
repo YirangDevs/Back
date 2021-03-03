@@ -42,7 +42,7 @@ public class User {
 
     @Builder
     public User(Long userId, String username,
-                Sex sex, String phone, String email, Authority authority) {
+                Sex sex, String email, Authority authority) {
         this.userId = userId;
         this.username = username;
         this.sex = sex;
