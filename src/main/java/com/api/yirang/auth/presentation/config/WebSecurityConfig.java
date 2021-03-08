@@ -107,6 +107,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             // 공고글 보는 건 Anonymous, User, admin 다 가능 해야함
             .antMatchers(HttpMethod.GET, "/v1/apis/manage/notices", "/v1/apis/manage/notices/**").permitAll()
             .antMatchers("/v1/apis/manage/notices", "/v1/apis/manage/notices/**").hasAnyAuthority("ADMIN", "SUPER_ADMIN")
+            /** Email **/
+            //  Email 인증은 AnonyMous가 아니면 다 가능하다.
+            .antMatchers("/v1/apis/emails/**").hasAnyAuthority("VOLUNTEER", "ADMIN", "SUPER_ADMIN")
             .anyRequest().authenticated()
             .and()
             .exceptionHandling()
