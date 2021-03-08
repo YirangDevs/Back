@@ -13,6 +13,11 @@ import com.api.yirang.auth.presentation.dto.UserInfoRequestDto;
 import com.api.yirang.auth.presentation.dto.UserInfoResponseDto;
 import com.api.yirang.auth.repository.persistence.maria.UserDao;
 import com.api.yirang.auth.support.type.Authority;
+import com.api.yirang.email.dto.EmailRequestDto;
+import com.api.yirang.email.exception.EmailDuplicatedException;
+import com.api.yirang.email.model.Email;
+import com.api.yirang.email.repository.EmailRepository;
+import com.api.yirang.email.util.Validation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,6 +34,7 @@ public class UserService {
 
     // DI Dao
     private final UserDao userDao;
+    private final EmailRepository emailRepository;
 
     // DI service
     private final AdminService adminService;
@@ -93,11 +99,32 @@ public class UserService {
         return userDao.existsUserByUserId(userId);
     }
 
+    public void updateMyEmail(Long userId, EmailRequestDto emailRequestDto) {
+        // User 찾기
+        User user = findUserByUserId(userId);
+        // 기존의 email과 같은 경우
+        if (user.getEmail().equals(emailRequestDto.getEmail())){
+            throw new EmailDuplicatedException();
+        }
+
+        // userDao로 email 업데이트 하기
+        userDao.updateUserInfo(user.getUserId(), emailRequestDto.getEmail(), user.getPhone(), user.getUsername());
+        // verify 무효화 하기
+        emailRepository.updateEmailVerificationWithUserId(userId, Validation.VALIDATION_NO);
+
+    }
+
 
     // 유저 저장하기
-    public void saveUser(User user){
+    public void saveUser(User newUser){
         // 유저의 권한 확인하기
-        Authority authority = user.getAuthority();
+        Authority authority = newUser.getAuthority();
+        // 유저 저장
+        User user = userDao.save(newUser);
+        // 유저 Email 테이블 추가
+        emailRepository.save(Email.builder()
+                                  .user(user)
+                                  .build());
 
         if (authority == Authority.ROLE_VOLUNTEER) {
             volunteerBasicService.save(user);
@@ -164,6 +191,7 @@ public class UserService {
         // 2. User 삭제
         userDao.delete(user);
     }
+
 
 
 }
