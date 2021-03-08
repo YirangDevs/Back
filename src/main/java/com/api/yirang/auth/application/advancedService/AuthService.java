@@ -69,7 +69,7 @@ public class AuthService {
 
         System.out.println("봉사자의 authority는: " + authority);
 
-        String yat = jwtProvider.generateJwtToken(username, imageUrl, userId, email);
+        String yat = jwtProvider.generateJwtToken(userId);
 
         return SignInResponseVO.builder()
                                .yirangAccessToken(yat)
@@ -82,12 +82,9 @@ public class AuthService {
 
         System.out.println("[AuthService]: Refresh를 위한 YAT를 받았습니다.: " + YAT);
 
-        String username = jwtParser.getUsernameFromJwt(YAT);
-        String imgUrl = jwtParser.getImageUrlFromJwt(YAT);
         Long userId = jwtParser.getUserIdFromJwt(YAT);
-        String email = jwtParser.getEmailFromJwt(YAT);
 
-        String newYAT = jwtProvider.generateJwtToken(username, imgUrl, userId, email);
+        String newYAT = jwtProvider.generateJwtToken(userId);
 
         System.out.println("[AuthService]: 새로운 YAT를 보내겠습니다.: " + newYAT);
 

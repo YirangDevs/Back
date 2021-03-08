@@ -32,41 +32,5 @@ public class JwtParser {
             throw new InvalidJwtException();
         }
     }
-    public String getUsernameFromJwt(String token){
-        try {
-            return (String) Jwts.parser()
-                                 .setSigningKey(JWT_SECRET)
-                                 .parseClaimsJws(token)
-                                 .getBody()
-                                 .get("username");
-        }
-        catch (Exception ex){
-            throw new InvalidJwtException();
-        }
-    }
-    public String getImageUrlFromJwt(String token) {
-        try {
-            return (String) Jwts.parser()
-                                .setSigningKey(JWT_SECRET)
-                                .parseClaimsJws(token)
-                                .getBody()
-                                .get("imgUrl");
-        } catch (Exception ex) {
-            throw new InvalidJwtException();
-        }
-    }
-
-    public String getEmailFromJwt(String token){
-        try {
-            return (String) Jwts.parser()
-                                .setSigningKey(JWT_SECRET)
-                                .parseClaimsJws(token)
-                                .getBody()
-                                .get("email");
-       }
-        catch (Exception ex){
-            throw new InvalidJwtException();
-        }
-    }
 
 }

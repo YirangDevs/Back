@@ -1,10 +1,8 @@
 package com.api.yirang.auth.presentation.dto;
 
+import com.api.yirang.common.support.type.Region;
 import com.api.yirang.common.support.type.Sex;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.ToString;
+import lombok.*;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
@@ -19,13 +17,21 @@ import javax.validation.constraints.Pattern;
  */
 @Getter
 @ToString
-@AllArgsConstructor
 @Builder
+@RequiredArgsConstructor
 public class UserInfoRequestDto {
 
     @NotNull
     @NotEmpty
     private final String username;
+
+    @NotNull
+    @NotEmpty
+    private final String realname;
+
+    @NotNull
+    private final Sex sex;
+
 
     @NotNull
     @Pattern(regexp = "[0-9]*$",
@@ -38,9 +44,17 @@ public class UserInfoRequestDto {
              message = "Email should be email type!")
     private final String email;
 
+    private final Region firstRegion;
+    private final Region secondRegion;
+
     public UserInfoRequestDto(){
         this.username = null;
+        this.realname = null;
+        this.sex = null;
         this.phone = null;
         this.email = null;
+
+        this.firstRegion = null;
+        this.secondRegion = null;
     }
 }
