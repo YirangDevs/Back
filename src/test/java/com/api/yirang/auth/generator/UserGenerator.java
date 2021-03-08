@@ -30,7 +30,7 @@ public class UserGenerator {
                                         Authority authority){
         return User.builder()
                    .userId(userId).username(username)
-                   .sex(sex).email(email).authority(authority).phone(phone)
+                   .sex(sex).email(email).authority(authority)
                    .build();
     }
 
