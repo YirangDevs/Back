@@ -13,12 +13,16 @@ import com.api.yirang.auth.domain.user.exceptions.AlreadyExistedVolunteer;
 import com.api.yirang.auth.domain.user.model.User;
 import com.api.yirang.auth.presentation.VO.RefreshResponseVO;
 import com.api.yirang.auth.presentation.VO.SignInResponseVO;
+import com.api.yirang.auth.presentation.dto.FakeSignInRequestDto;
 import com.api.yirang.auth.presentation.dto.SignInRequestDto;
 import com.api.yirang.auth.support.type.Authority;
 import com.api.yirang.auth.support.utils.ParsingHelper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -31,6 +35,19 @@ public class AuthService {
     // JWT DI
     private final JwtProvider jwtProvider;
     private final JwtParser jwtParser;
+
+    // Fake Map
+    private static final Map<String, Long> fakeUserMap = new HashMap<>();
+
+    static {
+        fakeUserMap.put("volunteer_1", 25158L);
+        fakeUserMap.put("volunteer_2", 33419L);
+        fakeUserMap.put("volunteer_3", 15614L);
+        fakeUserMap.put("volunteer_4", 33286L);
+        fakeUserMap.put("admin_1", 14378L);
+        fakeUserMap.put("admin_2", 17576L);
+        fakeUserMap.put("super_admin_1", 91621L);
+    }
 
     @Transactional
     public SignInResponseVO signin(SignInRequestDto signInRequestDto) {
@@ -48,9 +65,6 @@ public class AuthService {
         // KakaoUserInfo 얻기
         KakaoUserInfo kakaoUserInfo = kakaoTokenService.getUserInfoByToken(kakaoAccessToken);
 
-        // userName이랑 imageUrl 얻기
-        String username = kakaoUserInfo.getUsername();
-        String imageUrl = kakaoUserInfo.getFileUrl();
 
         // 이전에 등록한 User인지 확인
         if (!userService.isRegisteredUserByUserId(userId)){
@@ -62,10 +76,10 @@ public class AuthService {
             System.out.println("이전에 등록했던 봉사자입니다.");
         }
 
-        System.out.println("authority 판단합니다.");
+        // imgUrl 업데이트 하기
+
 
         Authority authority = userService.getAuthorityByUserId(userId);
-        String email = userService.getEmailByUserId(userId);
 
         System.out.println("봉사자의 authority는: " + authority);
 
@@ -107,6 +121,12 @@ public class AuthService {
             throw new AlreadyExistedVolunteer();
         }
         userService.fireAdmin(userId);
+    }
+
+    @Transactional
+    public String fakeSignIn(FakeSignInRequestDto fakeSignInRequestDto) {
+        Long userId = fakeUserMap.get(fakeSignInRequestDto.getFakeAuthority());
+        return jwtProvider.generateJwtToken(userId);
     }
 
     // For Test

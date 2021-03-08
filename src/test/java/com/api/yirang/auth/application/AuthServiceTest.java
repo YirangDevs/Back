@@ -25,7 +25,7 @@ import static org.assertj.core.api.Assertions.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-@ActiveProfiles("test")
+@ActiveProfiles("dev")
 public class AuthServiceTest {
 
     // test service
@@ -53,13 +53,11 @@ public class AuthServiceTest {
 
     @Test
     public void 봉사자에서_관리자로_테스트() {
-        Volunteer volunteer = saveRandomVolunteer();
 
-        assertThat(volunteerBasicService.existVolunteerByUserId(volunteer.getUser().getUserId())).isTrue();
+        authService.changeToAdmin(14378L);
+        authService.changeToAdmin(17576L);
+        authService.changeToAdmin(91621L);
 
-        authService.changeToAdmin(volunteer.getUser().getUserId());
-
-        assertThat(userService.getAuthorityByUserId(volunteer.getUser().getUserId())).isEqualTo(Authority.ROLE_ADMIN);
     }
 
     @Test(expected = AlreadyExistedAdmin.class)
