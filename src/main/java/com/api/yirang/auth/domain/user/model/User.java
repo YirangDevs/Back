@@ -30,6 +30,9 @@ public class User {
     @Column
     private String phone;
 
+    @Column
+    private String realname;
+
     @Column(columnDefinition = "VARCHAR(255) default 'unknown'")
     private String email;
 
@@ -39,13 +42,14 @@ public class User {
 
     @Builder
     public User(Long userId, String username,
-                Sex sex, String phone, String email, Authority authority) {
+                Sex sex, String email, Authority authority) {
         this.userId = userId;
         this.username = username;
         this.sex = sex;
         this.email = email;
-        this.phone = phone;
         this.authority = authority;
+        this.phone = null;
+        this.realname = null;
     }
 
 }
