@@ -46,7 +46,6 @@ public class AuthController {
     @PostMapping(value= "/fake/signin", consumes = "application/json")
     public void fakeSignIn(@RequestBody FakeSignInRequestDto fakeSignInRequestDto, HttpServletResponse response){
         response.addHeader("Authorization", "Bearer " + authService.fakeSignIn(fakeSignInRequestDto));
-
     }
 
 }

@@ -82,7 +82,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             /** swagger UI */
             .antMatchers("/api-ui.html", "/swagger-ui/**", "/swagger-ui.html", "/v2/api-docs", "/api-ui").permitAll()
             /** sign In */
-            .antMatchers("/v1/apis/auth/signin", "/v1/apis/auth/signin/**").permitAll()
+            .antMatchers("/v1/apis/auth/signin", "/v1/apis/auth/signin/**", "/v1/apis/auth/fake/signin").permitAll()
             .antMatchers("/v1/apis/auth/refresh").hasAnyAuthority("VOLUNTEER", "ADMIN", "SUPER_ADMIN")
             /** Admin */
             .antMatchers("/v1/apis/admins/region").hasAnyAuthority("ADMIN", "SUPER_ADMIN")

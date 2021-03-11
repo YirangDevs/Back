@@ -2,7 +2,7 @@ POST http://localhost:8080/v1/apis/auth/signin
 Content-Type: application/json
 
 {
- "accessToken": "9uXAuKCpSAbJzV1nyXu3Q7h2knkB5VwD2DlEowopcBMAAAF2BVn8rw",
+ "accessToken": "FkcUtiChT109CrtxV69XVL4BbXjY8yrj7Qt4nQo9dNoAAAF4IOLC6Q",
  "refreshToken": "Refresh",
   "refreshTokenExpiredTime": 1000
 }
@@ -16,6 +16,15 @@ Content-Type: application/json
  "accessToken": "1vWrpK2_p_b3OmTFQaDX2AB6WtjDfAAVEs4SJgo9dJcAAAF0ltPHOg",
   "refreshToken": "Refresh",
   "refreshTokenExpiredTime": 1000
+}
+
+###
+POST http://localhost:8080/v1/apis/auth/fake/signin
+Content-Type: application/json
+
+{
+ "fakeAuthority": "volunteer_4"
+
 }
 
 

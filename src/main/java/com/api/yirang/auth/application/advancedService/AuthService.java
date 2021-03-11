@@ -10,6 +10,7 @@ import com.api.yirang.auth.domain.kakaoToken.dto.KakaoUserInfo;
 import com.api.yirang.auth.domain.user.converter.UserConverter;
 import com.api.yirang.auth.domain.user.exceptions.AlreadyExistedAdmin;
 import com.api.yirang.auth.domain.user.exceptions.AlreadyExistedVolunteer;
+import com.api.yirang.auth.domain.user.exceptions.UserNullException;
 import com.api.yirang.auth.domain.user.model.User;
 import com.api.yirang.auth.presentation.VO.RefreshResponseVO;
 import com.api.yirang.auth.presentation.VO.SignInResponseVO;
@@ -128,7 +129,10 @@ public class AuthService {
 
     @Transactional
     public String fakeSignIn(FakeSignInRequestDto fakeSignInRequestDto) {
-        Long userId = fakeUserMap.get(fakeSignInRequestDto.getFakeAuthority());
+        Long userId = fakeUserMap.getOrDefault(fakeSignInRequestDto.getFakeAuthority(), null);
+        if (userId == null){
+            throw new UserNullException();
+        }
         return jwtProvider.generateJwtToken(userId);
     }
 
