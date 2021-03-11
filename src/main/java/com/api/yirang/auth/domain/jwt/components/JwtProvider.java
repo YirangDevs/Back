@@ -24,14 +24,11 @@ public class JwtProvider {
         this.JWT_EXPIRATION_MS = JWT_EXPIRATION_MS;
     }
 
-    public String generateJwtToken(String username, String imgUrl, Long userId, String email){
+    public String generateJwtToken(Long userId){
         // 예상 되는 문제 Date 와 LocalDateTime 호완성
         return Jwts.builder()
                    // 원래 이거 없었음
-                   .claim("username", username)
-                   .claim("imgUrl", imgUrl)
                    .claim("userId", userId.toString())
-                   .claim("email", email)
                    .setIssuedAt(new Date() )
                    .setExpiration(new Date( (new Date()).getTime() + JWT_EXPIRATION_MS) )
                    .signWith(SignatureAlgorithm.HS256, JWT_SECRET)

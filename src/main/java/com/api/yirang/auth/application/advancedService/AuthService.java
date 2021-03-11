@@ -10,15 +10,20 @@ import com.api.yirang.auth.domain.kakaoToken.dto.KakaoUserInfo;
 import com.api.yirang.auth.domain.user.converter.UserConverter;
 import com.api.yirang.auth.domain.user.exceptions.AlreadyExistedAdmin;
 import com.api.yirang.auth.domain.user.exceptions.AlreadyExistedVolunteer;
+import com.api.yirang.auth.domain.user.exceptions.UserNullException;
 import com.api.yirang.auth.domain.user.model.User;
 import com.api.yirang.auth.presentation.VO.RefreshResponseVO;
 import com.api.yirang.auth.presentation.VO.SignInResponseVO;
+import com.api.yirang.auth.presentation.dto.FakeSignInRequestDto;
 import com.api.yirang.auth.presentation.dto.SignInRequestDto;
 import com.api.yirang.auth.support.type.Authority;
 import com.api.yirang.auth.support.utils.ParsingHelper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -32,9 +37,23 @@ public class AuthService {
     private final JwtProvider jwtProvider;
     private final JwtParser jwtParser;
 
+    // Fake Map
+    private static final Map<String, Long> fakeUserMap = new HashMap<>();
+
+    static {
+        fakeUserMap.put("volunteer_1", 25158L);
+        fakeUserMap.put("volunteer_2", 33419L);
+        fakeUserMap.put("volunteer_3", 15614L);
+        fakeUserMap.put("volunteer_4", 33286L);
+        fakeUserMap.put("admin_1", 14378L);
+        fakeUserMap.put("admin_2", 17576L);
+        fakeUserMap.put("super_admin_1", 91621L);
+    }
+
     @Transactional
     public SignInResponseVO signin(SignInRequestDto signInRequestDto) {
         final String kakaoAccessToken = signInRequestDto.getAccessToken();
+        Boolean isNewbie = Boolean.FALSE;
 
         System.out.println("[AuthService]: kakaoAccessToken은 " + kakaoAccessToken);
         // kakaoAccessToken의 유효성 검사
@@ -48,31 +67,30 @@ public class AuthService {
         // KakaoUserInfo 얻기
         KakaoUserInfo kakaoUserInfo = kakaoTokenService.getUserInfoByToken(kakaoAccessToken);
 
-        // userName이랑 imageUrl 얻기
-        String username = kakaoUserInfo.getUsername();
-        String imageUrl = kakaoUserInfo.getFileUrl();
 
         // 이전에 등록한 User인지 확인
         if (!userService.isRegisteredUserByUserId(userId)){
 
             User user = UserConverter.fromKakaoUserInfo(userId, kakaoUserInfo, Authority.ROLE_VOLUNTEER);
+            isNewbie = Boolean.TRUE;
             userService.saveUser(user);
         }
         else{
             System.out.println("이전에 등록했던 봉사자입니다.");
         }
 
-        System.out.println("authority 판단합니다.");
+        // imgUrl 업데이트 하기
+
 
         Authority authority = userService.getAuthorityByUserId(userId);
-        String email = userService.getEmailByUserId(userId);
 
         System.out.println("봉사자의 authority는: " + authority);
 
-        String yat = jwtProvider.generateJwtToken(username, imageUrl, userId, email);
+        String yat = jwtProvider.generateJwtToken(userId);
 
         return SignInResponseVO.builder()
                                .yirangAccessToken(yat)
+                               .isNewbie(isNewbie)
                                .build();
     }
 
@@ -82,12 +100,9 @@ public class AuthService {
 
         System.out.println("[AuthService]: Refresh를 위한 YAT를 받았습니다.: " + YAT);
 
-        String username = jwtParser.getUsernameFromJwt(YAT);
-        String imgUrl = jwtParser.getImageUrlFromJwt(YAT);
         Long userId = jwtParser.getUserIdFromJwt(YAT);
-        String email = jwtParser.getEmailFromJwt(YAT);
 
-        String newYAT = jwtProvider.generateJwtToken(username, imgUrl, userId, email);
+        String newYAT = jwtProvider.generateJwtToken(userId);
 
         System.out.println("[AuthService]: 새로운 YAT를 보내겠습니다.: " + newYAT);
 
@@ -110,6 +125,15 @@ public class AuthService {
             throw new AlreadyExistedVolunteer();
         }
         userService.fireAdmin(userId);
+    }
+
+    @Transactional
+    public String fakeSignIn(FakeSignInRequestDto fakeSignInRequestDto) {
+        Long userId = fakeUserMap.getOrDefault(fakeSignInRequestDto.getFakeAuthority(), null);
+        if (userId == null){
+            throw new UserNullException();
+        }
+        return jwtProvider.generateJwtToken(userId);
     }
 
     // For Test

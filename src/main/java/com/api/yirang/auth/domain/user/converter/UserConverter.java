@@ -14,10 +14,11 @@ public class UserConverter {
 
     public static UserInfoResponseDto toUserInfoResponseDto(User user){
         return UserInfoResponseDto.builder()
-                                  .username(user.getUsername())
+                                  .username(user.getUsername()). realname(user.getRealname())
                                   .phone(user.getPhone())
                                   .email(user.getEmail())
                                   .sex(user.getSex())
+                                  .firstRegion(user.getFirstRegion()).secondRegion(user.getSecondRegion())
                                   .build();
     }
 

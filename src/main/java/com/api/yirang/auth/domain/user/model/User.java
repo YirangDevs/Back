@@ -1,6 +1,7 @@
 package com.api.yirang.auth.domain.user.model;
 
 import com.api.yirang.auth.support.type.Authority;
+import com.api.yirang.common.support.type.Region;
 import com.api.yirang.common.support.type.Sex;
 import lombok.Builder;
 import lombok.Getter;
@@ -40,6 +41,14 @@ public class User {
     @Column
     private Authority authority;
 
+    @Enumerated(EnumType.STRING)
+    @Column
+    private Region firstRegion;
+
+    @Enumerated(EnumType.STRING)
+    @Column
+    private Region secondRegion;
+
     @Builder
     public User(Long userId, String username,
                 Sex sex, String email, Authority authority) {
@@ -50,6 +59,8 @@ public class User {
         this.authority = authority;
         this.phone = null;
         this.realname = null;
+        this.firstRegion = null;
+        this.secondRegion = null;
     }
 
 }

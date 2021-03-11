@@ -1,10 +1,8 @@
 package com.api.yirang.auth.application.intermediateService;
 
-import com.api.yirang.apply.application.ApplyBasicService;
 import com.api.yirang.auth.application.basicService.AdminService;
 import com.api.yirang.auth.application.basicService.VolunteerBasicService;
 import com.api.yirang.auth.domain.user.converter.UserConverter;
-import com.api.yirang.auth.domain.user.exceptions.AlreadyExistedAdmin;
 import com.api.yirang.auth.domain.user.exceptions.UserNullException;
 import com.api.yirang.auth.domain.user.model.Admin;
 import com.api.yirang.auth.domain.user.model.User;
@@ -13,6 +11,8 @@ import com.api.yirang.auth.presentation.dto.UserInfoRequestDto;
 import com.api.yirang.auth.presentation.dto.UserInfoResponseDto;
 import com.api.yirang.auth.repository.persistence.maria.UserDao;
 import com.api.yirang.auth.support.type.Authority;
+import com.api.yirang.common.support.type.Region;
+import com.api.yirang.common.support.type.Sex;
 import com.api.yirang.email.dto.EmailRequestDto;
 import com.api.yirang.email.exception.EmailDuplicatedException;
 import com.api.yirang.email.model.Email;
@@ -22,10 +22,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
 
 @Service
 @RequiredArgsConstructor
@@ -83,11 +81,17 @@ public class UserService {
     public void updateUserInfoWithUserId(Long userId, UserInfoRequestDto userInfoRequestDto) {
         System.out.println("[UserService] User를 업데이트 합니다.");
 
-        String email = userInfoRequestDto.getEmail();
-        String phone = userInfoRequestDto.getPhone();
         String username = userInfoRequestDto.getUsername();
+        String realname = userInfoRequestDto.getRealname();
+        String phone = userInfoRequestDto.getPhone();
+        Sex sex = userInfoRequestDto.getSex();
 
-        userDao.updateUserInfo(userId, email, phone, username);
+        String email = userInfoRequestDto.getEmail();
+
+        Region firstRegion = userInfoRequestDto.getFirstRegion();
+        Region secondRegion = userInfoRequestDto.getSecondRegion();
+
+        userDao.updateUserInfo(userId, email, phone, username, realname, sex, firstRegion, secondRegion);
     }
 
     public void updateAuthority(Long userId, Authority authority){
@@ -108,7 +112,8 @@ public class UserService {
         }
 
         // userDao로 email 업데이트 하기
-        userDao.updateUserInfo(user.getUserId(), emailRequestDto.getEmail(), user.getPhone(), user.getUsername());
+        userDao.updateUserInfo(user.getUserId(), emailRequestDto.getEmail(), user.getPhone(), user.getUsername(),
+                               user.getRealname(), user.getSex(), user.getFirstRegion(), user.getSecondRegion());
         // verify 무효화 하기
         emailRepository.updateEmailVerificationWithUserId(userId, Validation.VALIDATION_NO);
 

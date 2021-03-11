@@ -24,7 +24,7 @@ public class JwtUserDetailsService implements UserDetailsService {
     public UserDetails loadUserByUsername(String YAT) throws UsernameNotFoundException {
 
         Long userId = jwtParser.getUserIdFromJwt(YAT);
-        String username = jwtParser.getUsernameFromJwt(YAT);
+        String username = "1234";
         String password = "1234";
         // user ID를 DB에서 검사
         Authority authority = userService.getAuthorityByUserId(userId);

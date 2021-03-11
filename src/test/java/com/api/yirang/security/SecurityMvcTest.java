@@ -179,12 +179,9 @@ public class SecurityMvcTest {
         volunteer = saveRandomVolunteer();
 
         // make YAT
-        adminYAT = jwtProvider.generateJwtToken(admin.getUser().getUsername(), imageURL,
-                                                admin.getUser().getUserId(), email);
-        superAdminYAT = jwtProvider.generateJwtToken(superAdmin.getUser().getUsername(), imageURL,
-                                                     superAdmin.getUser().getUserId(), email);
-        volunteerYAT = jwtProvider.generateJwtToken(volunteer.getUser().getUsername(), imageURL,
-                                                    volunteer.getUser().getUserId(), email);
+        adminYAT = jwtProvider.generateJwtToken(admin.getUser().getUserId());
+        superAdminYAT = jwtProvider.generateJwtToken(superAdmin.getUser().getUserId());
+        volunteerYAT = jwtProvider.generateJwtToken(volunteer.getUser().getUserId());
     }
 
 

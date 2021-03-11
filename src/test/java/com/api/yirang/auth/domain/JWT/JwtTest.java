@@ -30,13 +30,10 @@ public class JwtTest {
 
     @Test
     public void JWT_생성_후_파싱(){
-        String jwt = jwtProvider.generateJwtToken(username, imageUrl, id, email);
+        String jwt = jwtProvider.generateJwtToken(id);
 
         System.out.println("JWT: " + jwt);
-        assertThat(jwtParser.getUsernameFromJwt(jwt)).isEqualTo(username);
-        assertThat(jwtParser.getImageUrlFromJwt(jwt)).isEqualTo(imageUrl);
         assertThat(jwtParser.getUserIdFromJwt(jwt)).isEqualTo(id);
-        assertThat(jwtParser.getEmailFromJwt(jwt)).isEqualTo(email);
     }
 
 }
