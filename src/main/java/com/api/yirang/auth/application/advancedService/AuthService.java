@@ -52,6 +52,7 @@ public class AuthService {
     @Transactional
     public SignInResponseVO signin(SignInRequestDto signInRequestDto) {
         final String kakaoAccessToken = signInRequestDto.getAccessToken();
+        Boolean isNewbie = Boolean.FALSE;
 
         System.out.println("[AuthService]: kakaoAccessToken은 " + kakaoAccessToken);
         // kakaoAccessToken의 유효성 검사
@@ -70,6 +71,7 @@ public class AuthService {
         if (!userService.isRegisteredUserByUserId(userId)){
 
             User user = UserConverter.fromKakaoUserInfo(userId, kakaoUserInfo, Authority.ROLE_VOLUNTEER);
+            isNewbie = Boolean.TRUE;
             userService.saveUser(user);
         }
         else{
@@ -87,6 +89,7 @@ public class AuthService {
 
         return SignInResponseVO.builder()
                                .yirangAccessToken(yat)
+                               .isNewbie(isNewbie)
                                .build();
     }
 

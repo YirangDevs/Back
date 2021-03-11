@@ -12,6 +12,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
+import java.util.HashMap;
+import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
@@ -23,10 +25,13 @@ public class AuthController {
 
     @ResponseStatus(HttpStatus.OK)
     @PostMapping(value = "/signin", consumes = "application/json")
-    public void signIn(@RequestBody SignInRequestDto signInRequestDto, HttpServletResponse response){
+    public Map<String, Boolean> signIn(@RequestBody SignInRequestDto signInRequestDto, HttpServletResponse response){
+        Map<String, Boolean> res = new HashMap<>();
         System.out.println("[AuthController]: 로그인 요청을 받았 습니다.");
         SignInResponseVO signInResponseVO = authService.signin(signInRequestDto);
         response.addHeader("Authorization", "Bearer " + signInResponseVO.getYirangAccessToken());
+        res.put("isNewbie", signInResponseVO.getIsNewbie());
+        return res;
     }
 
     @ResponseStatus(HttpStatus.OK)

@@ -6,13 +6,19 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
-@NoArgsConstructor
 public class SignInResponseVO {
 
-    private String YirangAccessToken;
+    private final String yirangAccessToken;
+    private final Boolean isNewbie;
 
     @Builder
-    public SignInResponseVO(String yirangAccessToken) {
-        YirangAccessToken = yirangAccessToken;
+    public SignInResponseVO(String yirangAccessToken, Boolean isNewbie) {
+        this.yirangAccessToken = yirangAccessToken;
+        this.isNewbie = isNewbie;
+    }
+
+    public SignInResponseVO() {
+        this.yirangAccessToken = null;
+        this.isNewbie = null;
     }
 }
