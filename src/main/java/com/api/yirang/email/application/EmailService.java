@@ -40,6 +40,7 @@ public class EmailService {
             helper.setFrom(emailHost, senderName);
             helper.setTo(toEmail);
             helper.setSubject(subject);
+            System.out.println("Content: " + content);
             helper.setText(content, true);
         }
         catch (Exception ex){
