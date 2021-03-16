@@ -4,11 +4,11 @@ package com.api.yirang.email.model;
 import com.api.yirang.auth.domain.user.model.User;
 import com.api.yirang.email.util.Consent;
 import com.api.yirang.email.util.Validation;
-import com.sun.istack.Nullable;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import org.springframework.lang.Nullable;
 
 import javax.persistence.*;
 

@@ -2,7 +2,6 @@ package com.api.yirang.notices.presentation.dto;
 
 
 import com.api.yirang.notices.presentation.dto.embeded.ActivityRegisterRequestDto;
-import com.sun.istack.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
