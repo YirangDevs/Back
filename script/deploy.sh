@@ -26,6 +26,7 @@ do
 done
 
 echo "> 새 애플리케이션 배포"
+echo "> 이제 좀 하자"
 
 JAR_NAME=$(ls -tr $REPOSITORY/*.jar | head -n 1)
 
