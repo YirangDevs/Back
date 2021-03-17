@@ -18,6 +18,8 @@ import com.api.yirang.email.exception.EmailDuplicatedException;
 import com.api.yirang.email.model.Email;
 import com.api.yirang.email.repository.EmailRepository;
 import com.api.yirang.email.util.Validation;
+import com.api.yirang.img.model.Img;
+import com.api.yirang.img.repository.ImgRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -33,6 +35,7 @@ public class UserService {
     // DI Dao
     private final UserDao userDao;
     private final EmailRepository emailRepository;
+    private final ImgRepository imgRepository;
 
     // DI service
     private final AdminService adminService;
@@ -130,7 +133,12 @@ public class UserService {
         emailRepository.save(Email.builder()
                                   .user(user)
                                   .build());
+        // 유저 Img Table 추가
+        imgRepository.save(Img.builder()
+                              .user(user)
+                              .build());
 
+        // 봉사자면 봉사자에, 아니면 Admin에 저장
         if (authority == Authority.ROLE_VOLUNTEER) {
             volunteerBasicService.save(user);
         }
@@ -193,7 +201,11 @@ public class UserService {
         else{
             volunteerBasicService.delete(user);
         }
-        // 2. User 삭제
+        //TODO: 2. Email 삭제
+        emailRepository.deleteEmailByUser_UserId(userId);
+        //TODO: 3. img 삭제
+        imgRepository.deleteImgByUser_UserId(userId);
+        //TODO: 4. User 삭제
         userDao.delete(user);
     }
 

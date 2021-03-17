@@ -29,7 +29,9 @@ import java.util.Properties;
                          "com.api.yirang.notices.repository.persistence.maria",
                          "com.api.yirang.seniors.repository.persistence.maria",
                          "com.api.yirang.apply.repository.persistence.maria",
-                         "com.api.yirang.email.repository"}
+                         "com.api.yirang.email.repository",
+                         "com.api.yirang.img.repository"
+                        }
 )
 @PropertySource("classpath:properties/application-test.properties")
 @Profile({"test","test-security"})

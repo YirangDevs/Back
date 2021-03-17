@@ -18,6 +18,7 @@ import com.api.yirang.auth.presentation.dto.FakeSignInRequestDto;
 import com.api.yirang.auth.presentation.dto.SignInRequestDto;
 import com.api.yirang.auth.support.type.Authority;
 import com.api.yirang.auth.support.utils.ParsingHelper;
+import com.api.yirang.img.application.ImgService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -32,6 +33,7 @@ public class AuthService {
     // Services DI
     private final KakaoTokenService kakaoTokenService;
     private final UserService userService;
+    private final ImgService imgService;
 
     // JWT DI
     private final JwtProvider jwtProvider;
@@ -78,9 +80,8 @@ public class AuthService {
         else{
             System.out.println("이전에 등록했던 봉사자입니다.");
         }
-
-        // imgUrl 업데이트 하기
-
+        //TODO: imgUrl 업데이트 하기
+        imgService.updateKaKaoImg(kakaoUserInfo.getFileUrl())
 
         Authority authority = userService.getAuthorityByUserId(userId);
 
