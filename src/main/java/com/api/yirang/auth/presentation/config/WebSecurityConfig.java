@@ -101,6 +101,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             /** INFO */
             // 다른 유저들의 정보 조회나 Kick은 Super Admin만
             .antMatchers("/v1/apis/info/users/**").hasAuthority("SUPER_ADMIN")
+
+            // Super Admin은 탈퇴 불가능하다.
+            .antMatchers(HttpMethod.DELETE, "/v1/apis/info/myinfo").hasAnyAuthority("ADMIN", "VOLUNTEER")
             // 자신의 Information 보는건 AnonyMous가 아니면 다 가능하다
             .antMatchers("/v1/apis/info/myinfo").hasAnyAuthority("ADMIN", "VOLUNTEER", "SUPER_ADMIN")
             /** Notice **/
