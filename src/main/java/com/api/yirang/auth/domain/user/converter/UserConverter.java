@@ -12,12 +12,13 @@ import java.util.Collection;
 
 public class UserConverter {
 
-    public static UserInfoResponseDto toUserInfoResponseDto(User user){
+    public static UserInfoResponseDto toUserInfoResponseDto(User user, String imgUrl){
         return UserInfoResponseDto.builder()
                                   .username(user.getUsername()). realname(user.getRealname())
                                   .phone(user.getPhone())
                                   .email(user.getEmail())
                                   .sex(user.getSex())
+                                  .imgUrl(imgUrl)
                                   .firstRegion(user.getFirstRegion()).secondRegion(user.getSecondRegion())
                                   .build();
     }

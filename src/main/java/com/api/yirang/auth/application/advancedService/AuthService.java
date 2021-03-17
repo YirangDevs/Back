@@ -80,8 +80,8 @@ public class AuthService {
         else{
             System.out.println("이전에 등록했던 봉사자입니다.");
         }
-        //TODO: imgUrl 업데이트 하기
-        imgService.updateKaKaoImg(kakaoUserInfo.getFileUrl())
+        // Kakao로 새로 로그인 때마다, imgUrl 업데이트 하기
+        imgService.updateKaKaoImg(userId, kakaoUserInfo.getFileUrl());
 
         Authority authority = userService.getAuthorityByUserId(userId);
 
