@@ -1,0 +1,3 @@
+GET http://localhost:8080/v1/apis/info/myinfo
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOiIxNDY4NDE2MTM5IiwiaWF0IjoxNjE1OTIzMTcyLCJleHAiOjE2MTYwMDk1NzJ9.Ewh4DqaNlo1mBPik3UUdpjXLjfBAc_P1lwxXOMP-h5g
