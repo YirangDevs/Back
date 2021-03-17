@@ -5,13 +5,41 @@
     <title>Title</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 </head>
-<body>
-    <h3 th:text="'안녕하세요.' + ${name} + '님'"/>
-    <h3>이랑의 멤버가 되신 것을 환영합니다</h3>
-    <p>페이지로 돌아가서 아래의 인증번호를 입력해주세요.</p>
-    <div th:text="${certificationNumbers}"> </div>
-    <p>감사합니다~</p>
-    <p>Yirang 관리자 일동</p>
+<body style="margin:0;">
+    <div style="width: 100%; height: auto; background-color:rgb(236, 236, 236); display: flex; justify-content: center;">
+        <div style="height: auto; background-color: white; width: 500px;">
+            <div style="height: auto; display: flex; justify-content: center;"> <!-- header -->
+                <!-- <img src="./netflix.png" style="width: 40%;" /> -->
+                <span style="color: #2e7d32; font-size: 50px; font-weight: 800; font-family: Helvetica;">YIRANG</span>
+            </div>
+            <div style="height: auto; margin: 50px;"> <!-- main -->
+                <h3>이랑의 멤버가 되신 것을 환영합니다!!</h3>
+                <h2 th:text="${certificationNumbers}"/>
+                <br/>
+                <b><span th:text="${name}"/></b><span>님 안녕하세요</span>
+                <span style="font-size: 13px;">
+                            <br/>
+                            이랑 페이지에서의 본인 인증 요청이 접수되었습니다. <br/>
+                            해당 코드를 인증번호 칸에 입력한 후 인증을 완료해주세요. <br />
+                            전송된 코드는 <b>5분</b> 후에 만료됩니다.<br>
+                            <br/>
+                            질문이 있거나 도움이 필요한 경우 홈페이지의 채팅 기능을 활용해주세요.<br/>
+                            <br/>
+                            감사합니다.<br/>
+                            -Yirang 관리자 일동
+                </span>
 
-</body>
+            </div>
+            <div style="font-size: 12px; background-color: #005005; color: white; height: 80px; padding-top: 20px; padding-bottom: 20px;"> <!-- footer -->
+                <div style="margin-left: 50px; margin-right: 50px;">
+                    <span>(주) 이랑 컴퍼니</span><br/>
+                    <span>대표 번호: 010-0000-0000</span><br/>
+                    <span>회사 번호: 053) 000-0000</span><br/>
+                    <span>회사 주소: 대구 동성로 중앙파출소 앞 파스쿠찌</span>
+                </div>
+
+            </div>
+        </div>
+        </div>
+    </body>
 </html>
