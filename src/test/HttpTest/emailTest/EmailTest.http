@@ -11,10 +11,16 @@ GET http://localhost:8080/v1/apis/emails
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6IuycoOygleuvvCIsImltZ1VybCI6Imh0dHA6Ly9rLmtha2FvY2RuLm5ldC9kbi9oQTFWdS9idHFGS1h4ZlFzWC95MGhIalpsNlhaVWVScFdPa3lrTGtLL2ltZ182NDB4NjQwLmpwZyIsInVzZXJJZCI6IjE0Njg0MTYxMzkiLCJlbWFpbCI6Imxpa2VtaW4wMTQyQG5hdmVyLmNvbSIsImlhdCI6MTYxNDE3ODk4NCwiZXhwIjoxNjE0MjY1Mzg0fQ.rFkyasOyt2ul3ttKovF89ztjlT_HnriLrnUEVe2Mz7I
 
-### 자신의 이메일 인증번호 생성
+### 자신의 이메일 인증번호 생성 (localhost)
 POST http://localhost:8080/v1/apis/emails/certification
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6IuycoOygleuvvCIsImltZ1VybCI6Imh0dHA6Ly9rLmtha2FvY2RuLm5ldC9kbi9oQTFWdS9idHFGS1h4ZlFzWC95MGhIalpsNlhaVWVScFdPa3lrTGtLL2ltZ182NDB4NjQwLmpwZyIsInVzZXJJZCI6IjE0Njg0MTYxMzkiLCJlbWFpbCI6Imxpa2VtaW4wMTQyQG5hdmVyLmNvbSIsImlhdCI6MTYxNDE3ODk4NCwiZXhwIjoxNjE0MjY1Mzg0fQ.rFkyasOyt2ul3ttKovF89ztjlT_HnriLrnUEVe2Mz7I
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOiIxNDY4NDE2MTM5IiwiaWF0IjoxNjE1OTIzMTcyLCJleHAiOjE2MTYwMDk1NzJ9.Ewh4DqaNlo1mBPik3UUdpjXLjfBAc_P1lwxXOMP-h5g
+
+### 자신의 이메일 인증번호 생성 (실서버)
+POST http://ec2-3-35-99-114.ap-northeast-2.compute.amazonaws.com:8080/v1/apis/emails/certification
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOiIxNDY4NDE2MTM5IiwiaWF0IjoxNjE1OTIzMTcyLCJleHAiOjE2MTYwMDk1NzJ9.Ewh4DqaNlo1mBPik3UUdpjXLjfBAc_P1lwxXOMP-h5g
+
 
 ### 이메일 인증으로 확인
 POST http://localhost:8080/v1/apis/emails/validation
