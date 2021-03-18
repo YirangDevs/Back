@@ -110,10 +110,10 @@ public class UserService {
     public void updateMyEmail(Long userId, EmailRequestDto emailRequestDto) {
         // User 찾기
         User user = findUserByUserId(userId);
-        // 기존의 email과 같은 경우
-        if (user.getEmail().equals(emailRequestDto.getEmail())){
-            throw new EmailDuplicatedException();
-        }
+        // 기존의 email과 같은 경우(중복 허용)
+//        if (user.getEmail().equals(emailRequestDto.getEmail())){
+//            throw new EmailDuplicatedException();
+//        }
 
         // userDao로 email 업데이트 하기
         userDao.updateUserInfo(user.getUserId(), emailRequestDto.getEmail(), user.getPhone(), user.getUsername(),
