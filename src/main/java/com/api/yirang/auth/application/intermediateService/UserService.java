@@ -14,7 +14,9 @@ import com.api.yirang.auth.support.type.Authority;
 import com.api.yirang.common.support.type.Region;
 import com.api.yirang.common.support.type.Sex;
 import com.api.yirang.email.dto.EmailRequestDto;
+import com.api.yirang.email.exception.EmailAddressNullException;
 import com.api.yirang.email.exception.EmailDuplicatedException;
+import com.api.yirang.email.exception.EmailNullException;
 import com.api.yirang.email.model.Email;
 import com.api.yirang.email.repository.EmailRepository;
 import com.api.yirang.email.util.Validation;
@@ -58,10 +60,12 @@ public class UserService {
     public UserInfoResponseDto findUserInfoByUserId(Long userId) {
         User foundedUser = findUserByUserId(userId);
 
+        Email email = emailRepository.findEmailByUser_UserId(userId).orElseThrow(new EmailNullException(userId));
         // for debugging
         System.out.println("[UserService] User를 찾았습니다: " + foundedUser);
 
-        return UserConverter.toUserInfoResponseDto(foundedUser);
+
+        return UserConverter.toUserInfoResponseDto(foundedUser, email.getNotifiable());
     }
 
     public Collection<UserAuthResponseDto> findAllUserAuthInfos() {

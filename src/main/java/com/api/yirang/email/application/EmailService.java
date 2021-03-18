@@ -28,8 +28,8 @@ public class EmailService {
     private final MailContentHelper mailContentHelper;
     private final EmailRepository emailRepository;
 
-    private final String emailHost = "yirang@gmail.com";
-    private final String senderName = "Yirang";
+    private static final String EMAIL_HOST = "yirang@gmail.com";
+    private static final String SENDER_NAME = "Yirang";
 
     // Privates
     private void sendEmail(String toEmail, String subject, String content){
@@ -37,10 +37,9 @@ public class EmailService {
         MimeMessageHelper helper = new MimeMessageHelper(message);
 
         try {
-            helper.setFrom(emailHost, senderName);
+            helper.setFrom(EMAIL_HOST, SENDER_NAME);
             helper.setTo(toEmail);
             helper.setSubject(subject);
-            System.out.println("Content: " + content);
             helper.setText(content, true);
         }
         catch (Exception ex){
@@ -83,7 +82,7 @@ public class EmailService {
 
     public EmailValidationResponseDto checkMyValidation(Long userId) {
         User user = userService.findUserByUserId(userId);
-        Email email = emailRepository.findEmailByUser_UserId(userId).orElseThrow(new EmailNullException(userId));
+        Email email = findEmailByUserId(userId);
         return new EmailValidationResponseDto(email.getValidation());
     }
 
@@ -101,5 +100,11 @@ public class EmailService {
         }
         // 다 괜찮으면 validation_YES로 바꾸기
         emailRepository.updateEmailVerificationWithUserId(userId, Validation.VALIDATION_YES);
+    }
+
+
+    // Simple CRUD operations
+    public Email findEmailByUserId(Long userId){
+        return emailRepository.findEmailByUser_UserId(userId).orElseThrow(new EmailNullException(userId));
     }
 }
