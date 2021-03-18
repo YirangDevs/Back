@@ -64,7 +64,7 @@ public class UserService {
         User user= findUserByUserId(userId);
         Img img = imgRepository.findImgByUser_UserId(userId).orElseThrow(ImageNullException::new);
 
-        String imgUrl = img.getImgType() == ImgType.IMG_TYPE_CUSTOM ? img.getCustomImgUrl() : img.getKakaoImgUrl();
+        String imgUrl = img.getImgType().equals(ImgType.IMG_TYPE_CUSTOM) ? img.getCustomImgUrl() : img.getKakaoImgUrl();
         // for debugging
         System.out.println("[UserService] User를 찾았습니다: " + user);
 

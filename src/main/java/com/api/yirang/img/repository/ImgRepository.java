@@ -1,6 +1,7 @@
 package com.api.yirang.img.repository;
 
 import com.api.yirang.img.model.Img;
+import com.api.yirang.img.util.ImgType;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -31,4 +32,11 @@ public interface ImgRepository extends JpaRepository<Img, Long> {
            "SET I.customImgUrl =:fileUrl " +
            "WHERE I.user.userId =:userId")
     void updateCustomImg(Long userId, String fileUrl);
+
+    @Modifying
+    @Transactional
+    @Query("UPDATE Img I " +
+           "SET I.imgType =:newImgType " +
+           "WHERE I.user.userId =:userId")
+    void updateImgType(Long userId, ImgType newImgType);
 }

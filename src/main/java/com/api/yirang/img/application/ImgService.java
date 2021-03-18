@@ -4,7 +4,12 @@ package com.api.yirang.img.application;
 import com.api.yirang.auth.application.intermediateService.UserService;
 import com.api.yirang.auth.domain.user.model.User;
 import com.api.yirang.img.component.S3Uploader;
+import com.api.yirang.img.dto.ImgTypeRequestDto;
+import com.api.yirang.img.exception.ImageNullException;
+import com.api.yirang.img.exception.ImgTypeDuplicatedException;
+import com.api.yirang.img.model.Img;
 import com.api.yirang.img.repository.ImgRepository;
+import com.api.yirang.img.util.ImgType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -48,7 +53,25 @@ public class ImgService {
     }
 
 
+    public void updateImgType(Long userId, ImgTypeRequestDto imgTypeRequestDto) {
+        ImgType newImgType = imgTypeRequestDto.getImgType();
+        if (getMyImgType(userId).equals(newImgType)){
+            throw new ImgTypeDuplicatedException();
+        }
+        imgRepository.updateImgType(userId, newImgType);
+    }
 
+    public ImgType getMyImgType(Long userId) {
+        User user = userService.findUserByUserId(userId);
+        Img img = imgRepository.findImgByUser_UserId(userId).orElseThrow(ImageNullException::new);
+        return img.getImgType();
+    }
 
+    public String getMyImg(Long userId) {
+        User user = userService.findUserByUserId(userId);
+        Img img = imgRepository.findImgByUser_UserId(userId).orElseThrow(ImageNullException::new);
+
+        return img.getImgType().equals(ImgType.IMG_TYPE_CUSTOM) ? img.getCustomImgUrl() : img.getKakaoImgUrl();
+    }
 
 }

@@ -3,6 +3,7 @@ package com.api.yirang.common.presentation;
 import com.api.yirang.common.exceptions.AlreadyException;
 import com.api.yirang.common.exceptions.ApiException;
 import com.api.yirang.common.exceptions.Dto.ErrorDto;
+import com.api.yirang.common.exceptions.DuplicatedException;
 import com.api.yirang.common.exceptions.NullException;
 import com.api.yirang.email.exception.CustomMessagingException;
 import com.api.yirang.email.exception.EmailAlreadyValidException;
@@ -25,6 +26,12 @@ public class WholeExceptionHandler{
     @ExceptionHandler(value = {AlreadyException.class})
     @ResponseStatus(HttpStatus.NOT_ACCEPTABLE)
     public final ErrorDto handleAlreadyExistException(ApiException apiException){
+        return apiException.buildErrorDto();
+    }
+
+    @ExceptionHandler(value = {DuplicatedException.class})
+    @ResponseStatus(HttpStatus.NOT_ACCEPTABLE)
+    public final ErrorDto handleDuplicatedException(ApiException apiException){
         return apiException.buildErrorDto();
     }
 

@@ -1,0 +1,28 @@
+GET http://localhost:8080/v1/apis/imgs
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOiIxNDY4NDE2MTM5IiwiaWF0IjoxNjE2MDY2ODkxLCJleHAiOjE2MTYxNTMyOTF9.mGF2by7eErmHWj35Cr_pDljwJ9OogHoi9Yf99uP84XA
+###
+GET http://localhost:8080/v1/apis/imgs/imgTypes
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOiIxNDY4NDE2MTM5IiwiaWF0IjoxNjE2MDY2ODkxLCJleHAiOjE2MTYxNTMyOTF9.mGF2by7eErmHWj35Cr_pDljwJ9OogHoi9Yf99uP84XA
+###
+PUT http://localhost:8080/v1/apis/imgs/imgTypes
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOiIxNDY4NDE2MTM5IiwiaWF0IjoxNjE2MDY2ODkxLCJleHAiOjE2MTYxNTMyOTF9.mGF2by7eErmHWj35Cr_pDljwJ9OogHoi9Yf99uP84XA
+
+{
+ "imgType": "CUSTOM"
+}
+###
+POST http://localhost:8080/v1/apis/imgs/custom
+Content-Type: multipart/form-data; boundary=boundary
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOiIxNDY4NDE2MTM5IiwiaWF0IjoxNjE2MDY2ODkxLCJleHAiOjE2MTYxNTMyOTF9.mGF2by7eErmHWj35Cr_pDljwJ9OogHoi9Yf99uP84XA
+
+--boundary
+Content-Disposition: form-data; name="customImg"; filename="test.png"
+Content-Type: image/png
+
+< /Users/user/Desktop/test.png
+--boundary
+
+###
