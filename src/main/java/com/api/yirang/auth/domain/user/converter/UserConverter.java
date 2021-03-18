@@ -7,17 +7,18 @@ import com.api.yirang.auth.presentation.dto.UserInfoResponseDto;
 import com.api.yirang.auth.support.type.Authority;
 import com.api.yirang.common.support.type.Region;
 import com.api.yirang.common.support.type.Sex;
+import com.api.yirang.email.util.Consent;
 
 import java.util.Collection;
 
 public class UserConverter {
 
-    public static UserInfoResponseDto toUserInfoResponseDto(User user){
+    public static UserInfoResponseDto toUserInfoResponseDto(User user, Consent notifiable){
         return UserInfoResponseDto.builder()
                                   .username(user.getUsername()). realname(user.getRealname())
                                   .phone(user.getPhone())
                                   .email(user.getEmail())
-                                  .sex(user.getSex())
+                                  .sex(user.getSex()).isReceivingEmail(notifiable)
                                   .firstRegion(user.getFirstRegion()).secondRegion(user.getSecondRegion())
                                   .build();
     }

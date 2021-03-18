@@ -5,6 +5,6 @@ import com.api.yirang.common.exceptions.NullException;
 public class EmailNullException extends NullException {
 
     public EmailNullException(Long userId) {
-        super(String.format("Message with UserId#{} is not exist", userId));
+        super(String.format("Message with UserId#{%d} is not exist", userId));
     }
 }
