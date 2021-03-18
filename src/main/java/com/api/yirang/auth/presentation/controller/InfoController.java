@@ -3,13 +3,11 @@ package com.api.yirang.auth.presentation.controller;
 
 import com.api.yirang.auth.application.intermediateService.UserService;
 import com.api.yirang.auth.domain.jwt.components.JwtParser;
-import com.api.yirang.auth.presentation.dto.UserInfoRequestDto;
+import com.api.yirang.auth.presentation.dto.UserInfo.*;
 import com.api.yirang.auth.presentation.dto.UserInfoResponseDto;
 import com.api.yirang.auth.support.utils.ParsingHelper;
-import com.api.yirang.common.exceptions.Dto.ErrorDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -51,14 +49,58 @@ public class InfoController {
         return userService.findUserInfoByUserId(userId);
     }
 
-    // Update
+    /** Update **/
     @ResponseStatus(HttpStatus.OK)
-    @PutMapping(value = "/myinfo", consumes = "application/json")
-    public void updateMyInfo(@RequestHeader("Authorization") String header,
-                             @RequestBody @Valid UserInfoRequestDto userInfoRequestDto){
-        System.out.println("[InfoController] 내 정보 업데이트 요청이 왔습니다. ");
+    @PutMapping(value = "/myinfo/username", consumes = "application/json")
+    public void updateMyUserName(@RequestHeader("Authorization") String header,
+                                 @RequestBody @Valid UsernameUpdateRequestDto usernameUpdateRequestDto){
+        System.out.println("[InfoController] Username 업데이트 요청이 왔습니다. ");
         Long userId = jwtParser.getUserIdFromJwt(ParsingHelper.parseHeader(header));
-        userService.updateUserInfoWithUserId(userId, userInfoRequestDto);
+        userService.updateUserInfoWithUserId(userId, usernameUpdateRequestDto);
+    }
+    @ResponseStatus(HttpStatus.OK)
+    @PutMapping(value = "/myinfo/realname", consumes = "application/json")
+    public void updateMyRealname(@RequestHeader("Authorization") String header,
+                                 @RequestBody @Valid RealnameUpdateRequestDto realnameUpdateRequestDto){
+        System.out.println("[InfoController] Realname 업데이트 요청이 왔습니다. ");
+        Long userId = jwtParser.getUserIdFromJwt(ParsingHelper.parseHeader(header));
+        userService.updateUserInfoWithUserId(userId, realnameUpdateRequestDto);
+    }
+    @ResponseStatus(HttpStatus.OK)
+    @PutMapping(value = "/myinfo/sex", consumes = "application/json")
+    public void updateMySex(@RequestHeader("Authorization") String header,
+                             @RequestBody @Valid SexUpdateRequestDto sexUpdateRequestDto){
+        System.out.println("[InfoController] Sex 업데이트 요청이 왔습니다. ");
+        Long userId = jwtParser.getUserIdFromJwt(ParsingHelper.parseHeader(header));
+        userService.updateUserInfoWithUserId(userId, sexUpdateRequestDto);
+
+    }
+    @ResponseStatus(HttpStatus.OK)
+    @PutMapping(value = "/myinfo/phone", consumes = "application/json")
+    public void updateMyPhone(@RequestHeader("Authorization") String header,
+                              @RequestBody @Valid PhoneUpdateRequestDto phoneUpdateRequestDto){
+        System.out.println("[InfoController] Phone 업데이트 요청이 왔습니다. ");
+        Long userId = jwtParser.getUserIdFromJwt(ParsingHelper.parseHeader(header));
+        userService.updateUserInfoWithUserId(userId, phoneUpdateRequestDto);
+
+    }
+    @ResponseStatus(HttpStatus.OK)
+    @PutMapping(value = "/myinfo/firstRegion", consumes = "application/json")
+    public void updateMyFirstRegion(@RequestHeader("Authorization") String header,
+                                    @RequestBody @Valid FirstRegionUpdateRequestDto firstRegionUpdateRequestDtoO){
+        System.out.println("[InfoController] FirstRegion 업데이트 요청이 왔습니다. ");
+        Long userId = jwtParser.getUserIdFromJwt(ParsingHelper.parseHeader(header));
+        userService.updateUserInfoWithUserId(userId, firstRegionUpdateRequestDtoO);
+
+    }
+    @ResponseStatus(HttpStatus.OK)
+    @PutMapping(value = "/myinfo/secondRegion", consumes = "application/json")
+    public void updateMySecondRegion(@RequestHeader("Authorization") String header,
+                                     @RequestBody @Valid SecondRegionUpdateRequestDto secondRegionUpdateRequestDto){
+        System.out.println("[InfoController] SecondRegion 업데이트 요청이 왔습니다. ");
+        Long userId = jwtParser.getUserIdFromJwt(ParsingHelper.parseHeader(header));
+        userService.updateUserInfoWithUserId(userId, secondRegionUpdateRequestDto);
+
     }
 
     // Delete

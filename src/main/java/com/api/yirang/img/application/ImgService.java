@@ -7,6 +7,7 @@ import com.api.yirang.img.component.S3Uploader;
 import com.api.yirang.img.dto.ImgTypeRequestDto;
 import com.api.yirang.img.exception.ImageNullException;
 import com.api.yirang.img.exception.ImgTypeDuplicatedException;
+import com.api.yirang.img.exception.ImgTypeInvalidException;
 import com.api.yirang.img.model.Img;
 import com.api.yirang.img.repository.ImgRepository;
 import com.api.yirang.img.util.ImgType;
@@ -45,6 +46,10 @@ public class ImgService {
         User user = userService.findUserByUserId(userId);
         if (file == null){
             return;
+        }
+
+        if (!getMyImgType(userId).equals(ImgType.IMG_TYPE_CUSTOM)){
+            throw new ImgTypeInvalidException();
         }
 
         // 1. File Upload

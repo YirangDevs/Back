@@ -12,6 +12,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 @RestController
 @RequestMapping("/v1/apis/emails")
 @RequiredArgsConstructor
@@ -30,7 +32,8 @@ public class EmailController {
      */
     @PutMapping(consumes = "application/json")
     @ResponseStatus(HttpStatus.OK)
-    public void changeMyEmail(@RequestHeader("Authorization") String header, @RequestBody EmailRequestDto emailRequestDto){
+    public void changeMyEmail(@RequestHeader("Authorization") String header,
+                              @RequestBody @Valid EmailRequestDto emailRequestDto){
         Long userId = jwtParser.getUserIdFromJwt(ParsingHelper.parseHeader(header));
         userService.updateMyEmail(userId, emailRequestDto);
     }

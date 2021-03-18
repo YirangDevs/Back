@@ -7,15 +7,14 @@ import com.api.yirang.auth.domain.user.exceptions.UserNullException;
 import com.api.yirang.auth.domain.user.model.Admin;
 import com.api.yirang.auth.domain.user.model.User;
 import com.api.yirang.auth.presentation.dto.UserAuthResponseDto;
-import com.api.yirang.auth.presentation.dto.UserInfoRequestDto;
+import com.api.yirang.auth.presentation.dto.UserInfo.*;
 import com.api.yirang.auth.presentation.dto.UserInfoResponseDto;
 import com.api.yirang.auth.repository.persistence.maria.UserDao;
 import com.api.yirang.auth.support.type.Authority;
+import com.api.yirang.common.exceptions.UtilException;
 import com.api.yirang.common.support.type.Region;
 import com.api.yirang.common.support.type.Sex;
 import com.api.yirang.email.dto.EmailRequestDto;
-import com.api.yirang.email.exception.EmailAddressNullException;
-import com.api.yirang.email.exception.EmailDuplicatedException;
 import com.api.yirang.email.exception.EmailNullException;
 import com.api.yirang.email.model.Email;
 import com.api.yirang.email.repository.EmailRepository;
@@ -88,20 +87,64 @@ public class UserService {
         return res;
     }
 
-    public void updateUserInfoWithUserId(Long userId, UserInfoRequestDto userInfoRequestDto) {
-        System.out.println("[UserService] User를 업데이트 합니다.");
+    // Update
+    public void updateUserInfoWithUserId(Long userId, UsernameUpdateRequestDto usernameUpdateRequestDto) {
+        User user = findUserByUserId(userId);
+        String email = getEmailByUserId(userId);
 
-        String username = userInfoRequestDto.getUsername();
-        String realname = userInfoRequestDto.getRealname();
-        String phone = userInfoRequestDto.getPhone();
-        Sex sex = userInfoRequestDto.getSex();
+        userDao.updateUserInfo(userId, email,
+                               user.getPhone(), usernameUpdateRequestDto.getUsername(),
+                               user.getRealname(), user.getSex(),
+                               user.getFirstRegion(), user.getSecondRegion());
+    }
+    public void updateUserInfoWithUserId(Long userId, RealnameUpdateRequestDto realnameUpdateRequestDto) {
+        User user = findUserByUserId(userId);
+        String email = getEmailByUserId(userId);
 
-        String email = userInfoRequestDto.getEmail();
+        userDao.updateUserInfo(userId, email,
+                               user.getPhone(), user.getUsername(),
+                               realnameUpdateRequestDto.getRealname(), user.getSex(),
+                               user.getFirstRegion(), user.getSecondRegion());
+    }
+    public void updateUserInfoWithUserId(Long userId, SexUpdateRequestDto sexUpdateRequestDto) {
+        User user = findUserByUserId(userId);
+        String email = getEmailByUserId(userId);
 
-        Region firstRegion = userInfoRequestDto.getFirstRegion();
-        Region secondRegion = userInfoRequestDto.getSecondRegion();
+        if (!user.getSex().equals(Sex.SEX_UNKNOWN)){
+            throw new UtilException("SEX IS NOT UNKNOWN");
+        }
 
-        userDao.updateUserInfo(userId, email, phone, username, realname, sex, firstRegion, secondRegion);
+        userDao.updateUserInfo(userId, email,
+                               user.getPhone(), user.getUsername(),
+                               user.getRealname(), sexUpdateRequestDto.getSex(),
+                               user.getFirstRegion(), user.getSecondRegion());
+    }
+    public void updateUserInfoWithUserId(Long userId, PhoneUpdateRequestDto phoneUpdateRequestDto) {
+        User user = findUserByUserId(userId);
+        String email = getEmailByUserId(userId);
+
+        userDao.updateUserInfo(userId, email,
+                               phoneUpdateRequestDto.getPhone(), user.getUsername(),
+                               user.getRealname(), user.getSex(),
+                               user.getFirstRegion(), user.getSecondRegion());
+    }
+    public void updateUserInfoWithUserId(Long userId, FirstRegionUpdateRequestDto firstRegionUpdateRequestDto) {
+        User user = findUserByUserId(userId);
+        String email = getEmailByUserId(userId);
+
+        userDao.updateUserInfo(userId, email,
+                               user.getPhone(), user.getUsername(),
+                               user.getRealname(), user.getSex(),
+                               firstRegionUpdateRequestDto.getFirstRegion(), user.getSecondRegion());
+    }
+    public void updateUserInfoWithUserId(Long userId, SecondRegionUpdateRequestDto secondRegionUpdateRequestDto) {
+        User user = findUserByUserId(userId);
+        String email = getEmailByUserId(userId);
+
+        userDao.updateUserInfo(userId, email,
+                               user.getPhone(), user.getUsername(),
+                               user.getRealname(), user.getSex(),
+                               user.getFirstRegion(), secondRegionUpdateRequestDto.getSecondRegion());
     }
 
     public void updateAuthority(Long userId, Authority authority){
@@ -117,9 +160,6 @@ public class UserService {
         // User 찾기
         User user = findUserByUserId(userId);
         // 기존의 email과 같은 경우(중복 허용)
-//        if (user.getEmail().equals(emailRequestDto.getEmail())){
-//            throw new EmailDuplicatedException();
-//        }
 
         // userDao로 email 업데이트 하기
         userDao.updateUserInfo(user.getUserId(), emailRequestDto.getEmail(), user.getPhone(), user.getUsername(),

@@ -7,7 +7,6 @@ import com.api.yirang.auth.domain.user.model.Admin;
 import com.api.yirang.auth.domain.user.model.User;
 import com.api.yirang.auth.domain.user.model.Volunteer;
 import com.api.yirang.auth.generator.UserGenerator;
-import com.api.yirang.auth.presentation.dto.UserInfoRequestDto;
 import com.api.yirang.auth.support.type.Authority;
 import org.junit.After;
 import org.junit.Before;
@@ -67,33 +66,6 @@ public class InfoServiceTest {
         volunteerBasicService.deleteAll();
     }
 
-    @Test
-    public void 관리자를_찾아서_업데이트_하기(){
-        // 이전
-        System.out.println("Admin: "  + admin);
-
-        Long userId = admin.getUser().getUserId();
-
-        // UserInfoRequestDto 만들기
-
-        String username = "새로운 이름";
-        String email = "aaa@bbb.ac.kr";
-        String phone = "01011112222";
-
-        UserInfoRequestDto userInfoRequestDto = UserInfoRequestDto.builder()
-                                                                  .username(username)
-                                                                  .email(email)
-                                                                  .phone(phone)
-                                                                  .build();
-
-        userService.updateUserInfoWithUserId(userId, userInfoRequestDto);
-
-        // find User and check it is revised properly
-        User user = userService.findUserByUserId(userId);
-        
-
-
-    }
 
     @Test
     public void 봉사자를_찾아서_업데이트_하기(){
