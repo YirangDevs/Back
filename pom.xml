@@ -205,6 +205,12 @@
             <artifactId>spring-boot-devtools</artifactId>
         </dependency>
 
+        <!-- AWS s3 -->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-aws</artifactId>
+            <version>2.2.1.RELEASE</version>
+        </dependency>
 
     </dependencies>
 

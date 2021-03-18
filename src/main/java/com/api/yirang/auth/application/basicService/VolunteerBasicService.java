@@ -45,10 +45,12 @@ public class VolunteerBasicService {
     public void delete(User user) {
         Volunteer volunteer = findVolunteerByUserId(user.getUserId());
 
-        /** TO-DO
-         * 매칭 data 지우기
-         */
+        // TODO: 1. apply data 지우기
         applyBasicService.deleteAllWithVolunteer(volunteer);
+
+        // TODO: 2. Matching Data 지우기
+
+        // TODO: 3. Volunteer data 지우기
         volunteerDao.deleteByUser(user);
     }
 }

@@ -29,4 +29,7 @@ public interface EmailRepository extends JpaRepository<Email, Long> {
 
     Optional<Email> findEmailByUser_UserId(Long userId);
 
+    @Modifying
+    @Transactional
+    void deleteEmailByUser_UserId(Long userId);
 }

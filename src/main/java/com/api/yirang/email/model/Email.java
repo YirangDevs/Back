@@ -23,7 +23,6 @@ public class Email {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long emailNumber;
 
-    @Nullable
     @Column
     private String certificationNumbers;
 

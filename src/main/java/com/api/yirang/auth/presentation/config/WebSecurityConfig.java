@@ -113,6 +113,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             /** Email **/
             //  Email 인증은 AnonyMous가 아니면 다 가능하다.
             .antMatchers("/v1/apis/emails/**").hasAnyAuthority("VOLUNTEER", "ADMIN", "SUPER_ADMIN")
+            /** Img **/
+            // Img 관련은 Anonymous가 아니면 다 가능하다.
+            .antMatchers("/v1/apis/imgs/**").hasAnyAuthority("VOLUNTEER", "ADMIN", "SUPER_ADMIN")
             .anyRequest().authenticated()
             .and()
             .exceptionHandling()

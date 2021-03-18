@@ -13,12 +13,13 @@ import java.util.Collection;
 
 public class UserConverter {
 
-    public static UserInfoResponseDto toUserInfoResponseDto(User user, Consent notifiable){
+    public static UserInfoResponseDto toUserInfoResponseDto(User user, String imgUrl, Consent notifiable){
         return UserInfoResponseDto.builder()
                                   .username(user.getUsername()). realname(user.getRealname())
                                   .phone(user.getPhone())
                                   .email(user.getEmail())
                                   .sex(user.getSex()).isReceivingEmail(notifiable)
+                                  .imgUrl(imgUrl)
                                   .firstRegion(user.getFirstRegion()).secondRegion(user.getSecondRegion())
                                   .build();
     }
