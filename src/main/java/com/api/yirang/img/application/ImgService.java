@@ -60,9 +60,12 @@ public class ImgService {
 
     public void updateImgType(Long userId, ImgTypeRequestDto imgTypeRequestDto) {
         ImgType newImgType = imgTypeRequestDto.getImgType();
-        if (getMyImgType(userId).equals(newImgType)){
-            throw new ImgTypeDuplicatedException();
-        }
+
+
+        // 이미지 중복 허용
+//        if (getMyImgType(userId).equals(newImgType)){
+//            throw new ImgTypeDuplicatedException();
+//        }
         imgRepository.updateImgType(userId, newImgType);
     }
 
