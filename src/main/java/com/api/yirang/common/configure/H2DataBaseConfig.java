@@ -25,13 +25,15 @@ import java.util.Properties;
 @EnableJpaRepositories(
         entityManagerFactoryRef = "h2EntityManager",
         transactionManagerRef = "h2TransactionManager",
-        basePackages = { "com.api.yirang.auth.repository.persistence.maria",
-                         "com.api.yirang.notices.repository.persistence.maria",
-                         "com.api.yirang.seniors.repository.persistence.maria",
-                         "com.api.yirang.apply.repository.persistence.maria",
-                         "com.api.yirang.email.repository",
-                         "com.api.yirang.img.repository"
-                        }
+        basePackages = {
+                "com.api.yirang.auth.repository.persistence.maria",
+                "com.api.yirang.notices.repository.persistence.maria",
+                "com.api.yirang.seniors.repository.persistence.maria",
+                "com.api.yirang.apply.repository.persistence.maria",
+                "com.api.yirang.email.repository",
+                "com.api.yirang.img.repository",
+                "com.api.yirang.matching.repository.maria"
+                }
 )
 @PropertySource("classpath:properties/application-test.properties")
 @Profile({"test","test-security"})
