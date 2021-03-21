@@ -24,11 +24,14 @@ public class MongoRepositoryTest {
     @Test
     public void 매칭_생셩_후_저장(){
 
-        List<String> unMatchedSeniorIds = Arrays.asList("11", "22", "33");
-        List<String> unMatchedVolunteerIds = Arrays.asList("44", "55", "66");
+        List<Long> unMatchedSeniorIds = Arrays.asList(11L, 22L, 33L);
+        List<Long> unMatchedVolunteerIds = Arrays.asList(44L, 55L, 66L);
+
 
         UnMatchingList unMatchingList = UnMatchingList.builder()
-                                                      .activityId("111")
+                                                      .activityId(1L)
+                                                      .seniorIds(unMatchedSeniorIds)
+                                                      .volunteerIds(unMatchedVolunteerIds)
                                                       .build();
         unMatchingListRepository.save(unMatchingList);
     }
