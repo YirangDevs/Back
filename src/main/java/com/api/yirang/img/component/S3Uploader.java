@@ -15,7 +15,6 @@ import java.io.IOException;
 @Component
 @RequiredArgsConstructor
 public class S3Uploader {
-
     private final AmazonS3Client amazonS3Client;
 
     @Value("${cloud.aws.s3.bucket}")
@@ -30,6 +29,7 @@ public class S3Uploader {
             return imgUrl;
         }
         catch (Exception e){
+            e.printStackTrace();
             throw new FileConvertException();
         }
     }
@@ -44,7 +44,7 @@ public class S3Uploader {
     private File convert(MultipartFile multipartFile) throws IOException {
         System.out.println("I'm Trying to make File!");
         File convertFile = new File("./" + multipartFile.getOriginalFilename());
-        System.out.println("I Made ConvertFile!");
+        System.out.println("I Made ConvertFile!: " + convertFile.getName());
         if (convertFile.createNewFile()) {
             System.out.println("We did make createNew File!!");
             FileOutputStream fos = new FileOutputStream(convertFile);
