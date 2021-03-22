@@ -23,6 +23,7 @@ public class S3Uploader {
     private String bucket;
 
     public String upload(MultipartFile multipartFile){
+        System.out.println("In S3Uplodaer, MultiparFile: " + multipartFile.getOriginalFilename());
         File convertFile = convert(multipartFile);
         String imgUrl = uploadS3(convertFile);
         removeTempFile(convertFile);
