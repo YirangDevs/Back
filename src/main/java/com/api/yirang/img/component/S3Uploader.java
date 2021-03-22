@@ -40,7 +40,7 @@ public class S3Uploader {
     private File convert(MultipartFile multipartFile){
         try{
             System.out.println("I'm Trying to make File!");
-            File convertFile = new File(TEMP_FILE_PATH + multipartFile.getOriginalFilename());
+            File convertFile = new File(multipartFile.getOriginalFilename());
         if (convertFile.createNewFile()){
             System.out.println("We did make createNew File!!");
             FileOutputStream fos = new FileOutputStream(convertFile);
@@ -52,6 +52,7 @@ public class S3Uploader {
         throw new Exception();
         }
         catch (Exception e){
+            System.out.println(e.getStackTrace());
             throw new FileConvertException();
             }
         }
