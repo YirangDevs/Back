@@ -10,24 +10,28 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
 
 @Component
 @RequiredArgsConstructor
 public class S3Uploader {
 
-    private final static String TEMP_FILE_PATH = "./";
     private final AmazonS3Client amazonS3Client;
-
 
     @Value("${cloud.aws.s3.bucket}")
     private String bucket;
 
     public String upload(MultipartFile multipartFile){
         System.out.println("In S3Uplodaer, MultiparFile: " + multipartFile.getOriginalFilename());
-        File convertFile = convert(multipartFile);
-        String imgUrl = uploadS3(convertFile);
-        removeTempFile(convertFile);
-        return imgUrl;
+        try {
+            File convertFile = convert(multipartFile);
+            String imgUrl = uploadS3(convertFile);
+            removeTempFile(convertFile);
+            return imgUrl;
+        }
+        catch (Exception e){
+            throw new FileConvertException();
+        }
     }
 
     private String uploadS3(File uploadFile){
@@ -37,25 +41,19 @@ public class S3Uploader {
         return amazonS3Client.getUrl(bucket, fileName).toString();
     }
 
-    private File convert(MultipartFile multipartFile){
-        try{
-            System.out.println("I'm Trying to make File!");
-            File convertFile = new File(multipartFile.getOriginalFilename());
-        if (convertFile.createNewFile()){
+    private File convert(MultipartFile multipartFile) throws IOException {
+        System.out.println("I'm Trying to make File!");
+        File convertFile = new File("./" + multipartFile.getOriginalFilename());
+        System.out.println("I Made ConvertFile!");
+        if (convertFile.createNewFile()) {
             System.out.println("We did make createNew File!!");
             FileOutputStream fos = new FileOutputStream(convertFile);
             System.out.println("FileOutPutStream fos!!");
             fos.write(multipartFile.getBytes());
             System.out.println("fos write success!!");
-            return convertFile;
         }
-        throw new Exception();
-        }
-        catch (Exception e){
-            System.out.println(e.getStackTrace());
-            throw new FileConvertException();
-            }
-        }
+        return convertFile;
+    }
 
     private void removeTempFile(File targetFile) {
         if (targetFile.delete()){
