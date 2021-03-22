@@ -7,7 +7,7 @@ import javax.persistence.Id;
 import java.util.List;
 
 @Document(collection = "un_matching_list")
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
+@NoArgsConstructor
 @Getter
 @ToString
 public class UnMatchingList {

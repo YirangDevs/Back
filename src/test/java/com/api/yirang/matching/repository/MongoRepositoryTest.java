@@ -5,6 +5,7 @@ import com.api.yirang.matching.model.maria.Matching;
 import com.api.yirang.matching.model.mongo.UnMatchingList;
 import com.api.yirang.matching.repository.maria.MatchingRepository;
 import com.api.yirang.matching.repository.mongo.UnMatchingListRepository;
+import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +21,11 @@ public class MongoRepositoryTest {
 
     @Autowired
     UnMatchingListRepository unMatchingListRepository;
+
+    @After
+    public void tearDown(){
+        unMatchingListRepository.deleteAll();
+    }
 
     @Test
     public void 매칭_생셩_후_저장(){
