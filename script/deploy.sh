@@ -38,6 +38,8 @@ echo "> $JAR_NAME 실행"
 
 source ~/.bash_profile
 
+sudo chmod 777 "$JAR_NAME"
+
 nohup java -Dspring.config.location=classpath:/application.properties\
   -jar "$JAR_NAME" > $REPOSITORY/nohup.out 2x81 &
 # -javaagent:/home/ec2-user/app/scouter/scouter/agent.java/scouter.agent.jar\

@@ -39,7 +39,8 @@ public class S3Uploader {
 
     private File convert(MultipartFile multipartFile){
         try{
-        File convertFile = new File(TEMP_FILE_PATH + multipartFile.getOriginalFilename());
+            System.out.println("I'm Trying to make File!");
+            File convertFile = new File(TEMP_FILE_PATH + multipartFile.getOriginalFilename());
         if (convertFile.createNewFile()){
             System.out.println("We did make createNew File!!");
             FileOutputStream fos = new FileOutputStream(convertFile);
