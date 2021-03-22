@@ -1,22 +1,23 @@
 GET http://localhost:8080/v1/apis/imgs
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOiIxNDY4NDE2MTM5IiwiaWF0IjoxNjE2MDY2ODkxLCJleHAiOjE2MTYxNTMyOTF9.mGF2by7eErmHWj35Cr_pDljwJ9OogHoi9Yf99uP84XA
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOiIxNDM3OCIsImlhdCI6MTYxNjQxNTcxMiwiZXhwIjoxNjE2NTAyMTEyfQ.qrtP-LfRbxja8a9sq3XTzK8ouJcPnVcXaz1U7bd8bS4
+
 ###
 GET http://localhost:8080/v1/apis/imgs/imgTypes
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOiIxNDY4NDE2MTM5IiwiaWF0IjoxNjE2MDY2ODkxLCJleHAiOjE2MTYxNTMyOTF9.mGF2by7eErmHWj35Cr_pDljwJ9OogHoi9Yf99uP84XA
 ###
-PUT http://localhost:8080/v1/apis/imgs/imgTypes
+PUT http://ec2-3-35-99-114.ap-northeast-2.compute.amazonaws.com:8080/v1/apis/imgs/imgTypes
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOiIxNDY4NDE2MTM5IiwiaWF0IjoxNjE2MDY2ODkxLCJleHAiOjE2MTYxNTMyOTF9.mGF2by7eErmHWj35Cr_pDljwJ9OogHoi9Yf99uP84XA
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOiIxNDM3OCIsImlhdCI6MTYxNjQxNTcxMiwiZXhwIjoxNjE2NTAyMTEyfQ.qrtP-LfRbxja8a9sq3XTzK8ouJcPnVcXaz1U7bd8bS4
 
 {
  "imgType": "CUSTOM"
 }
 ###
-POST http://localhost:8080/v1/apis/imgs/custom
+POST http://ec2-3-35-99-114.ap-northeast-2.compute.amazonaws.com:8080/v1/apis/imgs/custom
 Content-Type: multipart/form-data; boundary=boundary
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOiIxNDY4NDE2MTM5IiwiaWF0IjoxNjE2MDY2ODkxLCJleHAiOjE2MTYxNTMyOTF9.mGF2by7eErmHWj35Cr_pDljwJ9OogHoi9Yf99uP84XA
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOiIxNDM3OCIsImlhdCI6MTYxNjQxNTcxMiwiZXhwIjoxNjE2NTAyMTEyfQ.qrtP-LfRbxja8a9sq3XTzK8ouJcPnVcXaz1U7bd8bS4
 
 --boundary
 Content-Disposition: form-data; name="customImg"; filename="test.png"
@@ -26,3 +27,13 @@ Content-Type: image/png
 --boundary
 
 ###
+POST http://localhost:8080/v1/apis/imgs/custom
+Content-Type: multipart/form-data; boundary=boundary
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOiIxNDM3OCIsImlhdCI6MTYxNjQxNTcxMiwiZXhwIjoxNjE2NTAyMTEyfQ.qrtP-LfRbxja8a9sq3XTzK8ouJcPnVcXaz1U7bd8bS4
+
+--boundary
+Content-Disposition: form-data; name="customImg"; filename="test.png"
+Content-Type: image/png
+
+< /Users/user/Desktop/test.png
+--boundary
