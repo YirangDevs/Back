@@ -41,8 +41,11 @@ public class S3Uploader {
         try{
         File convertFile = new File(TEMP_FILE_PATH + multipartFile.getOriginalFilename());
         if (convertFile.createNewFile()){
+            System.out.println("We did make createNew File!!");
             FileOutputStream fos = new FileOutputStream(convertFile);
+            System.out.println("FileOutPutStream fos!!");
             fos.write(multipartFile.getBytes());
+            System.out.println("fos write success!!");
             return convertFile;
         }
         throw new Exception();
