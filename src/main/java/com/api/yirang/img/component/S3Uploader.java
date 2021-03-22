@@ -43,7 +43,9 @@ public class S3Uploader {
 
     private File convert(MultipartFile multipartFile) throws IOException {
         System.out.println("I'm Trying to make File!");
-        File convertFile = new File("./" + multipartFile.getOriginalFilename());
+        File convertFile = new File(System.getProperty("java.io.tmpdir") +
+                                    System.getProperty("file.separator") +
+                                    multipartFile.getOriginalFilename());
         System.out.println("I Made ConvertFile!: " + convertFile.getName());
         if (convertFile.createNewFile()) {
             System.out.println("We did make createNew File!!");
