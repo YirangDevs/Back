@@ -29,7 +29,7 @@ public class S3Uploader {
             return imgUrl;
         }
         catch (Exception e){
-            e.printStackTrace();
+            e.printStackTrace(System.out);
             throw new FileConvertException();
         }
     }
