@@ -43,7 +43,6 @@ public class ImgService {
     }
 
     public void updateCustomImg(Long userId, MultipartFile file){
-        System.out.println("In ImgService, Multipartfile: " + file.getOriginalFilename());
         User user = userService.findUserByUserId(userId);
         if (file == null){
             return;
@@ -54,7 +53,7 @@ public class ImgService {
         }
 
         // 1. File Upload
-        String fileUrl = s3Uploader.upload(file);
+        String fileUrl = s3Uploader.upload(userId, file);
         imgRepository.updateCustomImg(userId, fileUrl);
     }
 

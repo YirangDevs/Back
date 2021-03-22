@@ -27,6 +27,6 @@ public class S3UploaderTest {
     public void 파일_업로드(){
         String data = "a,b,c";
         MultipartFile multipartFile = new MockMultipartFile("files", "abc.csv", "text/plain", data.getBytes(StandardCharsets.UTF_8));
-        System.out.println("URk: " + s3Uploader.upload(multipartFile) );
+//        System.out.println("URk: " + s3Uploader.upload(multipartFile) );
     }
 }
