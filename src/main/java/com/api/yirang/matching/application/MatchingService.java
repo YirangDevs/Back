@@ -34,8 +34,8 @@ public class MatchingService {
     private final ApplyDao applyDao;
     private final UserService userService;
     private final ActivityDao activityDao;
+    private final MatchingCrudService matchingCrudService;
 
-    private final MatchingRepository matchingRepository;
     private final UnMatchingListRepository unMatchingListRepository;
 
     public List<Activity> findAllActivityTomorrow(LocalDateTime now){
@@ -104,7 +104,6 @@ public class MatchingService {
                              Queue<Senior> maleTalkSeniors, Queue<Senior> femaleTalkSeniors){
 
         // 1. 해당하는 activity에 Work로 되어있는 피봉사자 데이터 가져오기
-        List<Senior> workSeniors =
         // 2. 해당하는 activity에 Talk로 되어있는 피봉사자 데이터 가져오기
     }
 
@@ -114,10 +113,9 @@ public class MatchingService {
         // 1. 남자 피봉사자 - 노력 봉사 불러오기
 
         // 2. 남자 봉사자 - 피봉사자 불러오기
-
+        return;
 
     }
-
 
 
 
