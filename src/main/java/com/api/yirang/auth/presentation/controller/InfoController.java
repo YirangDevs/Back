@@ -25,7 +25,7 @@ public class InfoController {
     private final UserService userService;
     private final JwtParser jwtParser;
 
-    // Super Admin 만 가능
+
     @ResponseStatus(HttpStatus.OK)
     @GetMapping(value="/users/{userId}", produces = "application/json")
     public UserInfoResponseDto getUserInfo(@PathVariable("userId") Long userId){
@@ -103,7 +103,7 @@ public class InfoController {
 
     }
 
-    // Delete
+    /** Delete **/
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping(value = "/myinfo")
     public void deleteMyInfo(@RequestHeader("Authorization") String header){

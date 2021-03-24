@@ -10,6 +10,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.Optional;
 
@@ -37,6 +38,13 @@ public interface ApplyDao extends JpaRepository<Apply, Long> {
 
     boolean existsApplyByVolunteerAndActivity(Volunteer volunteer, Activity activity);
 
+    @Transactional
+    @Query("SELECT ( COUNT(A) > 0) " +
+           "FROM Apply A " +
+           "WHERE A.volunteer.user.userId =:userId " +
+           "      AND A.activity.dtov > :now")
+    boolean existsApplyByVolunteer_User_UserIdAndActivity_DtovAfterNow(Long userId, LocalDateTime now);
+
 
     Optional<Apply> findApplyByApplyId(Long applyId);
 
@@ -51,4 +59,6 @@ public interface ApplyDao extends JpaRepository<Apply, Long> {
     @Query("DELETE FROM Apply A " +
            "WHERE A.activity =:activity ")
     void deleteAllWithActivity(Activity activity);
+
+    void  deleteAllByVolunteer_User_UserId(Long userId);
 }
