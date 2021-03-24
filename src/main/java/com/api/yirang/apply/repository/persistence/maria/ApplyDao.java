@@ -3,6 +3,7 @@ package com.api.yirang.apply.repository.persistence.maria;
 import com.api.yirang.apply.domain.model.Apply;
 import com.api.yirang.auth.domain.user.model.Volunteer;
 import com.api.yirang.notices.domain.activity.model.Activity;
+import com.api.yirang.seniors.support.custom.ServiceType;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -22,6 +23,7 @@ import java.util.Optional;
 @Repository
 public interface ApplyDao extends JpaRepository<Apply, Long> {
 
+    Collection<Apply> findAppliesByActivityAndServiceTypeOrderByDtoa(Activity activity, ServiceType serviceType);
     Collection<Apply> findAppliesByActivity(Activity activity);
 
     Collection<Apply> findAppliesByVolunteer(Volunteer volunteer);

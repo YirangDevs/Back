@@ -6,6 +6,7 @@ import com.api.yirang.apply.domain.model.Apply;
 import com.api.yirang.apply.repository.persistence.maria.ApplyDao;
 import com.api.yirang.auth.domain.user.model.Volunteer;
 import com.api.yirang.notices.domain.activity.model.Activity;
+import com.api.yirang.seniors.support.custom.ServiceType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -40,7 +41,14 @@ public class ApplyBasicService {
         }
         return applies;
     }
-
+    public Collection<Apply> getAppliesFromActivity(Activity activity, ServiceType serviceType) {
+        // null exception 제외
+        Collection<Apply> applies = applyDao.findAppliesByActivityAndServiceTypeOrderByDtoa(activity, serviceType);
+        if (applies.size() == 0){
+            throw new ApplyNullException();
+        }
+        return applies;
+    }
 
     public Apply findApplyByApplyId(Long applyId) {
         return applyDao.findApplyByApplyId(applyId).orElseThrow(ApplyNullException::new);

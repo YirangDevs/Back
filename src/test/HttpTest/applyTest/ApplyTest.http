@@ -1,0 +1,8 @@
+POST http://ec2-3-35-99-114.ap-northeast-2.compute.amazonaws.com:8080/v1/apis/apply/notices
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOiIyNTE1OCIsImlhdCI6MTYxNjMzOTk0NiwiZXhwIjoxNjE2NDI2MzQ2fQ.zLNoZAd-eE2oSZ3LwsAStMduHdXc7YVDwPzVWm1_Wf8
+
+{
+ "noticeId": 546,
+  "serviceType": "WORK"
+}

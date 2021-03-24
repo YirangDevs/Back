@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.stream.Collectors;
 
 /**
@@ -71,6 +72,33 @@ public class ApplyAdvancedService {
         Long res = Long.valueOf(applies.size());
         return res;
     }
+
+    public List<Volunteer> getVolunteersFromActivityId(Activity activity){
+        // 0. apply에 해당하는 Activity 찾기
+        Collection<Apply> applies = applyBasicService.getAppliesFromActivity(activity);
+
+        return applies.stream()
+                      .map(Apply::getVolunteer)
+                      .collect(Collectors.toList());
+    }
+    public List<Volunteer> getWorkVolunteersFromActivityId(Activity activity){
+        // 0. apply에 해당하는 Activity 찾기
+        Collection<Apply> applies = applyBasicService.getAppliesFromActivity(activity, ServiceType.SERVICE_WORK);
+
+        return applies.stream()
+                      .map(Apply::getVolunteer)
+                      .collect(Collectors.toList());
+    }
+    public List<Volunteer> getTalkVolunteersFromActivityId(Activity activity){
+        // 0. apply에 해당하는 Activity 찾기
+        Collection<Apply> applies = applyBasicService.getAppliesFromActivity(activity, ServiceType.SERVICE_TALK);
+
+        return applies.stream()
+                      .map(Apply::getVolunteer)
+                      .collect(Collectors.toList());
+    }
+
+
     /**
      * @param userId 봉사자의 아이디
      * 최근 Applicants 순으로 준다.

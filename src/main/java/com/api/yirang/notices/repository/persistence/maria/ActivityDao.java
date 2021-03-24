@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -39,6 +40,8 @@ public interface ActivityDao extends JpaRepository<Activity, Long> {
            "FROM Activity A " +
            "WHERE A.region =:region AND A.dtov =:dtov")
     Optional<Activity> findActivityByRegionAndDTOV(Region region, LocalDateTime dtov);
+
+    List<Activity> findActivitiesByDtovBetween(LocalDateTime start, LocalDateTime end);
 
 
     @Transactional
