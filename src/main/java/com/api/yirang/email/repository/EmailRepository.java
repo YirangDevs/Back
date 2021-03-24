@@ -1,6 +1,7 @@
 package com.api.yirang.email.repository;
 
 import com.api.yirang.email.model.Email;
+import com.api.yirang.email.util.Consent;
 import com.api.yirang.email.util.Validation;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -32,4 +33,11 @@ public interface EmailRepository extends JpaRepository<Email, Long> {
     @Modifying
     @Transactional
     void deleteEmailByUser_UserId(Long userId);
+
+    @Modifying
+    @Transactional
+    @Query("UPDATE Email E " +
+           "SET E.notifiable =:notifiable " +
+           "WHERE E.user.userId =:userId")
+    void updateEmailNotificationWithUserId(Long userId, Consent notifiable);
 }

@@ -3,6 +3,7 @@ package com.api.yirang.email.application;
 import com.api.yirang.auth.application.intermediateService.UserService;
 import com.api.yirang.auth.domain.user.model.User;
 import com.api.yirang.common.support.generator.RandomGenerator;
+import com.api.yirang.email.dto.EmailNotifiableRequestDto;
 import com.api.yirang.email.dto.EmailRequestDto;
 import com.api.yirang.email.dto.EmailValidationRequestDto;
 import com.api.yirang.email.dto.EmailValidationResponseDto;
@@ -106,5 +107,11 @@ public class EmailService {
     // Simple CRUD operations
     public Email findEmailByUserId(Long userId){
         return emailRepository.findEmailByUser_UserId(userId).orElseThrow(new EmailNullException(userId));
+    }
+
+    public void changeMyNotification(Long userId, EmailNotifiableRequestDto emailNotifiableRequest) {
+        User user = userService.findUserByUserId(userId);
+        Email email = findEmailByUserId(userId);
+        emailRepository.updateEmailNotificationWithUserId(userId, emailNotifiableRequest.getNotifiable());
     }
 }
