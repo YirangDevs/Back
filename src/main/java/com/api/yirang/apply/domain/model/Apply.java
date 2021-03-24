@@ -23,7 +23,7 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "apply")
 @Getter
-@ToString
+@ToString(exclude = {"volunteer", "activity"})
 @NoArgsConstructor
 public class Apply {
 

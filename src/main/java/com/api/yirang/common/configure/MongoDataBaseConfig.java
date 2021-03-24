@@ -18,7 +18,7 @@ import java.util.List;
 @Configuration
 @EnableMongoRepositories(
         basePackages = {
-            "com.api.yirang.seniors.repository.persistence.mongo"
+            "com.api.yirang.matching.repository.mongo"
         }
 )
 @PropertySource("classpath:properties/application-db.properties")

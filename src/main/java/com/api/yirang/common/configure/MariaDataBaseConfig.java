@@ -29,7 +29,8 @@ import java.util.Properties;
                 "com.api.yirang.seniors.repository.persistence.maria",
                 "com.api.yirang.apply.repository.persistence.maria",
                 "com.api.yirang.email.repository",
-                "com.api.yirang.img.repository"
+                "com.api.yirang.img.repository",
+                "com.api.yirang.matching.repository.maria"
         }
 )
 @PropertySource("classpath:properties/application-db.properties")
