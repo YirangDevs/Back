@@ -241,18 +241,22 @@ public class UserService {
     public void deleteUser(Long userId) {
         User user = findUserByUserId(userId);
 
-        // 1. Admin이나 Volunteer Data 지우기
+        //TODO: 1. Matching 삭제
+        matching
+        //TODO: 2. Apply 삭제
+
+        // 3. Admin이나 Volunteer Data 지우기
         if (user.getAuthority() == Authority.ROLE_ADMIN){
             adminService.delete(user);
         }
         else{
             volunteerBasicService.delete(user);
         }
-        //TODO: 2. Email 삭제
+        // 4. Email 삭제
         emailRepository.deleteEmailByUser_UserId(userId);
-        //TODO: 3. img 삭제
+        // 5. img 삭제
         imgRepository.deleteImgByUser_UserId(userId);
-        //TODO: 4. User 삭제
+        // 6. User 삭제
         userDao.delete(user);
     }
 
