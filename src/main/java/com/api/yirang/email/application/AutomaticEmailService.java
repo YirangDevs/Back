@@ -8,9 +8,9 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @Transactional
 public class AutomaticEmailService {
-//
-//    @Scheduled(cron = "*/10 * * * * *")
-//    public void run(){
-//        System.out.println("Hello!");
-//    }
+
+    @Scheduled(cron = "*/1 * * * * *")
+    public void run(){
+        System.out.println("Hello!");
+    }
 }
