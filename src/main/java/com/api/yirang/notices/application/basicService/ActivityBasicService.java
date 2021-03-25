@@ -98,7 +98,7 @@ public class ActivityBasicService {
         applyBasicService.deleteAllWithActivity(activity);
         // 2. volunteerService 삭제
         volunteerServiceBasicService.deleteAllWithActivity(activity);
-        /** TO-DO 매칭 삭제 */
+        //TODO: 매칭 삭제 */
         // 3. 매칭 삭제
         deleteOnlyActivityById(activityId);
     }
