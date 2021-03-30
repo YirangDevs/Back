@@ -6,16 +6,27 @@ import com.api.yirang.apply.domain.exception.NoaNegativeException;
 import com.api.yirang.auth.application.basicService.VolunteerBasicService;
 import com.api.yirang.common.support.time.TimeConverter;
 import com.api.yirang.common.support.type.Region;
+import com.api.yirang.notices.domain.activity.converter.ActivityConverter;
 import com.api.yirang.notices.domain.activity.exception.ActivityNullException;
 import com.api.yirang.notices.domain.activity.exception.AlreadyExistedActivityException;
 import com.api.yirang.notices.domain.activity.model.Activity;
+import com.api.yirang.notices.domain.notice.exception.NoticeNullException;
+import com.api.yirang.notices.presentation.dto.ActivityOneResponseDto;
+import com.api.yirang.notices.presentation.dto.ActivityResponseDto;
 import com.api.yirang.notices.repository.persistence.maria.ActivityDao;
+import com.api.yirang.notices.repository.persistence.maria.PageableActivityDao;
 import com.api.yirang.seniors.application.basicService.VolunteerServiceBasicService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.Collection;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -23,6 +34,7 @@ import java.time.LocalDateTime;
 public class ActivityBasicService {
 
     private final ActivityDao activityDao;
+    private final PageableActivityDao pageableActivityDao;
 
     // DI Service
     private final ApplyBasicService applyBasicService;
@@ -65,6 +77,35 @@ public class ActivityBasicService {
     public Activity findActivityByActivityId(Long activityId){
         return activityDao.findById(activityId).orElseThrow(ActivityNullException::new);
     }
+
+    public ActivityOneResponseDto getOneActivityById(Long id){
+        Activity activity = findActivityByActivityId(id);
+        ActivityOneResponseDto activityOneResponseDto = ActivityConverter.ConvertOneActivityToDto(activity);
+        return activityOneResponseDto;
+    }
+
+    public Collection<ActivityResponseDto> getAllActivityByPage(Integer page){
+        int pageNum = 14;
+        Pageable pageWithFourTeenElements = PageRequest.of(page, pageNum, Sort.by("dtov").descending());
+        Page<Activity> activityPage = pageableActivityDao.findAll(pageWithFourTeenElements);
+        Collection<Activity> activity = activityPage.toList();
+
+        if (activity.size() == 0){
+            throw new ActivityNullException();
+        }
+
+        Collection<ActivityResponseDto> activityResponseDtos = activity.stream().map(e->{
+            return ActivityConverter.ConvertActivityToDto(e);
+        }).collect(Collectors.toList());
+
+        return activityResponseDtos;
+    }
+
+    public Long findNumsOfActivity(){
+        System.out.println("[ActivityBasicService]: findNumsOfActivity를 실행하겠습니다.");
+        return activityDao.count();
+    }
+
     // update
     public void update(Long activityId, Activity toBeUpdatedActivity) {
         // (Noa:= apply 숫자는 바뀔 수 없음)
