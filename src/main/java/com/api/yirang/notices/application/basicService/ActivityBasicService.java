@@ -3,7 +3,10 @@ package com.api.yirang.notices.application.basicService;
 
 import com.api.yirang.apply.application.ApplyBasicService;
 import com.api.yirang.apply.domain.exception.NoaNegativeException;
+import com.api.yirang.auth.application.basicService.AdminService;
 import com.api.yirang.auth.application.basicService.VolunteerBasicService;
+import com.api.yirang.auth.application.intermediateService.UserService;
+import com.api.yirang.auth.support.type.Authority;
 import com.api.yirang.common.support.time.TimeConverter;
 import com.api.yirang.common.support.type.Region;
 import com.api.yirang.notices.domain.activity.converter.ActivityConverter;
@@ -25,8 +28,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.util.Collection;
-import java.util.stream.Collectors;
+
 
 @Service
 @RequiredArgsConstructor
@@ -34,11 +36,11 @@ import java.util.stream.Collectors;
 public class ActivityBasicService {
 
     private final ActivityDao activityDao;
-    private final PageableActivityDao pageableActivityDao;
 
     // DI Service
     private final ApplyBasicService applyBasicService;
     private final VolunteerServiceBasicService volunteerServiceBasicService;
+
 
     public Activity save(Activity activity) {
         // 있던 Activity가 중복되면 에러
@@ -84,22 +86,7 @@ public class ActivityBasicService {
         return activityOneResponseDto;
     }
 
-    public Collection<ActivityResponseDto> getAllActivityByPage(Integer page){
-        int pageNum = 14;
-        Pageable pageWithFourTeenElements = PageRequest.of(page, pageNum, Sort.by("dtov").descending());
-        Page<Activity> activityPage = pageableActivityDao.findAll(pageWithFourTeenElements);
-        Collection<Activity> activity = activityPage.toList();
 
-        if (activity.size() == 0){
-            throw new ActivityNullException();
-        }
-
-        Collection<ActivityResponseDto> activityResponseDtos = activity.stream().map(e->{
-            return ActivityConverter.ConvertActivityToDto(e);
-        }).collect(Collectors.toList());
-
-        return activityResponseDtos;
-    }
 
     public Long findNumsOfActivity(){
         System.out.println("[ActivityBasicService]: findNumsOfActivity를 실행하겠습니다.");

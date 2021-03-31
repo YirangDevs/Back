@@ -1,8 +1,12 @@
 package com.api.yirang.notices.presentation.controller;
 
+import com.api.yirang.auth.support.utils.ParsingHelper;
 import com.api.yirang.notices.application.advancedService.NoticeActivityService;
+import com.api.yirang.notices.application.advancedService.UserAdminActivityService;
 import com.api.yirang.notices.application.basicService.ActivityBasicService;
 import com.api.yirang.notices.presentation.dto.ActivityOneResponseDto;
+import com.api.yirang.auth.domain.jwt.components.JwtParser;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
@@ -13,13 +17,17 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
+
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/v1/apis/manage/activities")
 public class ActivityController {
 
     private final ActivityBasicService activityBasicService;
-    private final NoticeActivityService noticeActivityService;
+    private final UserAdminActivityService userAdminActivityService;
+    private final JwtParser jwtParser;
+
 
     /**
      * 목적: 액티비티 페이징 조회하는 API
@@ -27,12 +35,14 @@ public class ActivityController {
      */
     @GetMapping(produces = "application/json")
     @ResponseStatus(HttpStatus.OK)
-    public Map<String, Collection> getActivity (@Param("page") @Min(value = 0) Integer page){
+    public Map<String, Collection> getActivity (@Param("page") @Min(value = 0) Integer page, @RequestHeader("Authorization") String header){
+        Long userId = jwtParser.getUserIdFromJwt(ParsingHelper.parseHeader(header));
+
         System.out.println("[ActivityController] 액티비티 페이지 조회 요청이 왔습니다.");
         System.out.println("[ActivityController] PageNums: " + page);
 
         Map<String, Collection> res = new HashMap<>();
-        res.put("activities", activityBasicService.getAllActivityByPage(page));
+        res.put("activities", userAdminActivityService.getAllActivityByPage(page, userId));
         return res;
     }
     /**
@@ -59,10 +69,11 @@ public class ActivityController {
      */
     @GetMapping(value = "/nums", produces="application/json")
     @ResponseStatus(HttpStatus.OK)
-    public Map<String, Long> getActivityNum(){
+    public Map<String, Long> getActivityNum(@RequestHeader("Authorization") String header){
+        Long userId = jwtParser.getUserIdFromJwt(ParsingHelper.parseHeader(header));
         System.out.println("[ActivityController] 액티비티 숫자 요청이 왔습니다.");
         Map<String, Long> res = new HashMap<>();
-        res.put("totalActivityNums", activityBasicService.findNumsOfActivity());
+        res.put("totalActivityNums", userAdminActivityService.getActivityNumByAuthority(userId));
         return res;
     }
 
