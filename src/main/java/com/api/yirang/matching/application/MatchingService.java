@@ -63,10 +63,10 @@ public class MatchingService {
         final Queue<Senior> femaleTalkSeniors = new LinkedList<>();
 
         //TODO: 아래의 큐들은 과정 중에 발생하는 노력 봉사와 말벗 봉사 Queue 들입니다.
+        final PriorityQueue<Volunteer> workVolunteers = new PriorityQueue<>(Comparator.comparing(s -> applyAdvancedService.))
 
         //TODO: 아래의 큐들은 과정 중에 발생하는 PQ입니다.
-        final PriorityQueue<Senior> seniorPQ = new PriorityQueue<>(Comparator.comparingLong(s -> volunteerServiceBasicService.findVolunteerServiceByActivityAndSenior(activity, s)
-                                                                                                                             .getPriority()));
+        final PriorityQueue<Senior> seniorPQ = new PriorityQueue<>(Comparator.comparingLong(s -> volunteerServiceBasicService.findVolunteerServiceByActivityAndSenior(activity, s).getPriority()));
 
         final List<Long> unMatchedVolunteerIds = new ArrayList<>();
         final List<Long> unMatchedSeniorIds = new ArrayList<>();
