@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -75,6 +76,12 @@ public class AdminService {
 
     public Admin findAdminByUserId(Long userId) {
         return adminDao.findAdminByUserId(userId).orElseThrow(AdminNullException::new);
+    }
+
+    public List<Admin> findAdminsByRegion(Region region){
+
+        List<Admin> allAdmins = adminDao.findAll();
+        return allAdmins.stream().filter(e -> e.getRegions().contains(region)).collect(Collectors.toList());
     }
 
     public boolean isExistedUser(User user) {

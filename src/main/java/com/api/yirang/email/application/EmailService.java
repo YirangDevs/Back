@@ -3,9 +3,7 @@ package com.api.yirang.email.application;
 import com.api.yirang.auth.application.intermediateService.UserService;
 import com.api.yirang.auth.domain.user.model.User;
 import com.api.yirang.common.support.generator.RandomGenerator;
-import com.api.yirang.email.dto.EmailRequestDto;
-import com.api.yirang.email.dto.EmailValidationRequestDto;
-import com.api.yirang.email.dto.EmailValidationResponseDto;
+import com.api.yirang.email.dto.*;
 import com.api.yirang.email.exception.*;
 import com.api.yirang.email.model.Email;
 import com.api.yirang.email.repository.EmailRepository;
@@ -19,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.mail.internet.MimeMessage;
 import java.nio.charset.StandardCharsets;
+import java.util.List;
 
 @Service
 @Transactional
@@ -32,6 +31,11 @@ public class EmailService {
 
     private static final String EMAIL_HOST = "yirang@gmail.com";
     private static final String SENDER_NAME = "Yirang";
+
+    private static final String MATCHING_MAIL_TITLE = "[Yirang 재가봉사] 매칭완료 안내 메일입니다.";
+    private static final String VERIFY_MAIL_TITLE = "[Yirang 재가봉사] 본인 이메일을 인증해주세요";
+    private static final String WITHDRAW_MAIL_TITLE = "[Yirang 재가봉사] 회원탈퇴 안내 메일입니다.";
+
 
     // Privates
     private void sendEmail(String toEmail, String subject, String content){
@@ -48,6 +52,32 @@ public class EmailService {
             throw new CustomMessagingException();
         }
         javaMailSender.send(message);
+    }
+
+    public void sendMatchingEmail(Long userId,
+                                  List<MatchingMailContent> matchingMailContents){
+
+        User user = userService.findUserByUserId(userId);
+
+        final String toEmail = user.getEmail();
+        final String subject = MATCHING_MAIL_TITLE;
+        final String content = mailContentHelper.generateMatchingMailContent(matchingMailContents);
+
+        sendEmail(toEmail, subject, content);
+
+    }
+
+    public void sendWithdrawEmail(Long userId,
+                                  UserWithdrawMailContent userWithdrawMailContent,
+                                  List<MatchingMailContent> matchingMailContentList) {
+
+        User user = userService.findUserByUserId(userId);
+
+        final String toEmail = user.getEmail();
+        final String subject = WITHDRAW_MAIL_TITLE;
+        final String content = mailContentHelper.generateWithdrawMailContent(userWithdrawMailContent, matchingMailContentList);
+
+        sendEmail(toEmail, subject, content);
     }
 
 
@@ -75,7 +105,7 @@ public class EmailService {
         emailRepository.updateEmailCertificationWithUserId(userId, Hashing.sha256().hashString(certificationNumbers, StandardCharsets.UTF_8).toString());
 
         final String toEmail = user.getEmail();
-        final String subject = "[Yirang 재가봉사] 본인 이메일을 인증해주세요";
+        final String subject = VERIFY_MAIL_TITLE;
         final String content = mailContentHelper.generateVerifyMailContent(user, certificationNumbers);
 
         sendEmail(toEmail, subject, content);
@@ -109,4 +139,6 @@ public class EmailService {
     public Email findEmailByUserId(Long userId){
         return emailRepository.findEmailByUser_UserId(userId).orElseThrow(new EmailNullException(userId));
     }
+
+
 }
