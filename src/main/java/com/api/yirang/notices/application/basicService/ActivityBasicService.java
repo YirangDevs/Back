@@ -3,19 +3,32 @@ package com.api.yirang.notices.application.basicService;
 
 import com.api.yirang.apply.application.ApplyBasicService;
 import com.api.yirang.apply.domain.exception.NoaNegativeException;
+import com.api.yirang.auth.application.basicService.AdminService;
 import com.api.yirang.auth.application.basicService.VolunteerBasicService;
+import com.api.yirang.auth.application.intermediateService.UserService;
+import com.api.yirang.auth.support.type.Authority;
 import com.api.yirang.common.support.time.TimeConverter;
 import com.api.yirang.common.support.type.Region;
+import com.api.yirang.notices.domain.activity.converter.ActivityConverter;
 import com.api.yirang.notices.domain.activity.exception.ActivityNullException;
 import com.api.yirang.notices.domain.activity.exception.AlreadyExistedActivityException;
 import com.api.yirang.notices.domain.activity.model.Activity;
+import com.api.yirang.notices.domain.notice.exception.NoticeNullException;
+import com.api.yirang.notices.presentation.dto.ActivityOneResponseDto;
+import com.api.yirang.notices.presentation.dto.ActivityResponseDto;
 import com.api.yirang.notices.repository.persistence.maria.ActivityDao;
+import com.api.yirang.notices.repository.persistence.maria.PageableActivityDao;
 import com.api.yirang.seniors.application.basicService.VolunteerServiceBasicService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+
 
 @Service
 @RequiredArgsConstructor
@@ -27,6 +40,7 @@ public class ActivityBasicService {
     // DI Service
     private final ApplyBasicService applyBasicService;
     private final VolunteerServiceBasicService volunteerServiceBasicService;
+
 
     public Activity save(Activity activity) {
         // 있던 Activity가 중복되면 에러
@@ -65,6 +79,20 @@ public class ActivityBasicService {
     public Activity findActivityByActivityId(Long activityId){
         return activityDao.findById(activityId).orElseThrow(ActivityNullException::new);
     }
+
+    public ActivityOneResponseDto getOneActivityById(Long id){
+        Activity activity = findActivityByActivityId(id);
+        ActivityOneResponseDto activityOneResponseDto = ActivityConverter.ConvertOneActivityToDto(activity);
+        return activityOneResponseDto;
+    }
+
+
+
+    public Long findNumsOfActivity(){
+        System.out.println("[ActivityBasicService]: findNumsOfActivity를 실행하겠습니다.");
+        return activityDao.count();
+    }
+
     // update
     public void update(Long activityId, Activity toBeUpdatedActivity) {
         // (Noa:= apply 숫자는 바뀔 수 없음)
@@ -98,7 +126,7 @@ public class ActivityBasicService {
         applyBasicService.deleteAllWithActivity(activity);
         // 2. volunteerService 삭제
         volunteerServiceBasicService.deleteAllWithActivity(activity);
-        /** TO-DO 매칭 삭제 */
+        //TODO: 매칭 삭제 */
         // 3. 매칭 삭제
         deleteOnlyActivityById(activityId);
     }

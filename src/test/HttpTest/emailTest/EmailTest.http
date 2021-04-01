@@ -14,13 +14,12 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6IuycoOygleuvvCIsImltZ
 ### 자신의 이메일 인증번호 생성 (localhost)
 POST http://localhost:8080/v1/apis/emails/certification
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOiIxNDY4NDE2MTM5IiwiaWF0IjoxNjE1OTIzMTcyLCJleHAiOjE2MTYwMDk1NzJ9.Ewh4DqaNlo1mBPik3UUdpjXLjfBAc_P1lwxXOMP-h5g
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOiIzMzI4NiIsImlhdCI6MTYxNjQ3MDIyNywiZXhwIjoxNjE2NTU2NjI3fQ.5X_VfIgIIbuu9LBC0MR7sFChEOqRcp0Mc7ZGs9zXUBU
 
 ### 자신의 이메일 인증번호 생성 (실서버)
 POST http://ec2-3-35-99-114.ap-northeast-2.compute.amazonaws.com:8080/v1/apis/emails/certification
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOiIxNDY4NDE2MTM5IiwiaWF0IjoxNjE1OTIzMTcyLCJleHAiOjE2MTYwMDk1NzJ9.Ewh4DqaNlo1mBPik3UUdpjXLjfBAc_P1lwxXOMP-h5g
-
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOiIxNDY4NDE2MTM5IiwiaWF0IjoxNjE2NDcwMzY2LCJleHAiOjE2MTY1NTY3NjZ9.NWIfZopj5XaFlnrNqETOFNdq1C6jCENTgqeH0jLr8IU
 
 ### 이메일 인증으로 확인
 POST http://localhost:8080/v1/apis/emails/validation

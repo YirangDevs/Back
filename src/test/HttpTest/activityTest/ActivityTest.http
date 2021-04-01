@@ -1,0 +1,12 @@
+GET http://localhost:8080/v1/apis/manage/activities?page=0
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOiIyNTE1OCIsImlhdCI6MTYxNzE5MDIxNiwiZXhwIjoxNjE3Mjc2NjE2fQ.9HBBlsA_jKHgOxcpHo-SNEaxn7M_aBGksytiBQyN2cU
+###
+GET http://localhost:8080/v1/apis/manage/activities/nums
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOiIxNzU3NiIsImlhdCI6MTYxNzE4OTgwNSwiZXhwIjoxNjE3Mjc2MjA1fQ.nH4O-Bz230BU5tP04K6wHm9xP18O71qhP2EAJDlr6so
+###
+GET http://localhost:8080/v1/apis/manage/activities/417
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOiIxNDM3OCIsImlhdCI6MTYxNzE4NjkyMSwiZXhwIjoxNjE3MjczMzIxfQ.tdjCjaA39hMvRC0iDNNHjpfbVEvmAeTXYnJOajU3mvI
+###

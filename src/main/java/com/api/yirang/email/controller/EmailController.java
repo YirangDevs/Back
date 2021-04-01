@@ -5,6 +5,7 @@ import com.api.yirang.auth.application.intermediateService.UserService;
 import com.api.yirang.auth.domain.jwt.components.JwtParser;
 import com.api.yirang.auth.support.utils.ParsingHelper;
 import com.api.yirang.email.application.EmailService;
+import com.api.yirang.email.dto.EmailNotifiableRequestDto;
 import com.api.yirang.email.dto.EmailRequestDto;
 import com.api.yirang.email.dto.EmailValidationRequestDto;
 import com.api.yirang.email.dto.EmailValidationResponseDto;
@@ -72,6 +73,18 @@ public class EmailController {
     public void makeCertificateEmail(@RequestHeader("Authorization") String header){
         Long userId = jwtParser.getUserIdFromJwt(ParsingHelper.parseHeader(header));
         emailService.sendVerificationEmail(userId);
+    }
+
+    /**
+     * 목적: 자신의 이메일 수신 여부 변경을 위한 API
+     * 사용자: 슈펴관리자, 관리자, 봉사자
+     */
+    @PutMapping(value = "/notification", consumes = "application/json")
+    @ResponseStatus(HttpStatus.OK)
+    public void changeMyNotifiable(@RequestHeader("Authorization") String header,
+                                   @RequestBody @Valid EmailNotifiableRequestDto emailNotifiableRequest){
+        Long userId = jwtParser.getUserIdFromJwt(ParsingHelper.parseHeader(header));
+        emailService.changeMyNotification(userId, emailNotifiableRequest);
     }
 
 }
