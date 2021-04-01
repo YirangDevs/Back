@@ -52,12 +52,11 @@ public class ActivityController {
 
     @GetMapping(value = "/{activity_id}",produces = "application/json")
     @ResponseStatus(HttpStatus.OK)
-    public Map<String, ActivityOneResponseDto> getActivityById(@PathVariable("activity_id") Long activityId){
+    public ActivityOneResponseDto getActivityById(@PathVariable("activity_id") Long activityId){
         System.out.println("[ActivityController] 액티비티 조회 요청이 왔습니다.");
         System.out.println("[ActivityController] activityId: " + activityId);
-        Map<String, ActivityOneResponseDto> res = new HashMap<>();
-        res.put("activity", activityBasicService.getOneActivityById(activityId));
-        return res;
+        ActivityOneResponseDto activityOneResponseDto = activityBasicService.getOneActivityById(activityId);
+        return activityOneResponseDto;
     }
 
 
