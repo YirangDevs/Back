@@ -25,6 +25,7 @@ public class ApplyResponseDto {
 
     private final String dtov; // 봉사 날짜/시간
     private final Region region; // 봉사 지역
+    private final Long activityId; // noticeId
 
     public ApplyResponseDto() {
         this.applyId = null;
@@ -32,5 +33,6 @@ public class ApplyResponseDto {
         this.dtov = null;
         this.region = null;
         this.matchingState = null;
+        this.activityId = null;
     }
 }

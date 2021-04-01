@@ -40,6 +40,7 @@ public class ApplyDtoConverter {
                                .matchingState(apply.getMatchingState())
                                .dtov(TimeConverter.LocalDateTimeToString(activity.getDtov()))
                                .region(activity.getRegion())
+                               .activityId(activity.getActivityId())
                                .build();
     }
 }
