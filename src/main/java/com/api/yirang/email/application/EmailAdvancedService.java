@@ -36,7 +36,6 @@ public class EmailAdvancedService {
 
     private final AdminService adminService;
     private final VolunteerServiceBasicService volunteerServiceBasicService;
-    private final ActivityBasicService activityBasicService;
     private final EmailService emailService;
     private final MatchingCrudService matchingCrudService;
 
@@ -81,9 +80,6 @@ public class EmailAdvancedService {
                     .map(Matching::getActivity)
                     .map(Activity::getRegion)
                     .forEach(region -> adminList.addAll(adminService.findAdminsByRegion(region)));
-
-        // log
-        System.out.println("AdminList: " + adminList);
 
         // 3. User 정보 담긴 MailContent 클래스 만들기
         User user = userDao.findByUserId(userId).orElseThrow(UserNullException::new);

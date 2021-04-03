@@ -4,42 +4,44 @@
     <meta charset="UTF-8">
     <title>Title</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
 </head>
+
 <body style="margin:0;">
-    <div style="width: 100%; height: auto; background-color:rgb(236, 236, 236); display: flex; justify-content: center;">
-        <div style="height: auto; background-color: white; width: 500px;">
-            <div style="height: auto; display: flex; justify-content: center;"> <!-- header -->
-                <!-- <img src="./netflix.png" style="width: 40%;" /> -->
-                <span style="color: #2e7d32; font-size: 50px; font-weight: 800; font-family: Helvetica;">YIRANG</span>
-            </div>
-            <div style="height: auto; margin: 50px;"> <!-- main -->
-                <h3>이랑의 멤버가 되신 것을 환영합니다!!</h3>
-                <h2 th:text="${certificationNumbers}"/>
-                <br/>
-                <b><span th:text="${name}"/></b><span>님 안녕하세요</span>
-                <span style="font-size: 13px;">
-                            <br/>
-                            이랑 페이지에서의 본인 인증 요청이 접수되었습니다. <br/>
-                            해당 코드를 인증번호 칸에 입력한 후 인증을 완료해주세요. <br />
-                            전송된 코드는 <b>5분</b> 후에 만료됩니다.<br>
-                            <br/>
-                            질문이 있거나 도움이 필요한 경우 홈페이지의 채팅 기능을 활용해주세요.<br/>
-                            <br/>
-                            감사합니다.<br/>
-                            -Yirang 관리자 일동
-                </span>
+<div style="width: 100%; height: 770px; background-color:rgb(236, 236, 236); display: flex; justify-content: center;">
+    <div style="background-color: white; width: 640px; font-family: Noto Sans KR, sans-serif;">
+        <div style="height: auto; margin-top: 30px; margin-bottom: 20px;"> <!-- header -->
+            <img src="../img/greensignal.png" style="width: 30%; margin-left: 80px;" />
+            <!--위의 이미지파일 주석 풀고 디자이너님이 주신 로고 넣어주세용-->
+        </div>
+        <div style="height: auto; margin-left: 80px;"> <!-- main -->
+            <span style="font-size: 28px; font-weight: bold;">Welcome Greensignal!</span><br/><br/>
+            <span style="font-size: 30px; font-weight: bold; color:#00b700">이메일 주소 인증</span><br/><br/>
+            <hr style="border: 1px solid rgb(236, 236, 236)"/>
+            <span style="font-size: 18px; line-height: 35px;"><br/>
+                        안녕하세요 <b th:text="${name}" /> 님,<br/>
+                        재가봉사 프로젝트 Greensignal과 함께해 주셔서 감사합니다!<br/>
+                        이메일 인증 번호는 <span style="font-size: 30px; color: #00b700; text-decoration: underline;" th:text="${certificationNumbers}"/> 입니다.<br/>
+                        이메일 인증번호를 입력하여 이메일 인증을 완료해주세요.<br/>
+                        <br/><br/><br/>
 
-            </div>
-            <div style="font-size: 12px; background-color: #005005; color: white; height: 80px; padding-top: 20px; padding-bottom: 20px;"> <!-- footer -->
-                <div style="margin-left: 50px; margin-right: 50px;">
-                    <span>(주) 이랑 컴퍼니</span><br/>
-                    <span>대표 번호: 010-0000-0000</span><br/>
-                    <span>회사 번호: 053) 000-0000</span><br/>
-                    <span>회사 주소: 대구 동성로 중앙파출소 앞 파스쿠찌</span>
-                </div>
+                        가입을 시도하지 않으셨나요? <span style="color:#00b700">온라인 고객센터 바로가기</span>
+                    </span>
 
+        </div>
+        <div style="font-size: 18px; height: 80px; padding-top: 50px; padding-bottom: 20px;"> <!-- footer -->
+            <div style="margin-left: 80px;">
+                <span style="font-weight: bold;">GreenSinal 팀 드림</span><br/>
+                <a href="http://ec2-3-35-99-114.ap-northeast-2.compute.amazonaws.com/" style="text-decoration: none; color:rgb(145, 145, 145); font-size: 13px;">http://ec2-3-35-99-114.ap-northeast-2.compute.amazonaws.com/</a>
+            </div>
+            <div style="margin-top: 39px; font-size: 5px; background-color: rgb(206, 206, 206); padding: 8px;">
+                <span>Copyright 2020</span>
+                <span>TEAM:YIRANG, all right reserved</span>
             </div>
         </div>
-        </div>
-    </body>
+    </div>
+</div>
+</body>
+
+
 </html>

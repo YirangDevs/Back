@@ -32,7 +32,7 @@ public class ServiceTest {
 
     @Test
     public void 인증_이메일_보내기() throws UnsupportedEncodingException, MessagingException {
-        emailService.sendVerificationEmail(Long.valueOf(1468416139));
+        emailService.sendVerificationEmail(Long.valueOf(1467876478));
     }
 
     @Test

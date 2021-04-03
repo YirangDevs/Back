@@ -4,12 +4,13 @@
     <meta charset="UTF-8">
     <title>Title</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
 </head>
 <body style="margin:0;">
 <div style="width: 100%; height: auto; background-color:rgb(236, 236, 236); display: flex; justify-content: center;">
-    <div style="height: 6305px; background-color: white; width: 500px;">
-        <div style="height: auto; display: flex; justify-content: center;"> <!-- header -->
-            <!-- <img src="./netflix.png" style="width: 40%;" /> -->
+    <div style="height: 5000x; background-color: white; width: 500px;">
+        <div style="height: auto; display: flex; justify-content: center; margin-top: 30px;"> <!-- header -->
+             <img src="../img/greensignal.png" style="width: 30%;" />
             <!-- 위의 이미지 태그 주석 풀고 디자이너님께서 만들어주신 로고 넣어주세용-->
         </div>
         <div style="height: auto; margin: 50px;"> <!-- main -->
@@ -24,13 +25,7 @@
                         게시물 관리 페이지에서 확인하고자 하는 봉사를 선택해주세요.<br/>
                         <br/>
 
-                <!-- TEST -->
-                <ul th:each="content: ${contents} ">
-                    <li th:text="${content.getDtov()} + ' is ' + ${content.getRegion()}"></li>
-                </ul>
-                <!-- /TEST -->
-
-                        <span style="font-size: 10px; color: rgb(141, 141, 141)">영향을 받은 봉사</span><br/>
+                        <span style="font-size: 10px; color: rgb(141, 141, 141)">매칭 완료된 봉사</span><br/>
                         <table style="margin-top: 5px; text-align: center;font-size: 12px; border: 1px solid rgb(141, 141, 141); border-collapse: collapse;">
                             <thead style="border: 1px solid rgb(141, 141, 141); border-collapse: collapse;">
                                 <td style="width: 100px; border: 1px solid rgb(141, 141, 141); border-collapse: collapse;">날짜</td>
@@ -38,11 +33,11 @@
                                 <td style="width: 90px; border: 1px solid rgb(141, 141, 141); border-collapse: collapse;">어르신 성함</td>
                                 <td style="width: 90px; border: 1px solid rgb(141, 141, 141); border-collapse: collapse;">어르신 전화번호</td>
                             </thead>
-                            <tbody>
-                                <td style="border: 1px solid rgb(141, 141, 141); border-collapse: collapse;">2021년 03월 25일</td>
-                                <td style="border: 1px solid rgb(141, 141, 141); border-collapse: collapse;">수성구</td>
-                                <td style="border: 1px solid rgb(141, 141, 141); border-collapse: collapse;">김재욱</td>
-                                <td style="border: 1px solid rgb(141, 141, 141); border-collapse: collapse;">01012345678</td>
+                            <tbody th:each="content: ${contents}">
+                                <td style="border: 1px solid rgb(141, 141, 141); border-collapse: collapse;" th:text="${content.getDtov()}"/>
+                                <td style="border: 1px solid rgb(141, 141, 141); border-collapse: collapse;" th:text="${content.getRegion()}"/>
+                                <td style="border: 1px solid rgb(141, 141, 141); border-collapse: collapse;" th:text="${content.getSeniorName()}"/>
+                                <td style="border: 1px solid rgb(141, 141, 141); border-collapse: collapse;" th:text="${content.getPhoneNumber()}"/>
                             </tbody>
                         </table>
                     </span>
