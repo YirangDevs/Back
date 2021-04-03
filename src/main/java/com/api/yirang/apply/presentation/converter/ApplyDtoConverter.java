@@ -41,6 +41,7 @@ public class ApplyDtoConverter {
                                .dtov(TimeConverter.LocalDateTimeToString(activity.getDtov()))
                                .region(activity.getRegion())
                                .activityId(activity.getActivityId())
+                               .serviceType(apply.getServiceType())
                                .build();
     }
 }
