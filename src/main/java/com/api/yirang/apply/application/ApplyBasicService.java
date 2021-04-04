@@ -33,6 +33,11 @@ public class ApplyBasicService {
     }
 
 
+    public Apply getUniqueApplyWithVolunteerAndActivity(Volunteer volunteer, Activity activity){
+        return applyDao.findApplyByActivityAndVolunteer(activity, volunteer).orElseThrow(ApplyNullException::new);
+    }
+
+
     public Collection<Apply> getAppliesFromActivity(Activity activity) {
         // null exception 제외
         Collection<Apply> applies = applyDao.findAppliesByActivity(activity);

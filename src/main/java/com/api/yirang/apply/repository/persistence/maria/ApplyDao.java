@@ -23,6 +23,8 @@ import java.util.Optional;
 @Repository
 public interface ApplyDao extends JpaRepository<Apply, Long> {
 
+    Optional<Apply> findApplyByActivityAndVolunteer(Activity activity, Volunteer volunteer);
+
     Collection<Apply> findAppliesByActivityAndServiceTypeOrderByDtoa(Activity activity, ServiceType serviceType);
     Collection<Apply> findAppliesByActivity(Activity activity);
 

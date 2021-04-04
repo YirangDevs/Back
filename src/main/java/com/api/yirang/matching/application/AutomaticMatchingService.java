@@ -16,8 +16,10 @@ import java.util.List;
 public class AutomaticMatchingService {
 
     private final MatchingService matchingService;
+    private final MatchingLogicService matchingLogicService;
 
-    @Scheduled(cron = "0 0 0 * * *" )
+    // 봉사 시작 이틀 전의 봉사를 매칭합니다.
+    @Scheduled(cron = "0 0 15 * * *" )
     public void checkTomorrowAfterTomorrowActivityAndExecuteMatching(){
         LocalDateTime now = LocalDateTime.now();
         List<Activity> activities = matchingService.findAllActivityTomorrow(now);
@@ -26,7 +28,7 @@ public class AutomaticMatchingService {
         if (activities.isEmpty()){
             return;
         }
-
+        activities.forEach(matchingLogicService::executeMatchingSteps);
 
     }
 
