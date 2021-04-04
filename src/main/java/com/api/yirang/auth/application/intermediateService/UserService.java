@@ -1,5 +1,7 @@
 package com.api.yirang.auth.application.intermediateService;
 
+import com.api.yirang.apply.domain.exception.ValidApplyExistException;
+import com.api.yirang.apply.repository.persistence.maria.ApplyDao;
 import com.api.yirang.auth.application.basicService.AdminService;
 import com.api.yirang.auth.application.basicService.VolunteerBasicService;
 import com.api.yirang.auth.domain.user.converter.UserConverter;
@@ -14,6 +16,7 @@ import com.api.yirang.auth.support.type.Authority;
 import com.api.yirang.common.exceptions.UtilException;
 import com.api.yirang.common.support.type.Region;
 import com.api.yirang.common.support.type.Sex;
+import com.api.yirang.email.application.EmailAdvancedService;
 import com.api.yirang.email.dto.EmailRequestDto;
 import com.api.yirang.email.exception.EmailNullException;
 import com.api.yirang.email.model.Email;
@@ -23,10 +26,12 @@ import com.api.yirang.img.exception.ImageNullException;
 import com.api.yirang.img.model.Img;
 import com.api.yirang.img.repository.ImgRepository;
 import com.api.yirang.img.util.ImgType;
+import com.api.yirang.matching.repository.maria.MatchingRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -39,6 +44,8 @@ public class UserService {
     private final UserDao userDao;
     private final EmailRepository emailRepository;
     private final ImgRepository imgRepository;
+    private final MatchingRepository matchingRepository;
+    private final ApplyDao applyDao;
 
     // DI service
     private final AdminService adminService;
@@ -199,6 +206,12 @@ public class UserService {
 
         // userId에 해당하는 User가 있는 지 검사
         User user = findUserByUserId(userId);
+
+        // 만약 apply가 있으면 오류
+        if (applyDao.existsApplyByVolunteer_User_UserIdAndActivity_DtovAfterNow(userId, LocalDateTime.now())) {
+            throw new ValidApplyExistException();
+        }
+
         // User의 권한 바꾸기
         updateAuthority(userId, Authority.ROLE_ADMIN);
 
@@ -236,26 +249,6 @@ public class UserService {
         Admin admin = adminService.findAdminByUserId(userId);
         updateAuthority(userId, Authority.ROLE_SUPER_ADMIN);
     }
-
-    // DELETE
-    public void deleteUser(Long userId) {
-        User user = findUserByUserId(userId);
-
-        // 1. Admin이나 Volunteer Data 지우기
-        if (user.getAuthority() == Authority.ROLE_ADMIN){
-            adminService.delete(user);
-        }
-        else{
-            volunteerBasicService.delete(user);
-        }
-        //TODO: 2. Email 삭제
-        emailRepository.deleteEmailByUser_UserId(userId);
-        //TODO: 3. img 삭제
-        imgRepository.deleteImgByUser_UserId(userId);
-        //TODO: 4. User 삭제
-        userDao.delete(user);
-    }
-
 
 
 }

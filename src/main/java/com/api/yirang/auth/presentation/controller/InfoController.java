@@ -1,6 +1,7 @@
 package com.api.yirang.auth.presentation.controller;
 
 
+import com.api.yirang.auth.application.intermediateService.UserIntermediateService;
 import com.api.yirang.auth.application.intermediateService.UserService;
 import com.api.yirang.auth.domain.jwt.components.JwtParser;
 import com.api.yirang.auth.presentation.dto.UserInfo.*;
@@ -24,8 +25,9 @@ public class InfoController {
     // Serivces DI
     private final UserService userService;
     private final JwtParser jwtParser;
+    private final UserIntermediateService userIntermediateService;
 
-    // Super Admin 만 가능
+
     @ResponseStatus(HttpStatus.OK)
     @GetMapping(value="/users/{userId}", produces = "application/json")
     public UserInfoResponseDto getUserInfo(@PathVariable("userId") Long userId){
@@ -37,7 +39,7 @@ public class InfoController {
     @DeleteMapping(value = "/users/{userId}")
     public void kickUser(@PathVariable("userId") Long userId){
         System.out.println("[InfoController] User 삭제 요청이 왔습니다.");
-        userService.deleteUser(userId);
+        userIntermediateService.deleteUser(userId);
     }
 
     // Get
@@ -103,13 +105,13 @@ public class InfoController {
 
     }
 
-    // Delete
+    /** Delete **/
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping(value = "/myinfo")
     public void deleteMyInfo(@RequestHeader("Authorization") String header){
         System.out.println("[InfoController] 내 정보 삭제 요청이 왔습니다.");
         Long userId = jwtParser.getUserIdFromJwt(ParsingHelper.parseHeader(header));
-        userService.deleteUser(userId);
+        userIntermediateService.deleteUser(userId);
     }
 
 

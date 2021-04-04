@@ -1,10 +1,14 @@
 package com.api.yirang.email.application;
 
 import com.api.yirang.auth.domain.user.model.User;
+import com.api.yirang.email.dto.MatchingMailContent;
+import com.api.yirang.email.dto.UserWithdrawMailContent;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
+
+import java.util.List;
 
 @Component
 @RequiredArgsConstructor
@@ -22,6 +26,24 @@ public class MailContentHelper {
 
         return templateEngine.process("verifyMail", context);
 
+    }
+
+    public String generateMatchingMailContent(List<MatchingMailContent> matchingMailContentList){
+
+        Context context = new Context();
+        context.setVariable("contents", matchingMailContentList);
+        return templateEngine.process("matchingNotifyMail", context);
+
+    }
+
+    public String generateWithdrawMailContent(UserWithdrawMailContent userWithdrawMailContent,
+                                              List<MatchingMailContent> matchingMailContentList){
+
+        Context context = new Context();
+        context.setVariable("userContent", userWithdrawMailContent);
+        context.setVariable("matchingContents", matchingMailContentList);
+
+        return templateEngine.process("userWithdrawMail", context);
     }
 
 }

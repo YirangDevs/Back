@@ -15,7 +15,7 @@ import java.util.Optional;
 @Repository
 public interface AdminDao extends JpaRepository<Admin, Long> {
 
-    Optional<Admin> findAdminByAdminNumber(Long adminNumber);
+     Optional<Admin> findAdminByAdminNumber(Long adminNumber);
 
     @Transactional
     @Query("SELECT A " +
