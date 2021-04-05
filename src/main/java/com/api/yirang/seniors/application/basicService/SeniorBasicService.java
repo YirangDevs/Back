@@ -31,6 +31,10 @@ public class SeniorBasicService {
         return seniorDao.findSeniorByPhone(phone).orElseThrow(SeniorNullException::new);
     }
 
+    public Senior findSeniorById(Long seniorId){
+        return seniorDao.findSeniorBySeniorId(seniorId).orElseThrow(SeniorNullException::new);
+    }
+
     public Collection<Senior> findSeniorsByRegion(Region region, Boolean nullable) {
         Collection<Senior> seniors = seniorDao.findSeniorsByRegion(region);
         if (seniors.size() == 0 && !nullable){
