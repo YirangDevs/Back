@@ -35,7 +35,7 @@ public class UserIntermediateService {
     private final UserService userService;
 
     // DELETE
-    public void deleteUser(Long userId) {
+    public void deleteUser(Long requestUserId, Long userId) {
         User user = userService.findUserByUserId(userId);
 
         // 1. Admin이나 Volunteer Data 지우기
@@ -46,7 +46,7 @@ public class UserIntermediateService {
             //2. 안내 메일 날리기
             if(matchingRepository.existsMatchingByVolunteer_User_UserIdAndActivity_DtovAfterNow(userId, LocalDateTime.now()))
             {
-                emailAdvancedService.sendEmailToAdminAboutUserWithdraw(userId);
+                emailAdvancedService.sendEmailToAdminAboutUserWithdraw(requestUserId, userId);
             }
             // 3. Matching 삭제
             matchingRepository.deleteAllByVolunteer_User_UserId(userId);

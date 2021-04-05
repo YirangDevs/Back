@@ -13,7 +13,8 @@ import java.time.LocalDateTime;
 @Data
 public class UserWithdrawMailContent {
 
-    private final String username;
+    private final String requestUsername;
+    private final String name;
     private final String authority;
     private final String sex;
     private final String phoneNumber;
@@ -21,9 +22,10 @@ public class UserWithdrawMailContent {
     private final String dtow;
 
     @Builder
-    public UserWithdrawMailContent(String username, Authority authority, Sex sex,
+    public UserWithdrawMailContent(String requestUsername, String name, Authority authority, Sex sex,
                                    String phoneNumber, String email) {
-        this.username = username;
+        this.requestUsername = requestUsername;
+        this.name = name;
         this.authority = MailContentConverter.authorityToMailContentString(authority);
         this.sex = MailContentConverter.sexToMailContentString(sex);
         this.phoneNumber = phoneNumber;

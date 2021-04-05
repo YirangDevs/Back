@@ -16,10 +16,10 @@
                 <h2>회원의 탈퇴가 완료되었습니다.</h2>
                 <br/>
                 <span style="font-size: 13px;">
-                            <span style="font-weight: bold;">박연후</span>님의 요청으로 탈퇴가 완료되었습니다.<br/>
+                            <span style="font-weight: bold;", th:text="${userContent.getRequestUsername()} + '의 요청으로 탈퇴가 완료되었습니다.'"/><br/>
                             <br/>
                             <span style="font-size: 10px; color: rgb(141, 141, 141)">이름</span><br/>
-                            <span th:text="${userContent.getUsername()}"/><br/><br/>
+                            <span th:text="${userContent.getName()}"/><br/><br/>
                             <span style="font-size: 10px; color: rgb(141, 141, 141)">회원 등급</span><br/>
                             <span th:text="${userContent.getAuthority()}"/><br/><br/>
                             <span style="font-size: 10px; color: rgb(141, 141, 141)">성별</span><br/>

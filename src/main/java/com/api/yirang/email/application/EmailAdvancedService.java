@@ -6,6 +6,7 @@ import com.api.yirang.auth.domain.user.exceptions.UserNullException;
 import com.api.yirang.auth.domain.user.model.Admin;
 import com.api.yirang.auth.domain.user.model.User;
 import com.api.yirang.auth.repository.persistence.maria.UserDao;
+import com.api.yirang.auth.support.type.Authority;
 import com.api.yirang.common.support.type.Region;
 import com.api.yirang.email.dto.MatchingMailContent;
 import com.api.yirang.email.dto.UserWithdrawMailContent;
@@ -67,12 +68,21 @@ public class EmailAdvancedService {
         adminList.forEach(admin -> emailService.sendMatchingEmail(admin.getUser().getUserId(), matchingMailContentList));
     }
 
-    public void sendEmailToAdminAboutUserWithdraw(Long userId) {
+    public void sendEmailToAdminAboutUserWithdraw(Long requestId, Long userId) {
+
+        // 0. 유저 찾기
+        User user = userDao.findByUserId(userId).orElseThrow(UserNullException::new);
+        User requestUser = userDao.findByUserId(requestId).orElseThrow(UserNullException::new);
+
+        final String type = requestId.equals(userId) ? "[본인]" :
+                            requestUser.getAuthority().equals(Authority.ROLE_ADMIN) ? "[관리자]" : "[슈퍼_관리자]";
+
+        final String requestUsername = ( requestUser.getRealname() == null ?
+                                            requestUser.getUsername() : requestUser.getRealname() ) + type;
+
 
         // 1. userId로 매칭되어있는 현재 진행 중인 매칭 데이터 가져오기
         List<Matching> matchingList = matchingCrudService.findMatchingOnProcessByUserId(userId);
-        // log
-        System.out.println("matchingList: " + matchingList);
 
         // 2. 각 지역에 해당하는 admin, super_admin 알아내기
         List<Admin> adminList = new ArrayList<>();
@@ -82,16 +92,15 @@ public class EmailAdvancedService {
                     .forEach(region -> adminList.addAll(adminService.findAdminsByRegion(region)));
 
         // 3. User 정보 담긴 MailContent 클래스 만들기
-        User user = userDao.findByUserId(userId).orElseThrow(UserNullException::new);
         UserWithdrawMailContent userWithdrawMailContent = UserWithdrawMailContent.builder()
-                                                                                 .username(user.getUsername())
+                                                                                 .requestUsername(requestUsername)
+                                                                                 // 기본은 realname으로 없으면, username으로
+                                                                                 .name(user.getRealname() == null ? user.getUsername() : user.getRealname())
                                                                                  .authority(user.getAuthority())
                                                                                  .sex(user.getSex())
                                                                                  .phoneNumber(user.getPhone())
                                                                                  .email(user.getEmail())
                                                                                  .build();
-        // log
-        System.out.println("UserWithdrawMailContent: " + userWithdrawMailContent);
         // 4. 매칭 Content List 만들기.
         final List<MatchingMailContent> matchingMailContentList = matchingList.stream()
                                                                               .map(matching -> {
@@ -105,8 +114,6 @@ public class EmailAdvancedService {
                                                                                     })
                                                                              .collect(Collectors.toList());
 
-        // log
-        System.out.println("AdminList: " + adminList);
 
         // 5. 해당하는 관리자들에게 이메일 보내기
         adminList.forEach(admin -> emailService.sendWithdrawEmail(admin.getUser().getUserId(), userWithdrawMailContent ,matchingMailContentList));

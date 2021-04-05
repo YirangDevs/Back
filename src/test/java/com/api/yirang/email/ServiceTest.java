@@ -77,7 +77,7 @@ public class ServiceTest {
                                    .build());
 
         UserWithdrawMailContent userWithdrawMailContent = UserWithdrawMailContent.builder()
-                                                                                 .username("HI")
+                                                                                 .name("HI")
                                                                                  .sex(Sex.SEX_FEMALE)
                                                                                  .authority(Authority.ROLE_ADMIN)
                                                                                  .phoneNumber("1234")

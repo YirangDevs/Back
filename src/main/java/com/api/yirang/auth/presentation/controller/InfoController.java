@@ -37,9 +37,10 @@ public class InfoController {
 
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping(value = "/users/{userId}")
-    public void kickUser(@PathVariable("userId") Long userId){
+    public void kickUser(@RequestHeader("Authorization") String header, @PathVariable("userId") Long userId){
         System.out.println("[InfoController] User 삭제 요청이 왔습니다.");
-        userIntermediateService.deleteUser(userId);
+        Long requestUserId = jwtParser.getUserIdFromJwt(ParsingHelper.parseHeader(header));
+        userIntermediateService.deleteUser(requestUserId, userId);
     }
 
     // Get
@@ -111,7 +112,7 @@ public class InfoController {
     public void deleteMyInfo(@RequestHeader("Authorization") String header){
         System.out.println("[InfoController] 내 정보 삭제 요청이 왔습니다.");
         Long userId = jwtParser.getUserIdFromJwt(ParsingHelper.parseHeader(header));
-        userIntermediateService.deleteUser(userId);
+        userIntermediateService.deleteUser(userId, userId);
     }
 
 

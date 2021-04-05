@@ -28,6 +28,6 @@ public class EmailAdvancedServiceTest {
     }
     @Test
     public void 유저_탈퇴_테스트(){
-        emailAdvancedService.sendEmailToAdminAboutUserWithdraw(25158L);
+        emailAdvancedService.sendEmailToAdminAboutUserWithdraw(25158L, 25158L);
     }
 }
