@@ -34,6 +34,8 @@ public class MatchingLogicService {
 
     public void executeMatchingSteps(Activity activity) {
 
+        // 봉사 타입을 기록하는 Map
+        final Map<Long, ServiceType> seniorServiceTypeMap = new HashMap<>();
 
         // 매칭된 갯수를 기록하는 Map
         final Map<Long, Integer> seniorMatchingNumMap = new HashMap<>();
@@ -74,34 +76,34 @@ public class MatchingLogicService {
         final List<Long> unMatchedSeniorIds = new ArrayList<>();
 
         initVolunteers(activity, maleWorkVolunteers, femaleWorkVolunteers, maleTalkVolunteers, femaleTalkVolunteers);
-        initSeniors(activity, maleWorkSeniors, femaleWorkSeniors, maleTalkSeniors, femaleTalkSeniors, seniorMatchingNumMap, seniorMaxMatchingNumMap);
+        initSeniors(activity, maleWorkSeniors, femaleWorkSeniors, maleTalkSeniors, femaleTalkSeniors, seniorMatchingNumMap, seniorServiceTypeMap, seniorMaxMatchingNumMap);
 
 
         goOnStepFirst(maleWorkVolunteers, femaleWorkVolunteers, maleTalkVolunteers, femaleTalkVolunteers,
                       maleWorkSeniors, femaleWorkSeniors, maleTalkSeniors, femaleTalkSeniors,
                       workSeniors, talkSeniors,
                       workVolunteers, talkVolunteers,
-                      unMatchedVolunteerIds, unMatchedSeniorIds, activity, seniorMatchingNumMap);
+                      unMatchedVolunteerIds, unMatchedSeniorIds, activity, seniorMatchingNumMap, seniorServiceTypeMap);
 
         goOnStepSecond(maleWorkVolunteers, femaleWorkVolunteers, maleTalkVolunteers, femaleTalkVolunteers,
                        maleWorkSeniors, femaleWorkSeniors, maleTalkSeniors, femaleTalkSeniors,
                        workSeniors, talkSeniors,
                        workVolunteers, talkVolunteers,
-                       unMatchedVolunteerIds, unMatchedSeniorIds, activity, seniorMatchingNumMap);
+                       unMatchedVolunteerIds, unMatchedSeniorIds, activity, seniorMatchingNumMap, seniorServiceTypeMap);
         goOnStepThird(maleWorkVolunteers, femaleWorkVolunteers, maleTalkVolunteers, femaleTalkVolunteers,
                       maleWorkSeniors, femaleWorkSeniors, maleTalkSeniors, femaleTalkSeniors,
                       workSeniors, talkSeniors, bothSeniors,
                       workVolunteers, talkVolunteers,
-                      unMatchedVolunteerIds, unMatchedSeniorIds, activity, seniorMatchingNumMap);
+                      unMatchedVolunteerIds, unMatchedSeniorIds, activity, seniorMatchingNumMap, seniorServiceTypeMap);
         goOnStepFourth(workSeniors, talkSeniors, bothSeniors,
                        workVolunteers, talkVolunteers, bothVolunteers,
-                       unMatchedSeniorIds, activity, seniorMatchingNumMap);
+                       unMatchedSeniorIds, activity, seniorMatchingNumMap, seniorServiceTypeMap);
         goOnStepFifth(workSeniors, talkSeniors, bothSeniors,
                       workVolunteers, talkVolunteers, bothVolunteers,
-                      unMatchedSeniorIds, activity, seniorMatchingNumMap);
+                      unMatchedSeniorIds, activity, seniorMatchingNumMap, seniorServiceTypeMap);
         goOnStepSixth(workSeniors, talkSeniors, bothSeniors,
                       workVolunteers, talkVolunteers, bothVolunteers,
-                      unMatchedVolunteerIds, unMatchedSeniorIds, activity, seniorMatchingNumMap, seniorMaxMatchingNumMap);
+                      unMatchedVolunteerIds, unMatchedSeniorIds, activity, seniorMatchingNumMap, seniorMaxMatchingNumMap, seniorServiceTypeMap);
 
         // Update UnMatched
         unMatchingListRepository.save(UnMatchingList.builder()
@@ -143,16 +145,19 @@ public class MatchingLogicService {
                              Queue<Senior> maleWorkSeniors, Queue<Senior> femaleWorkSeniors,
                              Queue<Senior> maleTalkSeniors, Queue<Senior> femaleTalkSeniors,
                              Map<Long, Integer> seniorMatchingNumMap,
+                             Map<Long, ServiceType> seniorServiceTypeMap,
                              Map<Long, Integer> seniorMaxMatchingNumMap){
 
         // 1. 해당하는 activity에 Work로 되어있는 피봉사자 데이터 가져오기
         List<Senior> workSeniors = volunteerServiceBasicService.getWorkSeniorsFromActivity(activity);
         workSeniors.forEach(s -> seniorMatchingNumMap.put(s.getSeniorId(), 0));
         workSeniors.forEach(s -> seniorMaxMatchingNumMap.put(s.getSeniorId(), volunteerServiceBasicService.findVolunteerServiceByActivityAndSenior(activity, s).getNumsOfRequiredVolunteers().intValue()));
+        workSeniors.forEach(s -> seniorServiceTypeMap.put(s.getSeniorId(), volunteerServiceBasicService.findVolunteerServiceByActivityAndSenior(activity, s).getServiceType()));
         // 2. 해당하는 activity에 Talk로 되어있는 피봉사자 데이터 가져오기
         List<Senior> talkSeniors = volunteerServiceBasicService.getTalkSeniorsFromActivity(activity);
         talkSeniors.forEach(s -> seniorMatchingNumMap.put(s.getSeniorId(), 0));
         talkSeniors.forEach(s -> seniorMaxMatchingNumMap.put(s.getSeniorId(), volunteerServiceBasicService.findVolunteerServiceByActivityAndSenior(activity, s).getNumsOfRequiredVolunteers().intValue()));
+        talkSeniors.forEach(s -> seniorServiceTypeMap.put(s.getSeniorId(), volunteerServiceBasicService.findVolunteerServiceByActivityAndSenior(activity, s).getServiceType()));
 
         maleWorkSeniors.addAll(
                 workSeniors.stream().filter(e -> e.getSex().equals(Sex.SEX_MALE)).collect(Collectors.toList())
@@ -172,9 +177,10 @@ public class MatchingLogicService {
                                Queue<Senior> maleWorkSeniors, Queue<Senior> femaleWorkSeniors, Queue<Senior> maleTalkSeniors, Queue<Senior> femaleTalkSeniors,
                                PriorityQueue<Senior> workSeniors, PriorityQueue<Senior> talkSeniors,
                                PriorityQueue<Volunteer> workVolunteers, PriorityQueue<Volunteer> talkVolunteers,
-                               List<Long> unMatchedVolunteerIds, List<Long> unMatchedSeniorIds, Activity activity, Map<Long, Integer> seniorMatchingNumMap) {
+                               List<Long> unMatchedVolunteerIds, List<Long> unMatchedSeniorIds, Activity activity,
+                               Map<Long, Integer> seniorMatchingNumMap, Map<Long, ServiceType> seniorServiceTypeMap) {
 
-        matchingProcess(maleWorkVolunteers, maleWorkSeniors, workSeniors, activity, seniorMatchingNumMap);
+        matchingProcess(maleWorkVolunteers, maleWorkSeniors, workSeniors, activity, seniorMatchingNumMap, seniorServiceTypeMap);
 
         if (maleWorkSeniors.isEmpty()){
 
@@ -182,7 +188,7 @@ public class MatchingLogicService {
             if (!maleWorkVolunteers.isEmpty()){
                 maleTalkVolunteers.addAll(maleWorkVolunteers);
             }
-            matchingProcess(maleTalkVolunteers, maleTalkSeniors, talkSeniors, activity, seniorMatchingNumMap);
+            matchingProcess(maleTalkVolunteers, maleTalkSeniors, talkSeniors, activity, seniorMatchingNumMap, seniorServiceTypeMap);
             if (maleTalkVolunteers.isEmpty() && maleTalkSeniors.isEmpty()){
                 return;
             }
@@ -203,7 +209,7 @@ public class MatchingLogicService {
             return;
         }
         // 남자 - 노력 - 피봉사자 > 남자 - 노력 - 봉사자인 경우
-        matchingProcess(maleTalkVolunteers, maleWorkSeniors, workSeniors, activity, seniorMatchingNumMap);
+        matchingProcess(maleTalkVolunteers, maleWorkSeniors, workSeniors, activity, seniorMatchingNumMap, seniorServiceTypeMap);
 
         if (maleWorkSeniors.isEmpty()){
 
@@ -215,7 +221,7 @@ public class MatchingLogicService {
                 );
                 return;
             }
-            matchingProcess(maleTalkVolunteers, maleTalkSeniors, talkSeniors, activity, seniorMatchingNumMap);
+            matchingProcess(maleTalkVolunteers, maleTalkSeniors, talkSeniors, activity, seniorMatchingNumMap, seniorServiceTypeMap);
             if (maleTalkVolunteers.isEmpty() && maleTalkSeniors.isEmpty()){
                 return;
             }
@@ -241,9 +247,10 @@ public class MatchingLogicService {
                                 Queue<Senior> maleWorkSeniors, Queue<Senior> femaleWorkSeniors,
                                 Queue<Senior> maleTalkSeniors, Queue<Senior> femaleTalkSeniors,
                                 PriorityQueue<Senior> workSeniors, PriorityQueue<Senior> talkSeniors, PriorityQueue<Volunteer> workVolunteers, PriorityQueue<Volunteer> talkVolunteers,
-                                List<Long> unMatchedVolunteerIds, List<Long> unMatchedSeniorIds, Activity activity, Map<Long, Integer> seniorMatchingNumMap) {
+                                List<Long> unMatchedVolunteerIds, List<Long> unMatchedSeniorIds, Activity activity,
+                                Map<Long, Integer> seniorMatchingNumMap, Map<Long, ServiceType> seniorServiceTypeMap) {
 
-        matchingProcess(femaleWorkVolunteers, femaleWorkSeniors, workSeniors, activity, seniorMatchingNumMap);
+        matchingProcess(femaleWorkVolunteers, femaleWorkSeniors, workSeniors, activity, seniorMatchingNumMap, seniorServiceTypeMap);
 
         if (femaleWorkSeniors.isEmpty()){
             // 여자-노력-피봉사자가 같으나 많으면 종료
@@ -254,7 +261,7 @@ public class MatchingLogicService {
             return;
         }
 
-        matchingProcess(workVolunteers, femaleWorkSeniors, workSeniors, activity, seniorMatchingNumMap);
+        matchingProcess(workVolunteers, femaleWorkSeniors, workSeniors, activity, seniorMatchingNumMap, seniorServiceTypeMap);
 
         if (!femaleWorkSeniors.isEmpty()){
             // 남은 여자-노력-피봉사자들은 제외
@@ -267,15 +274,15 @@ public class MatchingLogicService {
                                PriorityQueue<Senior> workSeniors, PriorityQueue<Senior> talkSeniors,
                                PriorityQueue<Senior> bothSeniors, PriorityQueue<Volunteer> workVolunteers, PriorityQueue<Volunteer> talkVolunteers,
                                List<Long> unMatchedVolunteerIds, List<Long> unMatchedSeniorIds, Activity activity,
-                               Map<Long, Integer> seniorMatchingNumMap) {
+                               Map<Long, Integer> seniorMatchingNumMap, Map<Long, ServiceType> seniorServiceTypeMap) {
 
         // 남은 여자-말벗-봉사자들은 말벗 봉사자들로 편입.
         talkVolunteers.addAll(femaleTalkVolunteers);
 
-        matchingProcess(talkVolunteers, femaleTalkSeniors, talkSeniors, activity, seniorMatchingNumMap);
+        matchingProcess(talkVolunteers, femaleTalkSeniors, talkSeniors, activity, seniorMatchingNumMap, seniorServiceTypeMap);
         if (!femaleTalkSeniors.isEmpty()){
             // 남은 여자-말벗-피봉사자들은 노력과 매칭.
-            matchingProcess(workVolunteers, femaleTalkSeniors, talkSeniors, activity, seniorMatchingNumMap);
+            matchingProcess(workVolunteers, femaleTalkSeniors, talkSeniors, activity, seniorMatchingNumMap, seniorServiceTypeMap);
             if(!femaleTalkSeniors.isEmpty()){
                 // 남은 피봉사자들은 제외
                 unMatchedSeniorIds.addAll(femaleTalkSeniors.stream().map(Senior::getSeniorId).collect(Collectors.toList()));
@@ -284,9 +291,9 @@ public class MatchingLogicService {
     }
     private void goOnStepFourth(PriorityQueue<Senior> workSeniors, PriorityQueue<Senior> talkSeniors, PriorityQueue<Senior> bothSeniors,
                                 PriorityQueue<Volunteer> workVolunteers, PriorityQueue<Volunteer> talkVolunteers, PriorityQueue<Volunteer> bothVolunteers,
-                                List<Long> unMatchedSeniorIds, Activity activity, Map<Long, Integer> seniorMatchingNumMap) {
+                                List<Long> unMatchedSeniorIds, Activity activity, Map<Long, Integer> seniorMatchingNumMap, Map<Long, ServiceType> seniorServiceTypeMap) {
 
-        matchingProcess(workVolunteers, workSeniors, bothSeniors, activity, seniorMatchingNumMap);
+        matchingProcess(workVolunteers, workSeniors, bothSeniors, activity, seniorMatchingNumMap, seniorServiceTypeMap);
 
         if (!workVolunteers.isEmpty()){
             bothVolunteers.addAll(workVolunteers);
@@ -295,9 +302,9 @@ public class MatchingLogicService {
     }
     private void goOnStepFifth(PriorityQueue<Senior> workSeniors, PriorityQueue<Senior> talkSeniors, PriorityQueue<Senior> bothSeniors,
                                PriorityQueue<Volunteer> workVolunteers, PriorityQueue<Volunteer> talkVolunteers, PriorityQueue<Volunteer> bothVolunteers,
-                               List<Long> unMatchedSeniorIds, Activity activity, Map<Long, Integer> seniorMatchingNumMap) {
+                               List<Long> unMatchedSeniorIds, Activity activity, Map<Long, Integer> seniorMatchingNumMap, Map<Long, ServiceType> seniorServiceTypeMap) {
 
-        matchingProcess(talkVolunteers, talkSeniors, bothSeniors, activity, seniorMatchingNumMap);
+        matchingProcess(talkVolunteers, talkSeniors, bothSeniors, activity, seniorMatchingNumMap, seniorServiceTypeMap);
 
         if (!talkVolunteers.isEmpty()){
             bothVolunteers.addAll(talkVolunteers);
@@ -310,7 +317,7 @@ public class MatchingLogicService {
     private void goOnStepSixth(PriorityQueue<Senior> workSeniors, PriorityQueue<Senior> talkSeniors, PriorityQueue<Senior> bothSeniors,
                                PriorityQueue<Volunteer> workVolunteers, PriorityQueue<Volunteer> talkVolunteers, PriorityQueue<Volunteer> bothVolunteers,
                                List<Long> unMatchedVolunteerIds, List<Long> unMatchedSeniorIds,
-                               Activity activity, Map<Long, Integer> seniorMatchingNumMap, Map<Long, Integer> seniorMaxMatchingNumMap) {
+                               Activity activity, Map<Long, Integer> seniorMatchingNumMap, Map<Long, Integer> seniorMaxMatchingNumMap, Map<Long, ServiceType> seniorServiceTypeMap) {
 
         while(!bothVolunteers.isEmpty() && !bothSeniors.isEmpty()){
             Senior senior = bothSeniors.remove();
@@ -341,14 +348,18 @@ public class MatchingLogicService {
         }
     }
 
-    private void matchingProcess(Queue<Volunteer> volunteerQueue, Queue<Senior> seniorQueue, PriorityQueue<Senior> seniorPQ, Activity activity, Map<Long, Integer> seniorMatchingNumMap) {
+    private void matchingProcess(Queue<Volunteer> volunteerQueue, Queue<Senior> seniorQueue, PriorityQueue<Senior> seniorPQ, Activity activity,
+                                 Map<Long, Integer> seniorMatchingNumMap, Map<Long, ServiceType> seniorServiceTypeMap) {
         while(!volunteerQueue.isEmpty() && !seniorQueue.isEmpty()){
             Senior senior = seniorQueue.remove();
             Volunteer volunteer = volunteerQueue.remove();
 
+
+
             matchingCrudService.save(Matching.builder()
                                              .activity(activity)
                                              .senior(senior)
+                                             .serviceType(seniorServiceTypeMap.get(senior.getSeniorId()))
                                              .volunteer(volunteer)
                                              .build());
             seniorMatchingNumMap.put(senior.getSeniorId(), seniorMatchingNumMap.get(senior.getSeniorId()) + 1);

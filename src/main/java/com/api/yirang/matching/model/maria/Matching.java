@@ -45,11 +45,12 @@ public class Matching {
     private Senior senior;
 
     @Builder
-    public Matching(Volunteer volunteer,
+    public Matching(Volunteer volunteer, ServiceType serviceType,
                     Activity activity, Senior senior){
         this.dtom = LocalDateTime.now(); // 객체를 만든 시간이 Matching 시간
         this.volunteer = volunteer;
         this.activity = activity;
+        this.serviceType = serviceType;
         this.senior = senior;
     }
 }
