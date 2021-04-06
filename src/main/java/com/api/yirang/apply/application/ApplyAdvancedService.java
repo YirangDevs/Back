@@ -1,6 +1,7 @@
 package com.api.yirang.apply.application;
 
 import com.api.yirang.apply.domain.converter.ApplyConverter;
+import com.api.yirang.apply.domain.exception.InValidApplyException;
 import com.api.yirang.apply.domain.model.Apply;
 import com.api.yirang.apply.presentation.converter.ApplyDtoConverter;
 import com.api.yirang.apply.presentation.dto.ApplicantResponseDto;
@@ -18,6 +19,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -125,10 +127,13 @@ public class ApplyAdvancedService {
         Activity activity = noticeBasicService.findActivityNoticeId(noticeId);
 
         // 2. userId와 noticeId로 apply가 있는 지 없는 지 찾기.
-        Boolean existApply = applyBasicService.existApplyByVolunteerAndActivity(volunteer, activity);
+        Boolean noDuplicatedApply = !applyBasicService.existApplyByVolunteerAndActivity(volunteer, activity);
 
-        // 3. return 값은 Apply 존재 여부의 반대의 값
-        return !existApply;
+        // 3. 이미 모집 기간이 지난 apply는 신청이 안됨
+        Boolean validApply = activity.getDtod().isBefore(LocalDateTime.now());
+
+        // 4. return 값은 Apply 존재 여부의 반대의 값
+        return noDuplicatedApply && validApply;
     }
 
 
@@ -144,6 +149,11 @@ public class ApplyAdvancedService {
 
         // 중복 되는 Apply가 있는지 없는 지 체크
         applyBasicService.checkApplyByVolunteerAndActivity(volunteer, activity);
+
+        // 이미 모집 기간이 끝난 Apply는 신청이 안됨
+        if( activity.getDtod().isAfter(LocalDateTime.now()) ){
+            throw new InValidApplyException();
+        }
 
         // Apply 만들기
         Apply apply = ApplyConverter.makeApplyfromInfos(serviceType, volunteer, activity);
