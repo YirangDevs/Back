@@ -151,7 +151,7 @@ public class ApplyAdvancedService {
         applyBasicService.checkApplyByVolunteerAndActivity(volunteer, activity);
 
         // 이미 모집 기간이 끝난 Apply는 신청이 안됨
-        if( activity.getDtod().isAfter(LocalDateTime.now()) ){
+        if( activity.getDtod().isBefore(LocalDateTime.now()) ){
             throw new InValidApplyException();
         }
 
