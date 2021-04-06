@@ -8,7 +8,7 @@ import lombok.Data;
 public class UnMatchingContentDto {
 
     private String name;
-    private String id;
+    private Long id;
 
     public UnMatchingContentDto() {
         this.name = null;

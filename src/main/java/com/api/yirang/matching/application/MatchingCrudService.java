@@ -34,6 +34,14 @@ public class MatchingCrudService {
         return matchingList;
     }
 
+    public List<Matching> findMatchingsByUserId(Long userId){
+        List<Matching> matchingList = matchingRepository.findMatchingsByVolunteer_User_UserId(userId);
+        if (matchingList.size() == 0){
+            throw new MatchingNullException();
+        }
+        return matchingList;
+    }
+
 
     public UnMatchingList findUnmatchingByActivityId(Long activityId) {
         return unMatchingListRepository.findUnMatchingListByActivityId(activityId).orElseThrow(UnMatchingListNullException::new);

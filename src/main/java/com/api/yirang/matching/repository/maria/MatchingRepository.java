@@ -1,5 +1,6 @@
 package com.api.yirang.matching.repository.maria;
 
+import com.api.yirang.auth.domain.user.model.Volunteer;
 import com.api.yirang.matching.model.maria.Matching;
 import com.api.yirang.notices.domain.activity.model.Activity;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,4 +13,8 @@ import java.util.List;
 public interface MatchingRepository extends JpaRepository<Matching, Long> {
 
     List<Matching> findMatchingsByActivity(Activity activity);
+
+    List<Matching> findMatchingsByVolunteer_User_UserId(Long userId);
+
+    void deleteAllByVolunteer(Volunteer volunteer);
 }

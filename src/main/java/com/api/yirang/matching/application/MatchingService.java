@@ -4,12 +4,11 @@ import com.api.yirang.apply.application.ApplyAdvancedService;
 import com.api.yirang.apply.repository.persistence.maria.ApplyDao;
 import com.api.yirang.auth.application.basicService.VolunteerBasicService;
 import com.api.yirang.auth.application.intermediateService.UserService;
+import com.api.yirang.auth.domain.user.model.User;
 import com.api.yirang.auth.domain.user.model.Volunteer;
+import com.api.yirang.common.support.time.TimeConverter;
 import com.api.yirang.common.support.type.Sex;
-import com.api.yirang.matching.dto.MatchingContentDto;
-import com.api.yirang.matching.dto.MatchingResponseDto;
-import com.api.yirang.matching.dto.UnMatchingContentDto;
-import com.api.yirang.matching.dto.UnMatchingResponseDto;
+import com.api.yirang.matching.dto.*;
 import com.api.yirang.matching.model.maria.Matching;
 import com.api.yirang.matching.model.mongo.UnMatchingList;
 import com.api.yirang.matching.repository.maria.MatchingRepository;
@@ -39,6 +38,7 @@ public class MatchingService {
     private final MatchingCrudService matchingCrudService;
     private final SeniorBasicService seniorBasicService;
     private final VolunteerBasicService volunteerBasicService;
+    private final UserService userService;
 
     public List<Activity> findAllActivityTomorrow(LocalDateTime now){
 
@@ -68,7 +68,9 @@ public class MatchingService {
 
                                                                    )
                                                                    .collect(Collectors.toList());
-        return MatchingResponseDto.builder().build();
+        return MatchingResponseDto.builder()
+                                  .matchingContentDtos(matchingContentDtos)
+                                  .build();
 
     }
 
@@ -79,18 +81,45 @@ public class MatchingService {
         List<Long> seniorIds = unMatchingList.getSeniorIds();
         List<Long> volunteerIds = unMatchingList.getVolunteerIds();
 
-        List<Senior> seniors =
+        List<Senior> seniors = seniorIds.size() == 0 ? null : seniorIds.stream().map(seniorBasicService::findSeniorById).collect(Collectors.toList());
+        List<Volunteer> volunteers = volunteerIds.size() == 0 ? null : seniorIds.stream().map(volunteerBasicService::findVolunteerByVolunteerNumber).collect(Collectors.toList());
 
-        if (seniorIds.size() == 0){
 
-        }
+        List<UnMatchingContentDto> unMatchedSeniors = seniors == null ? null : seniors.stream()
+                                                                                      .map(s -> UnMatchingContentDto.builder()
+                                                                                                                    .id(s.getSeniorId())
+                                                                                                                    .name(s.getSeniorName())
+                                                                                                                    .build())
+                                                                                      .collect(Collectors.toList());
 
-        List<Senior> seniors = unMatchingList.getSeniorIds().stream().map(seniorBasicService::findSeniorById).collect(Collectors.toList());
-//        List<>
+        List<UnMatchingContentDto> unMatchedVolunteers = volunteers == null ? null : volunteers.stream()
+                                                                                               .map(v -> UnMatchingContentDto.builder()
+                                                                                                                             .id(v.getUser().getUserId())
+                                                                                                                             .name(v.getUser().getRealname())
+                                                                                                                             .build())
+                                                                                               .collect(Collectors.toList());
 
         return UnMatchingResponseDto.builder()
-                                    .unMatchedSeniors()
-                                    .unMatchedSeniors()
+                                    .unMatchedSeniors(unMatchedSeniors)
+                                    .unMatchedVolunteers(unMatchedVolunteers)
                                     .build();
+    }
+
+    public MatchingRecordsDto findMyMatchingRecordsByUserId(Long userId) {
+        // check user
+        userService.findUserByUserId(userId);
+
+        List<Matching> matchingList = matchingCrudService.findMatchingsByUserId(userId);
+
+        return MatchingRecordsDto.builder()
+                                 .matchingRecordDtoList(matchingList.stream()
+                                                                .map(m -> MatchingRecordDto.builder()
+                                                                                           .dtom(TimeConverter.LocalDateTimeToString(m.getDtom()))
+                                                                                           .dtov(TimeConverter.LocalDateTimeToString(m.getActivity().getDtov()))
+                                                                                           .serviceType(m.getServiceType())
+                                                                                           .region(m.getActivity().getRegion())
+                                                                                           .build())
+                                                                .collect(Collectors.toList()))
+                                 .build();
     }
 }

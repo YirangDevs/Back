@@ -248,11 +248,11 @@ public class UserService {
         else{
             volunteerBasicService.delete(user);
         }
-        //TODO: 2. Email 삭제
+        //2. Email 삭제
         emailRepository.deleteEmailByUser_UserId(userId);
-        //TODO: 3. img 삭제
+        //3. img 삭제
         imgRepository.deleteImgByUser_UserId(userId);
-        //TODO: 4. User 삭제
+        //4. User 삭제
         userDao.delete(user);
     }
 

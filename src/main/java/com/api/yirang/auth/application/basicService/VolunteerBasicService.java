@@ -6,6 +6,7 @@ import com.api.yirang.auth.domain.user.exceptions.VolunteerNullException;
 import com.api.yirang.auth.domain.user.model.User;
 import com.api.yirang.auth.domain.user.model.Volunteer;
 import com.api.yirang.auth.repository.persistence.maria.VolunteerDao;
+import com.api.yirang.matching.repository.maria.MatchingRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,6 +22,8 @@ public class VolunteerBasicService {
     // DI dao
     private final VolunteerDao volunteerDao;
 
+    private final MatchingRepository matchingRepository;
+
 
     public Volunteer save(User user){
         return volunteerDao.save(
@@ -31,6 +34,10 @@ public class VolunteerBasicService {
     }
     public Volunteer findVolunteerByUserId(Long userId) {
         return volunteerDao.findVolunteerByUserId(userId).orElseThrow(VolunteerNullException::new);
+    }
+
+    public Volunteer findVolunteerByVolunteerNumber(Long volunteerNumber){
+        return volunteerDao.findVolunteerByVolunteerNumber(volunteerNumber).orElseThrow(VolunteerNullException::new);
     }
 
 
@@ -45,12 +52,13 @@ public class VolunteerBasicService {
     public void delete(User user) {
         Volunteer volunteer = findVolunteerByUserId(user.getUserId());
 
-        // TODO: 1. apply data 지우기
+        //1. apply data 지우기
         applyBasicService.deleteAllWithVolunteer(volunteer);
 
-        // TODO: 2. Matching Data 지우기
+        // TODO: 2. Matching Data 지우기 : SHOULD BE TESTED.
+        matchingRepository.deleteAllByVolunteer(volunteer);
 
-        // TODO: 3. Volunteer data 지우기
+        //3. Volunteer data 지우기
         volunteerDao.deleteByUser(user);
     }
 }
