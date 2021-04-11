@@ -5,6 +5,7 @@ import com.api.yirang.common.generator.StringRandomGenerator;
 import com.api.yirang.common.generator.TimeGenerator;
 import com.api.yirang.common.support.type.Region;
 import com.api.yirang.notices.domain.activity.model.Activity;
+import com.api.yirang.notices.repository.persistence.maria.ActivityDao;
 
 import java.time.LocalDateTime;
 import java.util.Random;
@@ -13,7 +14,7 @@ public class ActivityGenerator {
 
     // range
     private static final int MAX_NOR = 100;
-    private static final int MAX_CONTENT_LENGTH = 3000;
+    private static final int MAX_CONTENT_LENGTH = 100;
 
     private static Random rand;
 
@@ -48,6 +49,10 @@ public class ActivityGenerator {
         Region region = EnumGenerator.generateRandomRegion();
         LocalDateTime dtov = TimeGenerator.generateRandomLocalDateTime();
         return createRandomActivity(region, dtov);
+    }
+
+    public static Activity createAndStoreRandomActivity(ActivityDao activityDao){
+        return activityDao.save(createRandomActivity());
     }
 
 }

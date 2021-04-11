@@ -72,8 +72,16 @@ public class StringRandomGenerator {
         }
         return buffer.toString();
     }
-    public static String generateRandomKoreanGu(){
-        return 구.get(rand.nextInt(구.size()));
+    public static String generateRandomEmailAddress(Long length){
+        StringBuffer buffer = new StringBuffer();
+
+        buffer.append(generateAlphabetStringWithLength(length));
+        buffer.append("@");
+        buffer.append(generateAlphabetStringWithLength(length));
+        buffer.append(".com");
+
+        return buffer.toString();
+
     }
 
 }

@@ -18,19 +18,20 @@ public class AutomaticMatchingService {
 
     private final MatchingService matchingService;
     private final EmailAdvancedService emailAdvancedService;
+    private final MatchingLogicService matchingLogicService;
 
-    @Scheduled(cron = "0 0 0 * * *" )
+    // 봉사 시작 이틀 전의 봉사를 매칭합니다.
+    @Scheduled(cron = "0 0 15 * * *" )
     public void checkTomorrowAfterTomorrowActivityAndExecuteMatching(){
         LocalDateTime now = LocalDateTime.now();
         List<Activity> activities = matchingService.findAllActivityTomorrow(now);
 
-        // 완료된 Activites가 없으면 그냥 넘김
+        // 해당하는Activites가 없으면 그냥 넘김
         if (activities.isEmpty()){
             return;
         }
-        // 매칭 진행하기
-        activities.forEach(matchingService::executeMatchingSteps);
-
+        // 진행하가
+        activities.forEach(matchingLogicService::executeMatchingSteps);
         //매칭 완료 페이지 보내기
         activities.forEach(emailAdvancedService::sendEmailToAdminAboutMatching);
     }

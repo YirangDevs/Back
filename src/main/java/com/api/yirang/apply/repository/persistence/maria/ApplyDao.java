@@ -1,6 +1,7 @@
 package com.api.yirang.apply.repository.persistence.maria;
 
 import com.api.yirang.apply.domain.model.Apply;
+import com.api.yirang.apply.support.type.MatchingState;
 import com.api.yirang.auth.domain.user.model.Volunteer;
 import com.api.yirang.notices.domain.activity.model.Activity;
 import com.api.yirang.seniors.support.custom.ServiceType;
@@ -23,6 +24,8 @@ import java.util.Optional;
  */
 @Repository
 public interface ApplyDao extends JpaRepository<Apply, Long> {
+
+    Optional<Apply> findApplyByActivityAndVolunteer(Activity activity, Volunteer volunteer);
 
     Collection<Apply> findAppliesByActivityAndServiceTypeOrderByDtoa(Activity activity, ServiceType serviceType);
     Collection<Apply> findAppliesByActivity(Activity activity);
@@ -47,6 +50,13 @@ public interface ApplyDao extends JpaRepository<Apply, Long> {
 
 
     Optional<Apply> findApplyByApplyId(Long applyId);
+
+    @Transactional
+    @Modifying
+    @Query("UPDATE Apply A " +
+           "SET A.matchingState =:matchingState " +
+           "WHERE A.applyId =:applyId")
+    void updateMatchingStateByApplyId(Long applyId, MatchingState matchingState);
 
     @Transactional
     @Modifying

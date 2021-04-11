@@ -2,6 +2,9 @@ package com.api.yirang.auth.generator;
 
 import com.api.yirang.auth.domain.user.model.User;
 import com.api.yirang.auth.domain.user.model.Volunteer;
+import com.api.yirang.auth.repository.persistence.maria.VolunteerDao;
+import com.api.yirang.auth.support.type.Authority;
+import com.api.yirang.common.support.type.Sex;
 
 import java.util.Random;
 
@@ -25,5 +28,25 @@ public class VolunteerGenerator {
                         .user(user)
                         .build();
     }
+
+    public static Volunteer createRandomVolunteer(){
+        User user = UserGenerator.createRandomUser(Authority.ROLE_VOLUNTEER);
+        return createRandomVolunteer(user);
+    }
+    public static Volunteer createRandomVolunteer(Sex sex){
+        User user = UserGenerator.createRandomUser(Authority.ROLE_VOLUNTEER, sex);
+        return createRandomVolunteer(user);
+    }
+
+    public static Volunteer createAndRandomVolunteer(VolunteerDao volunteerDao){
+        return volunteerDao.save(createRandomVolunteer());
+    }
+
+    public static Volunteer createAndRandomVolunteer(VolunteerDao volunteerDao, Sex sex){
+        return volunteerDao.save(createRandomVolunteer(sex));
+    }
+
+
+
 
 }

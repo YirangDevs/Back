@@ -20,6 +20,7 @@ public interface VolunteerDao extends JpaRepository<Volunteer, Long> {
            "WHERE V.user.userId = :userId ")
     Optional<Volunteer> findVolunteerByUserId(Long userId);
 
+    Optional<Volunteer> findVolunteerByVolunteerNumber(Long volunteerNumber);
 
     Boolean existsByUser_UserId(Long userId);
 

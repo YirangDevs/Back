@@ -34,5 +34,7 @@ public interface SeniorDao extends JpaRepository<Senior, Long> {
     )
     void updateSenior(Senior existedSenior, String name, Sex sex, String address, String phone, Region region);
 
+    Optional<Senior> findSeniorBySeniorId(Long seniorId);
+
     // delete
 }

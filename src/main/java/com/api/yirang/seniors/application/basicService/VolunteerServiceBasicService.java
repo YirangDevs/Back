@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -79,12 +80,27 @@ public class VolunteerServiceBasicService {
     }
 
 
-    public Collection<VolunteerService> findVolunteerServicesByActivity(Activity activity) {
-        Collection<VolunteerService> volunteerServices = volunteerServiceDao.findVolunteerServicesByActivity(activity);
+    public List<VolunteerService> findVolunteerServicesByActivity(Activity activity) {
+        List<VolunteerService> volunteerServices = volunteerServiceDao.findVolunteerServicesByActivity(activity);
         if (volunteerServices.size() == 0){
             throw new VolunteerServiceNullException();
         }
         return volunteerServices;
+    }
+
+    public List<Senior> getWorkSeniorsFromActivity(Activity activity){
+        List<VolunteerService> volunteerServices = findVolunteerServicesByActivity(activity);
+        return volunteerServices.stream()
+                                .filter(e-> e.getServiceType().equals(ServiceType.SERVICE_WORK))
+                                .map(VolunteerService::getSenior)
+                                .collect(Collectors.toList());
+    }
+    public List<Senior> getTalkSeniorsFromActivity(Activity activity){
+        List<VolunteerService> volunteerServices = findVolunteerServicesByActivity(activity);
+        return volunteerServices.stream()
+                                .filter(e -> e.getServiceType().equals(ServiceType.SERVICE_TALK))
+                                .map(VolunteerService::getSenior)
+                                .collect(Collectors.toList());
     }
 
 

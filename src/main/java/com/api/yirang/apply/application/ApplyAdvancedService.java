@@ -83,7 +83,7 @@ public class ApplyAdvancedService {
                       .map(Apply::getVolunteer)
                       .collect(Collectors.toList());
     }
-    public List<Volunteer> getWorkVolunteersFromActivityId(Activity activity){
+    public List<Volunteer> getWorkVolunteersFromActivity(Activity activity){
         // 0. apply에 해당하는 Activity 찾기
         Collection<Apply> applies = applyBasicService.getAppliesFromActivity(activity, ServiceType.SERVICE_WORK);
 
@@ -91,7 +91,7 @@ public class ApplyAdvancedService {
                       .map(Apply::getVolunteer)
                       .collect(Collectors.toList());
     }
-    public List<Volunteer> getTalkVolunteersFromActivityId(Activity activity){
+    public List<Volunteer> getTalkVolunteersFromActivity(Activity activity){
         // 0. apply에 해당하는 Activity 찾기
         Collection<Apply> applies = applyBasicService.getAppliesFromActivity(activity, ServiceType.SERVICE_TALK);
 
@@ -177,4 +177,5 @@ public class ApplyAdvancedService {
         activityBasicService.subtractNumberOfApplicants(activity);
     }
 
+    //
 }

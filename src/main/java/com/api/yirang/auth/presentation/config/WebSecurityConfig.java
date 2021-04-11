@@ -118,6 +118,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             .antMatchers("/v1/apis/imgs/**").hasAnyAuthority("VOLUNTEER", "ADMIN", "SUPER_ADMIN")
             /** Activity **/
             .antMatchers("/v1/apis/manage/activities/**", "/v1/apis/manage/activities").hasAnyAuthority("ADMIN", "SUPER_ADMIN")
+            /** Matching **/
+            .antMatchers("/v1/apis/matchings/**").hasAnyAuthority("ADMIN", "SUPER_ADMIN")
             .anyRequest().authenticated()
             .and()
             .exceptionHandling()

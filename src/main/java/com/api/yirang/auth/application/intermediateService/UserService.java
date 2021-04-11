@@ -250,5 +250,24 @@ public class UserService {
         updateAuthority(userId, Authority.ROLE_SUPER_ADMIN);
     }
 
+    // DELETE
+    public void deleteUser(Long userId) {
+        User user = findUserByUserId(userId);
+
+        // 1. Admin이나 Volunteer Data 지우기
+        if (user.getAuthority() == Authority.ROLE_ADMIN){
+            adminService.delete(user);
+        }
+        else{
+            volunteerBasicService.delete(user);
+        }
+        //2. Email 삭제
+        emailRepository.deleteEmailByUser_UserId(userId);
+        //3. img 삭제
+        imgRepository.deleteImgByUser_UserId(userId);
+        //4. User 삭제
+        userDao.delete(user);
+    }
+
 
 }

@@ -4,6 +4,7 @@ import com.api.yirang.apply.domain.exception.AlreadyExistedApplyException;
 import com.api.yirang.apply.domain.exception.ApplyNullException;
 import com.api.yirang.apply.domain.model.Apply;
 import com.api.yirang.apply.repository.persistence.maria.ApplyDao;
+import com.api.yirang.apply.support.type.MatchingState;
 import com.api.yirang.auth.domain.user.model.Volunteer;
 import com.api.yirang.notices.domain.activity.model.Activity;
 import com.api.yirang.seniors.support.custom.ServiceType;
@@ -33,6 +34,11 @@ public class ApplyBasicService {
     }
 
 
+    public Apply getUniqueApplyWithVolunteerAndActivity(Volunteer volunteer, Activity activity){
+        return applyDao.findApplyByActivityAndVolunteer(activity, volunteer).orElseThrow(ApplyNullException::new);
+    }
+
+
     public Collection<Apply> getAppliesFromActivity(Activity activity) {
         // null exception 제외
         Collection<Apply> applies = applyDao.findAppliesByActivity(activity);
@@ -44,9 +50,9 @@ public class ApplyBasicService {
     public Collection<Apply> getAppliesFromActivity(Activity activity, ServiceType serviceType) {
         // null exception 제외
         Collection<Apply> applies = applyDao.findAppliesByActivityAndServiceTypeOrderByDtoa(activity, serviceType);
-        if (applies.size() == 0){
-            throw new ApplyNullException();
-        }
+//        if (applies.size() == 0){
+//            throw new ApplyNullException();
+//        }
         return applies;
     }
 
@@ -70,6 +76,13 @@ public class ApplyBasicService {
 
     public Boolean existApplyByVolunteerAndActivity(Volunteer volunteer, Activity activity){
         return applyDao.existsApplyByVolunteerAndActivity(volunteer, activity);
+    }
+
+
+    // update
+    public void updateMatchingStateByApplyId(Long applyId, MatchingState matchingState){
+        findApplyByApplyId(applyId);
+        applyDao.updateMatchingStateByApplyId(applyId, matchingState);
     }
 
     // Delete

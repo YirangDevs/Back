@@ -17,7 +17,7 @@ public class UnMatchingList {
 
     private List<Long> seniorIds;
 
-    private List<Long> volunteerIds;
+    private List<Long> volunteerIds; // VolunteerNumber
 
     @Builder
     public UnMatchingList(Long activityId, List<Long> seniorIds, List<Long> volunteerIds) {

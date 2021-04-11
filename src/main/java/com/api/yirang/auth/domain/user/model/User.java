@@ -50,17 +50,18 @@ public class User {
     private Region secondRegion;
 
     @Builder
-    public User(Long userId, String username,
+    public User(Long userId, String username, String realname, String phone,
+                Region firstRegion, Region secondRegion,
                 Sex sex, String email, Authority authority) {
         this.userId = userId;
         this.username = username;
         this.sex = sex;
         this.email = email;
         this.authority = authority;
-        this.phone = null;
-        this.realname = null;
-        this.firstRegion = null;
-        this.secondRegion = null;
+        this.phone = phone;
+        this.realname = realname;
+        this.firstRegion = firstRegion;
+        this.secondRegion = secondRegion;
     }
 
 }

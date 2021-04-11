@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -66,7 +67,7 @@ public interface VolunteerServiceDao extends JpaRepository<VolunteerService, Lon
     // exist
     boolean existsVolunteerServiceByActivityAndSenior(Activity activity, Senior senior);
 
-    Collection<VolunteerService> findVolunteerServicesByActivity(Activity activity);
+    List<VolunteerService> findVolunteerServicesByActivity(Activity activity);
 
     @Transactional
     @Modifying

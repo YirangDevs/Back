@@ -25,11 +25,13 @@ public class UserGenerator {
         rand = new Random();
     }
 
-    public static User createRandomUser(Long userId, String username,
+    public static User createRandomUser(Long userId, String username, String realname,
                                         Sex sex, String email, String phone,
                                         Authority authority){
+
         return User.builder()
                    .userId(userId).username(username)
+                   .realname(realname).phone(phone)
                    .sex(sex).email(email).authority(authority)
                    .build();
     }
@@ -37,9 +39,34 @@ public class UserGenerator {
     public static User createRandomUser(Authority authority){
         Long userId = NumberRandomGenerator.generateLongValueWithRange(1, 100000);
         String username= StringRandomGenerator.generateKoreanNameWithLength(Long.valueOf(3));
+        String realname = StringRandomGenerator.generateKoreanNameWithLength(Long.valueOf(3));
         Sex sex = EnumGenerator.generateRandomSex();
-        String email = StringRandomGenerator.generateAlphabetStringWithLength(Long.valueOf(10));
+        String email = StringRandomGenerator.generateRandomEmailAddress(5L);
         String phone = StringRandomGenerator.generateNumericStringWithLength(Long.valueOf(11));
-        return createRandomUser(userId, username, sex, email, phone, authority);
+        return createRandomUser(userId, username, realname, sex, email, phone, authority);
     }
+    public static User createRandomUser(Authority authority, Sex sex){
+        Long userId = NumberRandomGenerator.generateLongValueWithRange(1, 100000);
+        String username= StringRandomGenerator.generateKoreanNameWithLength(Long.valueOf(3));
+        String realname = StringRandomGenerator.generateKoreanNameWithLength(Long.valueOf(3));
+        String email = StringRandomGenerator.generateRandomEmailAddress(5L);
+        String phone = StringRandomGenerator.generateNumericStringWithLength(Long.valueOf(11));
+        return createRandomUser(userId, username, realname, sex, email, phone, authority);
+    }
+
+
+
+    public static User createRandomUser(){
+        Long userId = NumberRandomGenerator.generateLongValueWithRange(1, 100000);
+        String username= StringRandomGenerator.generateKoreanNameWithLength(Long.valueOf(3));
+        String realname = StringRandomGenerator.generateKoreanNameWithLength(Long.valueOf(3));
+        Sex sex = EnumGenerator.generateRandomSex();
+        String email = StringRandomGenerator.generateRandomEmailAddress(5L);
+        String phone = StringRandomGenerator.generateNumericStringWithLength(Long.valueOf(11));
+        Authority authority = EnumGenerator.generateRandomAuthority();
+
+        return createRandomUser(userId, username, realname, sex, email, phone, authority);
+    }
+
+
 }
