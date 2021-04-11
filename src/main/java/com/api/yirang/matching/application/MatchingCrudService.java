@@ -30,6 +30,11 @@ public class MatchingCrudService {
         matchingRepository.saveAll(matchingList);
     }
 
+    public void saveUniqueUnMatchingListRepository(UnMatchingList unMatchingList){
+        unMatchingListRepository.deleteUnMatchingListByActivityId(unMatchingList.getActivityId());
+        unMatchingListRepository.save(unMatchingList);
+    }
+
     public List<Matching> findMatchingsByActivity(Activity activity) {
         List<Matching> matchingList = matchingRepository.findMatchingsByActivity(activity);
         if (matchingList.size() == 0){
@@ -50,4 +55,6 @@ public class MatchingCrudService {
     public UnMatchingList findUnmatchingByActivityId(Long activityId) {
         return unMatchingListRepository.findUnMatchingListByActivityId(activityId).orElseThrow(UnMatchingListNullException::new);
     }
+
+
 }

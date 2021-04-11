@@ -36,6 +36,18 @@ public class SeniorGenerator {
                      .build();
 
     }
+    public static Senior createRandomSenior(Sex sex){
+        String seniorName = StringRandomGenerator.generateKoreanNameWithLength(Long.valueOf(2));
+        String address = StringRandomGenerator.generateRandomKoreansWithLength(Long.valueOf(10));
+        String phone = StringRandomGenerator.generateNumericStringWithLength(Long.valueOf(11));
+        Region region = EnumGenerator.generateRandomRegion();
+
+        return Senior.builder()
+                     .seniorName(seniorName).sex(sex)
+                     .address(address).phone(phone).region(region)
+                     .build();
+
+    }
 
     public static Senior createRandomSenior(Region region){
         String seniorName = StringRandomGenerator.generateKoreanNameWithLength(Long.valueOf(2));
@@ -60,10 +72,12 @@ public class SeniorGenerator {
                      .seniorName(seniorName).sex(sex)
                      .address(address).phone(phone).region(region)
                      .build();
-
     }
 
     public static Senior createAndSaveRandomSenior(SeniorDao seniorDao){
         return seniorDao.save(createRandomSenior());
+    }
+    public static Senior createAndSaveRandomSenior(SeniorDao seniorDao, Sex sex){
+        return seniorDao.save(createRandomSenior(sex));
     }
 }

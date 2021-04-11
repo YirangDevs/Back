@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "matching")
 @Getter
-@ToString
+@ToString(exclude = {"activity"})
 @NoArgsConstructor
 public class Matching {
 

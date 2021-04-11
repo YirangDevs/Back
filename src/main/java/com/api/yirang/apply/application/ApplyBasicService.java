@@ -50,9 +50,9 @@ public class ApplyBasicService {
     public Collection<Apply> getAppliesFromActivity(Activity activity, ServiceType serviceType) {
         // null exception 제외
         Collection<Apply> applies = applyDao.findAppliesByActivityAndServiceTypeOrderByDtoa(activity, serviceType);
-        if (applies.size() == 0){
-            throw new ApplyNullException();
-        }
+//        if (applies.size() == 0){
+//            throw new ApplyNullException();
+//        }
         return applies;
     }
 

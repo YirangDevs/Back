@@ -45,6 +45,16 @@ public class UserGenerator {
         String phone = StringRandomGenerator.generateNumericStringWithLength(Long.valueOf(11));
         return createRandomUser(userId, username, realname, sex, email, phone, authority);
     }
+    public static User createRandomUser(Authority authority, Sex sex){
+        Long userId = NumberRandomGenerator.generateLongValueWithRange(1, 100000);
+        String username= StringRandomGenerator.generateKoreanNameWithLength(Long.valueOf(3));
+        String realname = StringRandomGenerator.generateKoreanNameWithLength(Long.valueOf(3));
+        String email = StringRandomGenerator.generateRandomEmailAddress(5L);
+        String phone = StringRandomGenerator.generateNumericStringWithLength(Long.valueOf(11));
+        return createRandomUser(userId, username, realname, sex, email, phone, authority);
+    }
+
+
 
     public static User createRandomUser(){
         Long userId = NumberRandomGenerator.generateLongValueWithRange(1, 100000);

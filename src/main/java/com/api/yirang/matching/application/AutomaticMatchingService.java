@@ -24,7 +24,7 @@ public class AutomaticMatchingService {
         LocalDateTime now = LocalDateTime.now();
         List<Activity> activities = matchingService.findAllActivityTomorrow(now);
 
-        // Activites가 없으면 그냥 넘김
+        // 해당하는Activites가 없으면 그냥 넘김
         if (activities.isEmpty()){
             return;
         }

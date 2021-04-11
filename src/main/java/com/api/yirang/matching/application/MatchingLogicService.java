@@ -5,7 +5,6 @@ import com.api.yirang.apply.application.ApplyBasicService;
 import com.api.yirang.apply.domain.model.Apply;
 import com.api.yirang.apply.support.type.MatchingState;
 import com.api.yirang.auth.application.basicService.VolunteerBasicService;
-import com.api.yirang.auth.domain.user.model.User;
 import com.api.yirang.auth.domain.user.model.Volunteer;
 import com.api.yirang.common.support.type.Sex;
 import com.api.yirang.matching.model.maria.Matching;
@@ -85,6 +84,12 @@ public class MatchingLogicService {
         initVolunteers(activity, maleWorkVolunteers, femaleWorkVolunteers, maleTalkVolunteers, femaleTalkVolunteers);
         initSeniors(activity, maleWorkSeniors, femaleWorkSeniors, maleTalkSeniors, femaleTalkSeniors, seniorMatchingNumMap, seniorServiceTypeMap, seniorMaxMatchingNumMap);
 
+        showLogs("[init]"
+                 , maleWorkVolunteers, femaleWorkVolunteers, maleTalkVolunteers, femaleTalkVolunteers,
+                 maleWorkSeniors, femaleWorkSeniors, maleTalkSeniors, femaleTalkSeniors,
+                 workSeniors, talkSeniors, bothSeniors,
+                 workVolunteers, talkVolunteers, bothVolunteers,
+                 unMatchedVolunteerIds, unMatchedSeniorIds, activity, seniorMatchingNumMap, seniorMaxMatchingNumMap, seniorServiceTypeMap, matchingList);
 
         goOnStepFirst(maleWorkVolunteers, femaleWorkVolunteers, maleTalkVolunteers, femaleTalkVolunteers,
                       maleWorkSeniors, femaleWorkSeniors, maleTalkSeniors, femaleTalkSeniors,
@@ -92,28 +97,57 @@ public class MatchingLogicService {
                       workVolunteers, talkVolunteers,
                       unMatchedVolunteerIds, unMatchedSeniorIds, activity, seniorMatchingNumMap, seniorServiceTypeMap, matchingList);
 
+        showLogs("[1st Step]", maleWorkVolunteers, femaleWorkVolunteers, maleTalkVolunteers, femaleTalkVolunteers, maleWorkSeniors, femaleWorkSeniors, maleTalkSeniors, femaleTalkSeniors, workSeniors, talkSeniors, bothSeniors,
+                 workVolunteers, talkVolunteers, bothVolunteers,
+                 unMatchedVolunteerIds, unMatchedSeniorIds, activity, seniorMatchingNumMap, seniorMaxMatchingNumMap, seniorServiceTypeMap, matchingList);
+
         goOnStepSecond(maleWorkVolunteers, femaleWorkVolunteers, maleTalkVolunteers, femaleTalkVolunteers,
                        maleWorkSeniors, femaleWorkSeniors, maleTalkSeniors, femaleTalkSeniors,
                        workSeniors, talkSeniors,
                        workVolunteers, talkVolunteers,
                        unMatchedVolunteerIds, unMatchedSeniorIds, activity, seniorMatchingNumMap, seniorServiceTypeMap, matchingList);
+
+        showLogs("[2nd Step]", maleWorkVolunteers, femaleWorkVolunteers, maleTalkVolunteers, femaleTalkVolunteers, maleWorkSeniors, femaleWorkSeniors, maleTalkSeniors, femaleTalkSeniors, workSeniors, talkSeniors, bothSeniors,
+                 workVolunteers, talkVolunteers, bothVolunteers,
+                 unMatchedVolunteerIds, unMatchedSeniorIds, activity, seniorMatchingNumMap, seniorMaxMatchingNumMap, seniorServiceTypeMap, matchingList);
+
+
         goOnStepThird(maleWorkVolunteers, femaleWorkVolunteers, maleTalkVolunteers, femaleTalkVolunteers,
                       maleWorkSeniors, femaleWorkSeniors, maleTalkSeniors, femaleTalkSeniors,
                       workSeniors, talkSeniors, bothSeniors,
                       workVolunteers, talkVolunteers,
                       unMatchedVolunteerIds, unMatchedSeniorIds, activity, seniorMatchingNumMap, seniorServiceTypeMap, matchingList);
+
+        showLogs("[3rd Step]", maleWorkVolunteers, femaleWorkVolunteers, maleTalkVolunteers, femaleTalkVolunteers, maleWorkSeniors, femaleWorkSeniors, maleTalkSeniors, femaleTalkSeniors, workSeniors, talkSeniors, bothSeniors,
+                 workVolunteers, talkVolunteers, bothVolunteers,
+                 unMatchedVolunteerIds, unMatchedSeniorIds, activity, seniorMatchingNumMap, seniorMaxMatchingNumMap, seniorServiceTypeMap, matchingList);
+
         goOnStepFourth(workSeniors, talkSeniors, bothSeniors,
                        workVolunteers, talkVolunteers, bothVolunteers,
                        unMatchedSeniorIds, activity, seniorMatchingNumMap, seniorServiceTypeMap, matchingList);
+
+        showLogs("[4th Step]", maleWorkVolunteers, femaleWorkVolunteers, maleTalkVolunteers, femaleTalkVolunteers, maleWorkSeniors, femaleWorkSeniors, maleTalkSeniors, femaleTalkSeniors, workSeniors, talkSeniors, bothSeniors,
+                 workVolunteers, talkVolunteers, bothVolunteers,
+                 unMatchedVolunteerIds, unMatchedSeniorIds, activity, seniorMatchingNumMap, seniorMaxMatchingNumMap, seniorServiceTypeMap, matchingList);
+
         goOnStepFifth(workSeniors, talkSeniors, bothSeniors,
                       workVolunteers, talkVolunteers, bothVolunteers,
                       unMatchedSeniorIds, activity, seniorMatchingNumMap, seniorServiceTypeMap, matchingList);
+
+        showLogs("[5th Step]", maleWorkVolunteers, femaleWorkVolunteers, maleTalkVolunteers, femaleTalkVolunteers, maleWorkSeniors, femaleWorkSeniors, maleTalkSeniors, femaleTalkSeniors, workSeniors, talkSeniors, bothSeniors,
+                 workVolunteers, talkVolunteers, bothVolunteers,
+                 unMatchedVolunteerIds, unMatchedSeniorIds, activity, seniorMatchingNumMap, seniorMaxMatchingNumMap, seniorServiceTypeMap, matchingList);
+
         goOnStepSixth(workSeniors, talkSeniors, bothSeniors,
                       workVolunteers, talkVolunteers, bothVolunteers,
                       unMatchedVolunteerIds, unMatchedSeniorIds, activity, seniorMatchingNumMap, seniorMaxMatchingNumMap, seniorServiceTypeMap, matchingList);
 
+        showLogs("[6th Step]", maleWorkVolunteers, femaleWorkVolunteers, maleTalkVolunteers, femaleTalkVolunteers, maleWorkSeniors, femaleWorkSeniors, maleTalkSeniors, femaleTalkSeniors, workSeniors, talkSeniors, bothSeniors,
+                 workVolunteers, talkVolunteers, bothVolunteers,
+                 unMatchedVolunteerIds, unMatchedSeniorIds, activity, seniorMatchingNumMap, seniorMaxMatchingNumMap, seniorServiceTypeMap, matchingList);
+
         // Update UnMatched
-        unMatchingListRepository.save(UnMatchingList.builder()
+        matchingCrudService.saveUniqueUnMatchingListRepository(UnMatchingList.builder()
                                                     .activityId(activity.getActivityId())
                                                     .volunteerIds(unMatchedVolunteerIds)
                                                     .seniorIds(unMatchedSeniorIds)
@@ -134,6 +168,8 @@ public class MatchingLogicService {
         });
 
     }
+
+
 
 
     private void initVolunteers(Activity activity,
@@ -321,6 +357,11 @@ public class MatchingLogicService {
             bothVolunteers.addAll(workVolunteers);
             workVolunteers.clear();
         }
+        if (!workSeniors.isEmpty()){
+            bothSeniors.addAll(workSeniors);
+            workSeniors.clear();
+        }
+
     }
     private void goOnStepFifth(PriorityQueue<Senior> workSeniors, PriorityQueue<Senior> talkSeniors, PriorityQueue<Senior> bothSeniors,
                                PriorityQueue<Volunteer> workVolunteers, PriorityQueue<Volunteer> talkVolunteers, PriorityQueue<Volunteer> bothVolunteers,
@@ -331,6 +372,10 @@ public class MatchingLogicService {
         if (!talkVolunteers.isEmpty()){
             bothVolunteers.addAll(talkVolunteers);
             talkVolunteers.clear();
+        }
+        if (!talkSeniors.isEmpty()){
+            bothSeniors.addAll(talkSeniors);
+            talkSeniors.clear();
         }
 
     }
@@ -344,23 +389,27 @@ public class MatchingLogicService {
         while(!bothVolunteers.isEmpty() && !bothSeniors.isEmpty()){
             Senior senior = bothSeniors.remove();
 
-            if (seniorMaxMatchingNumMap.get(senior.getSeniorId()) >= seniorMatchingNumMap.get(senior.getSeniorId())){
+            if (seniorMaxMatchingNumMap.get(senior.getSeniorId()) <= seniorMatchingNumMap.get(senior.getSeniorId())){
                 continue;
             }
 
             Volunteer volunteer = bothVolunteers.remove();
-            matchingCrudService.save(Matching.builder()
-                                             .activity(activity)
-                                             .senior(senior)
-                                             .volunteer(volunteer)
-                                             .build());
+            matchingList.add(Matching.builder()
+                                     .activity(activity)
+                                     .senior(senior)
+                                     .volunteer(volunteer)
+                                     .serviceType(seniorServiceTypeMap.get(senior.getSeniorId()))
+                                     .build());
             seniorMatchingNumMap.put(senior.getSeniorId(), seniorMatchingNumMap.get(senior.getSeniorId()) + 1);
+            bothSeniors.add(senior);
         }
 
         // 남은 사람은 다 제외
         if (!bothSeniors.isEmpty()){
             unMatchedSeniorIds.addAll(
-                    bothSeniors.stream().map(Senior::getSeniorId).collect(Collectors.toList())
+                    bothSeniors.stream()
+                               .filter(s -> seniorMatchingNumMap.get(s.getSeniorId()).equals(0))
+                               .map(Senior::getSeniorId).collect(Collectors.toList())
             );
         }
         if (!bothVolunteers.isEmpty()){
@@ -376,7 +425,6 @@ public class MatchingLogicService {
             Senior senior = seniorQueue.remove();
             Volunteer volunteer = volunteerQueue.remove();
 
-
             matchingList.add(Matching.builder()
                                      .activity(activity)
                                      .senior(senior)
@@ -387,5 +435,37 @@ public class MatchingLogicService {
             seniorMatchingNumMap.put(senior.getSeniorId(), seniorMatchingNumMap.get(senior.getSeniorId()) + 1);
             seniorPQ.add(senior);
         }
+    }
+    private void showLogs(String step,
+                          Queue<Volunteer> maleWorkVolunteers, Queue<Volunteer> femaleWorkVolunteers, Queue<Volunteer> maleTalkVolunteers, Queue<Volunteer> femaleTalkVolunteers,
+                          Queue<Senior> maleWorkSeniors, Queue<Senior> femaleWorkSeniors, Queue<Senior> maleTalkSeniors, Queue<Senior> femaleTalkSeniors,
+                          PriorityQueue<Senior> workSeniors, PriorityQueue<Senior> talkSeniors, PriorityQueue<Senior> bothSeniors, PriorityQueue<Volunteer> workVolunteers,
+                          PriorityQueue<Volunteer> talkVolunteers, PriorityQueue<Volunteer> bothVolunteers, List<Long> unMatchedVolunteerIds, List<Long> unMatchedSeniorIds,
+                          Activity activity, Map<Long, Integer> seniorMatchingNumMap, Map<Long, Integer> seniorMaxMatchingNumMap, Map<Long, ServiceType> seniorServiceTypeMap,
+                          List<Matching> matchingList) {
+
+
+        System.out.println(step + " maleWorkVolunteers: " + maleWorkVolunteers);
+        System.out.println(step + " femaleWorkVolunteers: " + femaleWorkVolunteers);
+        System.out.println(step + " maleTalkVolunteers: " + maleTalkVolunteers);
+        System.out.println(step + " femaleTalkVolunteers: " + femaleTalkVolunteers);
+
+        System.out.println(step + " maleWorkSeniors: " + maleWorkSeniors);
+        System.out.println(step + " femaleWorkSeniors: " + femaleWorkSeniors);
+        System.out.println(step + " maleTalkSeniors: " + maleTalkSeniors);
+        System.out.println(step + " femaleTalkSeniors: " + femaleTalkSeniors);
+
+        System.out.println(step + " workSeniors: " + workSeniors);
+        System.out.println(step + " talkSeniors: " + talkSeniors);
+        System.out.println(step + " bothSeniors: " + bothSeniors);
+        System.out.println(step + " workVolunteers: " + workVolunteers);
+        System.out.println(step + " talkVolunteers: " + talkVolunteers);
+        System.out.println(step + " bothVolunteers: " + bothVolunteers);
+        System.out.println(step + " unMatchedVolunteerIds: " + unMatchedVolunteerIds);
+        System.out.println(step + " unMatchedSeniorIds: " + unMatchedSeniorIds);
+        System.out.println(step + " seniorMatchingNumMap: " + seniorMatchingNumMap);
+        System.out.println(step + " seniorMaxMatchingNumMap: " + seniorMaxMatchingNumMap);
+        System.out.println(step + " seniorServiceTypeMap: " + seniorServiceTypeMap);
+        System.out.println(step + " matchingList: " + matchingList);
     }
 }
