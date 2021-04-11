@@ -4,6 +4,7 @@ import com.api.yirang.apply.domain.exception.AlreadyExistedApplyException;
 import com.api.yirang.apply.domain.exception.ApplyNullException;
 import com.api.yirang.apply.domain.model.Apply;
 import com.api.yirang.apply.repository.persistence.maria.ApplyDao;
+import com.api.yirang.apply.support.type.MatchingState;
 import com.api.yirang.auth.domain.user.model.Volunteer;
 import com.api.yirang.notices.domain.activity.model.Activity;
 import com.api.yirang.seniors.support.custom.ServiceType;
@@ -75,6 +76,13 @@ public class ApplyBasicService {
 
     public Boolean existApplyByVolunteerAndActivity(Volunteer volunteer, Activity activity){
         return applyDao.existsApplyByVolunteerAndActivity(volunteer, activity);
+    }
+
+
+    // update
+    public void updateMatchingStateByApplyId(Long applyId, MatchingState matchingState){
+        findApplyByApplyId(applyId);
+        applyDao.updateMatchingStateByApplyId(applyId, matchingState);
     }
 
     // Delete

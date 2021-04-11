@@ -6,7 +6,6 @@ import lombok.Builder;
 import lombok.Data;
 
 @Data
-@Builder
 public class MatchingRecordDto {
 
     private final String dtov;
@@ -20,5 +19,13 @@ public class MatchingRecordDto {
         this.dtom = null;
         this.region = null;
         this.serviceType = null;
+    }
+
+    @Builder
+    public MatchingRecordDto(String dtov, String dtom, Region region, ServiceType serviceType) {
+        this.dtov = dtov;
+        this.dtom = dtom;
+        this.region = region;
+        this.serviceType = serviceType;
     }
 }

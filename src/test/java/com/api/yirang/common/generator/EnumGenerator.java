@@ -15,6 +15,7 @@ public class EnumGenerator {
     private static final List<Sex> SEXES = Arrays.asList(Sex.values());
     private static final List<ServiceType> SERVICE_TYPES = Arrays.asList(ServiceType.values());
     private static final List<Region> REGIONS = Arrays.asList(Region.values());
+    private static final List<Authority> AUTHORITIES = Arrays.asList(Authority.values());
 
     private static Random rand;
 
@@ -30,4 +31,6 @@ public class EnumGenerator {
         return SERVICE_TYPES.get(rand.nextInt(SERVICE_TYPES.size()));
     }
     public static final Region generateRandomRegion() {return REGIONS.get(rand.nextInt(REGIONS.size()));}
+    public static final Authority generateRandomAuthority(){return AUTHORITIES.get(rand.nextInt(AUTHORITIES.size()));}
+
 }

@@ -82,7 +82,7 @@ public class MatchingService {
         List<Long> volunteerIds = unMatchingList.getVolunteerIds();
 
         List<Senior> seniors = seniorIds.size() == 0 ? null : seniorIds.stream().map(seniorBasicService::findSeniorById).collect(Collectors.toList());
-        List<Volunteer> volunteers = volunteerIds.size() == 0 ? null : seniorIds.stream().map(volunteerBasicService::findVolunteerByVolunteerNumber).collect(Collectors.toList());
+        List<Volunteer> volunteers = volunteerIds.size() == 0 ? null : volunteerIds.stream().map(volunteerBasicService::findVolunteerByVolunteerNumber).collect(Collectors.toList());
 
 
         List<UnMatchingContentDto> unMatchedSeniors = seniors == null ? null : seniors.stream()

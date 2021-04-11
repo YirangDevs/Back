@@ -4,14 +4,19 @@ import lombok.Builder;
 import lombok.Data;
 
 @Data
-@Builder
 public class UnMatchingContentDto {
 
-    private String name;
-    private Long id;
+    private final String name;
+    private final Long id;
 
     public UnMatchingContentDto() {
         this.name = null;
         this.id = null;
+    }
+
+    @Builder
+    public UnMatchingContentDto(String name, Long id) {
+        this.name = name;
+        this.id = id;
     }
 }

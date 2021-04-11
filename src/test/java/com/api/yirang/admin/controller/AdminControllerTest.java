@@ -4,10 +4,15 @@ package com.api.yirang.admin.controller;
 import com.api.yirang.auth.application.basicService.AdminService;
 import com.api.yirang.auth.domain.user.model.Admin;
 import com.api.yirang.auth.domain.user.model.User;
+import com.api.yirang.auth.domain.user.model.Volunteer;
 import com.api.yirang.auth.generator.UserGenerator;
+import com.api.yirang.auth.generator.VolunteerGenerator;
 import com.api.yirang.auth.support.type.Authority;
 import com.api.yirang.common.generator.EnumGenerator;
 import com.api.yirang.common.support.type.Region;
+import com.api.yirang.senior.generator.SeniorGenerator;
+import com.api.yirang.seniors.domain.senior.model.Senior;
+import com.api.yirang.seniors.repository.persistence.maria.SeniorDao;
 import com.google.gson.Gson;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -38,7 +43,14 @@ public class AdminControllerTest {
     @Autowired
     AdminService adminService;
 
-    private Admin saveRandomAdmin(){
+    @Autowired
+    SeniorDao seniorDao;
+
+    public Senior saveRandomSenior(){
+        return seniorDao.save(SeniorGenerator.createRandomSenior());
+    }
+
+    public Admin saveRandomAdmin(){
         User adminUser = UserGenerator.createRandomUser(Authority.ROLE_ADMIN);
         return adminService.save(adminUser);
     }

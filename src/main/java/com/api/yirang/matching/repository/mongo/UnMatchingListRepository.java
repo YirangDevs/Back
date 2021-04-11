@@ -12,4 +12,5 @@ public interface UnMatchingListRepository extends MongoRepository<UnMatchingList
 
     Optional<UnMatchingList> findUnMatchingListByActivityId(Long ActivityId);
 
+    void deleteUnMatchingListByActivityId(Long activityId);
 }

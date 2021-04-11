@@ -6,11 +6,12 @@ import com.api.yirang.common.generator.StringRandomGenerator;
 import com.api.yirang.common.support.type.Region;
 import com.api.yirang.common.support.type.Sex;
 import com.api.yirang.seniors.domain.senior.model.Senior;
+import com.api.yirang.seniors.repository.persistence.maria.SeniorDao;
 
 
 public class SeniorGenerator {
 
-    public static final Senior createRandomSenior(){
+    public static Senior createRandomSenior(){
         String seniorName = StringRandomGenerator.generateKoreanNameWithLength(Long.valueOf(2));
         Sex sex = EnumGenerator.generateRandomSex();
         String address = StringRandomGenerator.generateRandomKoreansWithLength(Long.valueOf(10));
@@ -23,7 +24,7 @@ public class SeniorGenerator {
                      .build();
 
     }
-    public static final Senior createRandomSenior(String seniorName){
+    public static Senior createRandomSenior(String seniorName){
         Sex sex = EnumGenerator.generateRandomSex();
         String address = StringRandomGenerator.generateRandomKoreansWithLength(Long.valueOf(10));
         String phone = StringRandomGenerator.generateNumericStringWithLength(Long.valueOf(11));
@@ -36,7 +37,7 @@ public class SeniorGenerator {
 
     }
 
-    public static final Senior createRandomSenior(Region region){
+    public static Senior createRandomSenior(Region region){
         String seniorName = StringRandomGenerator.generateKoreanNameWithLength(Long.valueOf(2));
         Sex sex = EnumGenerator.generateRandomSex();
         String address = StringRandomGenerator.generateRandomKoreansWithLength(Long.valueOf(10));
@@ -49,7 +50,7 @@ public class SeniorGenerator {
 
     }
 
-    public static final Senior createRandomSeniorWithPhone(String phone){
+    public static Senior createRandomSeniorWithPhone(String phone){
         String seniorName = StringRandomGenerator.generateKoreanNameWithLength(Long.valueOf(2));
         Sex sex = EnumGenerator.generateRandomSex();
         String address = StringRandomGenerator.generateRandomKoreansWithLength(Long.valueOf(10));
@@ -60,5 +61,9 @@ public class SeniorGenerator {
                      .address(address).phone(phone).region(region)
                      .build();
 
+    }
+
+    public static Senior createAndSaveRandomSenior(SeniorDao seniorDao){
+        return seniorDao.save(createRandomSenior());
     }
 }

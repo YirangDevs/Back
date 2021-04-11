@@ -6,7 +6,6 @@ import lombok.Data;
 import java.util.List;
 
 @Data
-@Builder
 public class UnMatchingResponseDto {
 
     private final List<UnMatchingContentDto> unMatchedSeniors;
@@ -16,5 +15,11 @@ public class UnMatchingResponseDto {
     public UnMatchingResponseDto() {
         this.unMatchedSeniors = null;
         this.unMatchedVolunteers = null;
+    }
+
+    @Builder
+    public UnMatchingResponseDto(List<UnMatchingContentDto> unMatchedSeniors, List<UnMatchingContentDto> unMatchedVolunteers) {
+        this.unMatchedSeniors = unMatchedSeniors;
+        this.unMatchedVolunteers = unMatchedVolunteers;
     }
 }

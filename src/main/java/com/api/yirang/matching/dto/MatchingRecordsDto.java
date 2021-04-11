@@ -6,12 +6,16 @@ import lombok.Data;
 import java.util.List;
 
 @Data
-@Builder
 public class MatchingRecordsDto {
 
     private final List<MatchingRecordDto> matchingRecordDtoList;
 
     public MatchingRecordsDto() {
         this.matchingRecordDtoList = null;
+    }
+
+    @Builder
+    public MatchingRecordsDto(List<MatchingRecordDto> matchingRecordDtoList) {
+        this.matchingRecordDtoList = matchingRecordDtoList;
     }
 }

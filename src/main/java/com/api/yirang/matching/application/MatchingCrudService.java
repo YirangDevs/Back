@@ -26,6 +26,10 @@ public class MatchingCrudService {
         matchingRepository.save(matching);
     }
 
+    public void saveAll(List<Matching> matchingList){
+        matchingRepository.saveAll(matchingList);
+    }
+
     public List<Matching> findMatchingsByActivity(Activity activity) {
         List<Matching> matchingList = matchingRepository.findMatchingsByActivity(activity);
         if (matchingList.size() == 0){
