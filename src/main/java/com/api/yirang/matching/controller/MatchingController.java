@@ -1,6 +1,7 @@
 package com.api.yirang.matching.controller;
 
 
+import com.api.yirang.matching.application.AutomaticMatchingService;
 import com.api.yirang.matching.application.MatchingCrudService;
 import com.api.yirang.matching.application.MatchingService;
 import com.api.yirang.matching.dto.MatchingRecordsDto;
@@ -19,6 +20,9 @@ public class MatchingController {
     private final MatchingService matchingService;
     private final MatchingCrudService matchingCrudService;
 
+    // temp
+    private final AutomaticMatchingService automaticMatchingService;
+
     /**
      * 목적: 해당 activity의 매칭된 기록 확인
      * 사용자: 슈퍼 관리자, 관리자
@@ -29,8 +33,6 @@ public class MatchingController {
         System.out.println("[MatchingController] 매칭 조회가 왔습니다.");
         return matchingService.findMatchingByActivityId(activityId);
     }
-
-
 
     /**
      * 목적: 해당 activity의 제외된 피봉사자 확인
@@ -52,5 +54,16 @@ public class MatchingController {
     public MatchingRecordsDto getMyMatchingRecords(@PathVariable("user_id") Long userId){
         System.out.println("[MatchingController] 나의 매칭 기록 조회가 왔습니다.");
         return matchingService.findMyMatchingRecordsByUserId(userId);
+    }
+
+
+    /** 임시로 실행
+     * 매칭 실행시키기
+     */
+    @PostMapping(value = "/test/{activity_id}")
+    @ResponseStatus(HttpStatus.OK)
+    public void makeMatching(@PathVariable("activity_id") Long activityId){
+        System.out.println("[MatchingController] 매칭 실행합니다.");
+        automaticMatchingService.executeMatchingAndSendEmail(activityId);
     }
 }

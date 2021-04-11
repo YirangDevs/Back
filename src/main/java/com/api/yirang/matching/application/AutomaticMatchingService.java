@@ -2,6 +2,7 @@ package com.api.yirang.matching.application;
 
 
 import com.api.yirang.email.application.EmailAdvancedService;
+import com.api.yirang.notices.application.basicService.ActivityBasicService;
 import com.api.yirang.notices.domain.activity.model.Activity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -20,6 +21,9 @@ public class AutomaticMatchingService {
     private final EmailAdvancedService emailAdvancedService;
     private final MatchingLogicService matchingLogicService;
 
+    //
+    private final ActivityBasicService activityBasicService;
+
     // 봉사 시작 이틀 전의 봉사를 매칭합니다.
     @Scheduled(cron = "0 0 15 * * *" )
     public void checkTomorrowAfterTomorrowActivityAndExecuteMatching(){
@@ -34,6 +38,12 @@ public class AutomaticMatchingService {
         activities.forEach(matchingLogicService::executeMatchingSteps);
         //매칭 완료 페이지 보내기
         activities.forEach(emailAdvancedService::sendEmailToAdminAboutMatching);
+    }
+
+    public void executeMatchingAndSendEmail(Long activityId){
+        Activity activity = activityBasicService.findActivityByActivityId(activityId);
+        matchingLogicService.executeMatchingSteps(activity);
+        emailAdvancedService.sendEmailToAdminAboutMatching(activity);
     }
 
 
