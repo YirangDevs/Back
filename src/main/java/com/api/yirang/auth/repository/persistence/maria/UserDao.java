@@ -19,6 +19,9 @@ public interface UserDao extends JpaRepository<User, Long> {
     boolean existsUserByUserId(Long userId);
 
     @Modifying
+    void deleteByUserId(Long userId);
+
+    @Modifying
     @Transactional
     @Query("UPDATE User u set u.authority =:authority " +
            "WHERE u.userId =:userId")

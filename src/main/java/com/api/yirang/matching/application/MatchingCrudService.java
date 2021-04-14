@@ -67,4 +67,7 @@ public class MatchingCrudService {
         return matchingList;
     }
 
+    public void deleteAllWithActivity(Activity activity) {
+        matchingRepository.deleteAllByActivity(activity);
+    }
 }

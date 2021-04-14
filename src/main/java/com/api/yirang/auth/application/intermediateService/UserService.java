@@ -266,7 +266,7 @@ public class UserService {
         //3. img 삭제
         imgRepository.deleteImgByUser_UserId(userId);
         //4. User 삭제
-        userDao.delete(user);
+        userDao.deleteByUserId(userId);
     }
 
 

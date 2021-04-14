@@ -9,6 +9,8 @@ import com.api.yirang.auth.application.intermediateService.UserService;
 import com.api.yirang.auth.support.type.Authority;
 import com.api.yirang.common.support.time.TimeConverter;
 import com.api.yirang.common.support.type.Region;
+import com.api.yirang.matching.application.MatchingCrudService;
+import com.api.yirang.matching.repository.maria.MatchingRepository;
 import com.api.yirang.notices.domain.activity.converter.ActivityConverter;
 import com.api.yirang.notices.domain.activity.exception.ActivityNullException;
 import com.api.yirang.notices.domain.activity.exception.AlreadyExistedActivityException;
@@ -40,6 +42,7 @@ public class ActivityBasicService {
     // DI Service
     private final ApplyBasicService applyBasicService;
     private final VolunteerServiceBasicService volunteerServiceBasicService;
+    private final MatchingCrudService matchingCrudService;
 
 
     public Activity save(Activity activity) {
@@ -126,8 +129,8 @@ public class ActivityBasicService {
         applyBasicService.deleteAllWithActivity(activity);
         // 2. volunteerService 삭제
         volunteerServiceBasicService.deleteAllWithActivity(activity);
-        //TODO: 매칭 삭제 */
         // 3. 매칭 삭제
+        matchingCrudService.deleteAllWithActivity(activity);
         deleteOnlyActivityById(activityId);
     }
 

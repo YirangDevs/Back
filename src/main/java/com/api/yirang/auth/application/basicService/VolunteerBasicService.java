@@ -55,7 +55,7 @@ public class VolunteerBasicService {
         //1. apply data 지우기
         applyBasicService.deleteAllWithVolunteer(volunteer);
 
-        // TODO: 2. Matching Data 지우기 : SHOULD BE TESTED.
+        //2. Matching Data 지우기
         matchingRepository.deleteAllByVolunteer(volunteer);
 
         //3. Volunteer data 지우기
