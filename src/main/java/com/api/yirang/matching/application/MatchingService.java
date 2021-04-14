@@ -40,18 +40,10 @@ public class MatchingService {
     private final VolunteerBasicService volunteerBasicService;
     private final UserService userService;
 
-    public List<Activity> findAllActivityTomorrow(LocalDateTime now){
-
-        LocalDateTime tomorrowStart = now.plusHours(33L);
-        LocalDateTime tomorrowEnd = tomorrowStart.plusDays(1L);
-
-        return activityDao.findActivitiesByDtovBetween(tomorrowStart, tomorrowEnd);
-    }
-
 
     public MatchingResponseDto findMatchingByActivityId(Long activityId) {
         Activity activity = activityDao.findById(activityId).orElseThrow(ActivityNullException::new);
-        List<Matching> matchingList = matchingCrudService.findMatchingsByActivity(activity);
+        List<Matching> matchingList = matchingCrudService.findMatchingsByActivity(activity, false);
 
         List<MatchingContentDto> matchingContentDtos = matchingList.stream()
                                                                    .map(matching ->{

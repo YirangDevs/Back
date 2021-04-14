@@ -10,6 +10,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 
@@ -32,4 +33,7 @@ public interface UserDao extends JpaRepository<User, Long> {
            "WHERE u.userId =:userId")
     void updateUserInfo(Long userId, String email, String phone, String username,
                         String realname, Sex sex, Region firstRegion, Region secondRegion);
+
+
+    List<User> findAllByAuthority(Authority authority);
 }

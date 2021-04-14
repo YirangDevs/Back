@@ -37,9 +37,9 @@ public class MatchingCrudService {
         unMatchingListRepository.save(unMatchingList);
     }
 
-    public List<Matching> findMatchingsByActivity(Activity activity) {
+    public List<Matching> findMatchingsByActivity(Activity activity, Boolean nullable) {
         List<Matching> matchingList = matchingRepository.findMatchingsByActivity(activity);
-        if (matchingList.size() == 0){
+        if (matchingList.size() == 0 && !nullable){
             throw new MatchingNullException();
         }
         return matchingList;

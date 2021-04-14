@@ -28,6 +28,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 
 @Service
@@ -79,6 +80,21 @@ public class ActivityBasicService {
     public Activity findActivityByActivityId(Long activityId){
         return activityDao.findById(activityId).orElseThrow(ActivityNullException::new);
     }
+    public List<Activity> findAllActivityTomorrowAfterTomorrow(LocalDateTime now){
+
+        LocalDateTime tomorrowStart = now.plusHours(33L);
+        LocalDateTime tomorrowEnd = tomorrowStart.plusDays(1L);
+
+        return activityDao.findActivitiesByDtovBetween(tomorrowStart, tomorrowEnd);
+    }
+
+    public List<Activity> findAllActivityTomorrow(LocalDateTime now) {
+
+        LocalDateTime tomorrowStart = now.plusHours(11L);
+        LocalDateTime tomorrowEnd = tomorrowStart.plusDays(1L);
+
+        return activityDao.findActivitiesByDtovBetween(tomorrowStart, tomorrowEnd);
+    }
 
     public ActivityOneResponseDto getOneActivityById(Long id){
         Activity activity = findActivityByActivityId(id);
@@ -126,13 +142,12 @@ public class ActivityBasicService {
         applyBasicService.deleteAllWithActivity(activity);
         // 2. volunteerService 삭제
         volunteerServiceBasicService.deleteAllWithActivity(activity);
-        //TODO: 매칭 삭제 */
+        //TODO: 매칭 삭제
         // 3. 매칭 삭제
         deleteOnlyActivityById(activityId);
     }
 
     // 봉사 신청자 수 늘리기
-
     public void addNumberOfApplicants(Activity activity, Long number) {
         Long activityId = activity.getActivityId();
         Long newNoa = activity.getNoa() + number; // 한 명 추가
@@ -167,4 +182,6 @@ public class ActivityBasicService {
     public void subtractNumberOfApplicants(Activity activity) {
         subtractNumberOfApplicants(activity, Long.valueOf(1));
     }
+
+
 }

@@ -33,8 +33,8 @@ public class NoticeBasicService {
         if (isExistedNoticeByNoticeTitle(notice.getTitle())){
             throw new AlreadyExistedNoticeException();
         }
-        Notice returnedNotice = noticeDao.save(notice);
-        return returnedNotice;
+
+        return noticeDao.save(notice);
     }
 
     public boolean isExistedNoticeByNoticeId(Long noticeId){

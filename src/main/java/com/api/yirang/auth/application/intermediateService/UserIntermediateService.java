@@ -6,6 +6,7 @@ import com.api.yirang.auth.application.basicService.VolunteerBasicService;
 import com.api.yirang.auth.domain.user.model.User;
 import com.api.yirang.auth.repository.persistence.maria.UserDao;
 import com.api.yirang.auth.support.type.Authority;
+import com.api.yirang.common.support.type.Region;
 import com.api.yirang.email.application.EmailAdvancedService;
 import com.api.yirang.email.repository.EmailRepository;
 import com.api.yirang.img.repository.ImgRepository;
@@ -15,6 +16,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -61,4 +64,6 @@ public class UserIntermediateService {
         // 7. User 삭제
         userDao.delete(user);
     }
+
+
 }
