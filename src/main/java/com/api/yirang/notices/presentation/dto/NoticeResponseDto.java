@@ -20,6 +20,7 @@ public class NoticeResponseDto {
     private final String dov;
     private final String tov;
     private final Region region;
+    private final String dow;
 
     public NoticeResponseDto() {
         this.id = null;
@@ -28,6 +29,7 @@ public class NoticeResponseDto {
         this.dov = null;
         this.tov = null;
         this.region = null;
+        this.dow = null;
     }
 
 }
