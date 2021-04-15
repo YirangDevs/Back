@@ -29,4 +29,5 @@ public class NoticeResponseDto {
         this.tov = null;
         this.region = null;
     }
+
 }

@@ -4,6 +4,7 @@ import com.api.yirang.auth.support.utils.ParsingHelper;
 import com.api.yirang.notices.application.advancedService.NoticeActivityService;
 import com.api.yirang.notices.application.advancedService.UserAdminActivityService;
 import com.api.yirang.notices.application.basicService.ActivityBasicService;
+import com.api.yirang.notices.presentation.dto.ActivityAppliesDto;
 import com.api.yirang.notices.presentation.dto.ActivityOneResponseDto;
 import com.api.yirang.auth.domain.jwt.components.JwtParser;
 
@@ -80,9 +81,12 @@ public class ActivityController {
      * 목적: 엑티티비에 누가 신청했는 지 조회하는 API
      * 사용자: Admin, Super_Admin
      */
-//    @GetMapping(value = "/applies/{activity_id}", produces = "application/json")
-//    @ResponseStatus(HttpStatus.OK)
-//    public
+    @GetMapping(value = "/applies/{activity_id}", produces = "application/json")
+    @ResponseStatus(HttpStatus.OK)
+    public ActivityAppliesDto getActivityAppliers(@PathVariable("activity_id") Long activityId){
+        System.out.println("[ActivityController] 액티비티 신청자 조회 요이 왔습니다.");
+        return userAdminActivityService.getAllAppliersByActivityId(activityId);
+    }
 
 
 }

@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
+import java.util.List;
 
 /**
  * Created by JeongminYoo on 2020/12/30
@@ -100,4 +101,5 @@ public class ApplyBasicService {
     public void deleteAll() {
         applyDao.deleteAll();
     }
+
 }

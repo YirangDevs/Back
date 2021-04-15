@@ -1,13 +1,19 @@
 package com.api.yirang.notices.application.advancedService;
 
+import com.api.yirang.apply.application.ApplyAdvancedService;
+import com.api.yirang.apply.application.ApplyBasicService;
+import com.api.yirang.apply.domain.model.Apply;
 import com.api.yirang.auth.application.basicService.AdminService;
 import com.api.yirang.auth.application.intermediateService.UserService;
+import com.api.yirang.auth.domain.user.model.User;
 import com.api.yirang.auth.support.type.Authority;
 import com.api.yirang.common.support.type.Region;
 import com.api.yirang.notices.domain.activity.converter.ActivityConverter;
 import com.api.yirang.notices.domain.activity.exception.ActivityNullException;
 import com.api.yirang.notices.domain.activity.model.Activity;
+import com.api.yirang.notices.presentation.dto.ActivityAppliesDto;
 import com.api.yirang.notices.presentation.dto.ActivityResponseDto;
+import com.api.yirang.notices.presentation.dto.embeded.ActivityApplyDto;
 import com.api.yirang.notices.repository.persistence.maria.ActivityDao;
 import com.api.yirang.notices.repository.persistence.maria.PageableActivityDao;
 import lombok.RequiredArgsConstructor;
@@ -30,6 +36,7 @@ public class UserAdminActivityService {
 
     private final PageableActivityDao pageableActivityDao;
 
+    private final ApplyBasicService applyBasicService;
     private final UserService userService;
     private final AdminService adminService;
     private final ActivityDao activityDao;
@@ -89,4 +96,25 @@ public class UserAdminActivityService {
         return count;
     }
 
+    public ActivityAppliesDto getAllAppliersByActivityId(Long activityId) {
+        // 1. activity 찾기
+        Activity activity = activityDao.findById(activityId).orElseThrow(ActivityNullException::new);
+        // 2. applies 얻음
+        Collection<Apply> applies = applyBasicService.getAppliesFromActivity(activity);
+
+        // 3. 바꿈
+        List<User> users = applies.stream().map(e -> e.getVolunteer().getUser()).collect(Collectors.toList());
+        List<ActivityApplyDto> activityApplyDtos = users.stream()
+                                                        .map(user ->ActivityApplyDto.builder()
+                                                                                    .userId(user.getUserId())
+                                                                                    .realname(user.getRealname())
+                                                                                    .email(user.getEmail())
+                                                                                    .sex(user.getSex()).phone(user.getPhone())
+                                                                                    .build())
+                                                        .collect(Collectors.toList());
+
+        return ActivityAppliesDto.builder()
+                                 .appliers(activityApplyDtos)
+                                 .build();
+    }
 }
