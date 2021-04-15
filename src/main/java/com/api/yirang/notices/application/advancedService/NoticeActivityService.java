@@ -89,7 +89,7 @@ public class NoticeActivityService {
 
     public Collection<NoticeResponseDto> findNoticesByPage(Integer pageNum) {
         // 갯수는 고정적
-        int elementNums = 6;
+        final int elementNums = 6;
         // Pageable 만들기
         Pageable pageWithSixElements = PageRequest.of(pageNum, elementNums, Sort.by("dtow").descending());
 
