@@ -111,7 +111,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             .antMatchers(HttpMethod.GET, "/v1/apis/manage/notices", "/v1/apis/manage/notices/**").permitAll()
             .antMatchers("/v1/apis/manage/notices", "/v1/apis/manage/notices/**").hasAnyAuthority("ADMIN", "SUPER_ADMIN")
             /** Email **/
-            //  Email 인증은 AnonyMous가 아니면 다 가능하다.
+            //  Email 관련 AnonyMous가 아니면 다 가능하다.
             .antMatchers("/v1/apis/emails/**").hasAnyAuthority("VOLUNTEER", "ADMIN", "SUPER_ADMIN")
             /** Img **/
             // Img 관련은 Anonymous가 아니면 다 가능하다.
@@ -119,6 +119,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             /** Activity **/
             .antMatchers("/v1/apis/manage/activities/**", "/v1/apis/manage/activities").hasAnyAuthority("ADMIN", "SUPER_ADMIN")
             /** Matching **/
+            // 자신의 이전 매칭 기록 보는건 Volunteer이 가능하다.
+            .antMatchers("/v1/apis/matchings/mymatching").hasAnyAuthority("VOLUNTEER")
             .antMatchers("/v1/apis/matchings/**").hasAnyAuthority("ADMIN", "SUPER_ADMIN")
             .anyRequest().authenticated()
             .and()

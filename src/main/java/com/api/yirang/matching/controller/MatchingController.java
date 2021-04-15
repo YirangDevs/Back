@@ -1,6 +1,8 @@
 package com.api.yirang.matching.controller;
 
 
+import com.api.yirang.auth.domain.jwt.components.JwtParser;
+import com.api.yirang.auth.support.utils.ParsingHelper;
 import com.api.yirang.matching.application.AutomaticMatchingService;
 import com.api.yirang.matching.application.MatchingCrudService;
 import com.api.yirang.matching.application.MatchingService;
@@ -18,10 +20,10 @@ public class MatchingController {
 
     // DI Service
     private final MatchingService matchingService;
-    private final MatchingCrudService matchingCrudService;
 
     // temp
     private final AutomaticMatchingService automaticMatchingService;
+    private final JwtParser jwtParser;
 
     /**
      * 목적: 해당 activity의 매칭된 기록 확인
@@ -49,10 +51,12 @@ public class MatchingController {
      * 목적: 내가 이전에 진행했던 과거 매칭기록 또는 현재 기록?
      * 사용자: 봉사자
      */
-    @GetMapping(value = "/users/{user_id}", produces = "application/json")
+    @GetMapping(value = "/mymatching", produces = "application/json")
     @ResponseStatus(HttpStatus.OK)
-    public MatchingRecordsDto getMyMatchingRecords(@PathVariable("user_id") Long userId){
+    public MatchingRecordsDto getMyMatchingRecords(@RequestHeader("Authorization") String header){
         System.out.println("[MatchingController] 나의 매칭 기록 조회가 왔습니다.");
+
+        Long userId = jwtParser.getUserIdFromJwt(ParsingHelper.parseHeader(header));
         return matchingService.findMyMatchingRecordsByUserId(userId);
     }
 
