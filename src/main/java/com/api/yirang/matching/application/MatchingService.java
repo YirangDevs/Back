@@ -1,23 +1,16 @@
 package com.api.yirang.matching.application;
 
-import com.api.yirang.apply.application.ApplyAdvancedService;
-import com.api.yirang.apply.repository.persistence.maria.ApplyDao;
 import com.api.yirang.auth.application.basicService.VolunteerBasicService;
 import com.api.yirang.auth.application.intermediateService.UserService;
-import com.api.yirang.auth.domain.user.model.User;
 import com.api.yirang.auth.domain.user.model.Volunteer;
 import com.api.yirang.common.support.time.TimeConverter;
-import com.api.yirang.common.support.type.Sex;
 import com.api.yirang.matching.dto.*;
 import com.api.yirang.matching.model.maria.Matching;
 import com.api.yirang.matching.model.mongo.UnMatchingList;
-import com.api.yirang.matching.repository.maria.MatchingRepository;
-import com.api.yirang.matching.repository.mongo.UnMatchingListRepository;
 import com.api.yirang.notices.domain.activity.exception.ActivityNullException;
 import com.api.yirang.notices.domain.activity.model.Activity;
 import com.api.yirang.notices.repository.persistence.maria.ActivityDao;
 import com.api.yirang.seniors.application.basicService.SeniorBasicService;
-import com.api.yirang.seniors.application.basicService.VolunteerServiceBasicService;
 import com.api.yirang.seniors.domain.senior.model.Senior;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
