@@ -103,8 +103,7 @@ public class ServiceTest {
 
     @Test
     public void 가이드_이메일_보내기(){
-        Matching matching = matchingRepository.findById(618L).orElse(null);
-
+        Matching matching = matchingRepository.findById(616L).orElse(null);
         emailAdvancedService.sendEmailToVolunteerAboutSuccessEmail(matching);
     }
 
@@ -116,8 +115,7 @@ public class ServiceTest {
 
     @Test
     public void 지역추천_이메일(){
-        Notice notice = noticeDao.findById(339L).orElse(null);
-
+        Notice notice = noticeDao.findById(624L).orElse(null);
         emailAdvancedService.sendEmailToVolunteerAboutRecommendedActivity(notice);
     }
 
