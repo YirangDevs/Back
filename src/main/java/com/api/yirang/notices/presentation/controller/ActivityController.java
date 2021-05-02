@@ -84,7 +84,7 @@ public class ActivityController {
     @GetMapping(value = "/applies/{activity_id}", produces = "application/json")
     @ResponseStatus(HttpStatus.OK)
     public ActivityAppliesDto getActivityAppliers(@PathVariable("activity_id") Long activityId){
-        System.out.println("[ActivityController] 액티비티 신청자 조회 요이 왔습니다.");
+        System.out.println("[ActivityController] 액티비티 신청자 조회 요청이 왔습니다.");
         return userAdminActivityService.getAllAppliersByActivityId(activityId);
     }
 

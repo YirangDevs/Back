@@ -8,6 +8,7 @@ import com.api.yirang.auth.application.intermediateService.UserService;
 import com.api.yirang.auth.domain.user.model.User;
 import com.api.yirang.auth.support.type.Authority;
 import com.api.yirang.common.support.type.Region;
+import com.api.yirang.img.application.ImgService;
 import com.api.yirang.notices.domain.activity.converter.ActivityConverter;
 import com.api.yirang.notices.domain.activity.exception.ActivityNullException;
 import com.api.yirang.notices.domain.activity.model.Activity;
@@ -40,6 +41,7 @@ public class UserAdminActivityService {
     private final UserService userService;
     private final AdminService adminService;
     private final ActivityDao activityDao;
+    private final ImgService imgService;
 
     public Collection<ActivityResponseDto> getAllActivityByPage(Integer page, Long userId){
         int pageNum = 14;
@@ -110,6 +112,7 @@ public class UserAdminActivityService {
                                                                                     .realname(user.getRealname())
                                                                                     .email(user.getEmail())
                                                                                     .sex(user.getSex()).phone(user.getPhone())
+                                                                                    .profileImg(imgService.getMyImgNullable(user.getUserId()))
                                                                                     .build())
                                                         .collect(Collectors.toList());
 
