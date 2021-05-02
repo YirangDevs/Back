@@ -99,6 +99,8 @@ public class MatchingService {
                                                                                       .map(s -> UnMatchingContentDto.builder()
                                                                                                                     .id(s.getSeniorId())
                                                                                                                     .name(s.getSeniorName())
+                                                                                                                    .sex(s.getSex())
+                                                                                                                    .phone(s.getPhone())
                                                                                                                     .build())
                                                                                       .collect(Collectors.toList());
 
@@ -106,6 +108,9 @@ public class MatchingService {
                                                                                                .map(v -> UnMatchingContentDto.builder()
                                                                                                                              .id(v.getUser().getUserId())
                                                                                                                              .name(v.getUser().getRealname())
+                                                                                                                             .sex(v.getUser().getSex())
+                                                                                                                             .phone(v.getUser().getPhone())
+                                                                                                                             .img(imgService.getMyImgNullable(v.getUser().getUserId()))
                                                                                                                              .build())
                                                                                                .collect(Collectors.toList());
 

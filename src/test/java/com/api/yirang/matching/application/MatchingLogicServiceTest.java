@@ -92,7 +92,7 @@ public class MatchingLogicServiceTest {
         seniorDao.deleteAll();
     }
 
-    @Test
+    @Test(expected = MatchingNullException.class)
     public void 간단하게_테스트(){
 
         Volunteer volunteer = VolunteerGenerator.createAndRandomVolunteer(volunteerDao, Sex.SEX_FEMALE);
