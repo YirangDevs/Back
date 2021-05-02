@@ -8,6 +8,8 @@ import com.api.yirang.auth.domain.user.model.User;
 import com.api.yirang.auth.domain.user.model.Volunteer;
 import com.api.yirang.common.support.time.TimeConverter;
 import com.api.yirang.common.support.type.Sex;
+import com.api.yirang.img.application.ImgService;
+import com.api.yirang.img.model.Img;
 import com.api.yirang.matching.dto.*;
 import com.api.yirang.matching.model.maria.Matching;
 import com.api.yirang.matching.model.mongo.UnMatchingList;
@@ -39,6 +41,7 @@ public class MatchingService {
     private final SeniorBasicService seniorBasicService;
     private final VolunteerBasicService volunteerBasicService;
     private final UserService userService;
+    private final ImgService imgService;
 
     public List<Activity> findAllActivityTomorrow(LocalDateTime now){
 
@@ -61,8 +64,15 @@ public class MatchingService {
                                                                        return MatchingContentDto.builder()
                                                                                                 .seniorId(senior.getSeniorId())
                                                                                                 .seniorName(senior.getSeniorName())
+                                                                                                .seniorSex(senior.getSex())
+                                                                                                .seniorPhone(senior.getPhone())
                                                                                                 .volunteerName(volunteer.getUser().getRealname())
                                                                                                 .volunteerId(volunteer.getUser().getUserId())
+                                                                                                .volunteerEmail(volunteer.getUser().getEmail())
+                                                                                                .volunteerSex(volunteer.getUser().getSex())
+                                                                                                .volunteerPhone(volunteer.getUser().getPhone())
+                                                                                                .volunteerProfileImg(imgService.getMyImgNullable(volunteer.getUser().getUserId()))
+                                                                                                .serviceType(matching.getServiceType())
                                                                                                 .build();
                                                                         }
 

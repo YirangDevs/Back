@@ -16,6 +16,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.validation.constraints.Null;
+
 @Service
 @RequiredArgsConstructor
 @Transactional
@@ -77,6 +79,17 @@ public class ImgService {
     public String getMyImg(Long userId) {
         User user = userService.findUserByUserId(userId);
         Img img = imgRepository.findImgByUser_UserId(userId).orElseThrow(ImageNullException::new);
+
+        return img.getImgType().equals(ImgType.IMG_TYPE_CUSTOM) ? img.getCustomImgUrl() : img.getKakaoImgUrl();
+    }
+
+    public String getMyImgNullable(Long userId){
+        User user = userService.findUserByUserId(userId);
+        Img img = imgRepository.findImgByUser_UserId(userId).orElse(null);
+
+        if (img == null){
+            return null;
+        }
 
         return img.getImgType().equals(ImgType.IMG_TYPE_CUSTOM) ? img.getCustomImgUrl() : img.getKakaoImgUrl();
     }
