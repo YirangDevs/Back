@@ -15,6 +15,7 @@ import com.api.yirang.email.dto.ActivityGuideMailContent;
 import com.api.yirang.email.dto.MatchingMailContent;
 import com.api.yirang.email.dto.NoticeRecommendMailContent;
 import com.api.yirang.email.dto.UserWithdrawMailContent;
+import com.api.yirang.email.repository.APIrepository;
 import com.api.yirang.matching.application.MatchingCrudService;
 import com.api.yirang.matching.model.maria.Matching;
 import com.api.yirang.matching.model.mongo.UnMatchingList;
@@ -41,6 +42,7 @@ public class EmailAdvancedService {
 
     // Dao
     private final UserDao userDao;
+    private final APIrepository apIrepository;
 
     private final AdminService adminService;
     private final VolunteerServiceBasicService volunteerServiceBasicService;
@@ -183,11 +185,11 @@ public class EmailAdvancedService {
         Activity activity = matching.getActivity();
         Senior senior = matching.getSenior();
 
-        //TODO roadAddress에서 areaAddress 얻어야함
         String roadAddress = senior.getAddress();
-        String areaAddress = "TEMP";
+        String areaAddress = apIrepository.getJibunFromAPI(roadAddress);
 
-        //TODO: 네이버 지도를 위한 위도 경도 구하기.
+        //TODO: 네이버 지도를 위한 1. GeoCoding으로 위도 경도 구하기 + 2. Mongo DB로 지도 넣기
+        //TODO: 네이버 캘린더 연동하기.
         ActivityGuideMailContent activityGuideMailContent = ActivityGuideMailContent.builder()
                                                                                     .volunteerName(volunteer.getUser().getRealname())
                                                                                     .activityTime(activity.getDtov())

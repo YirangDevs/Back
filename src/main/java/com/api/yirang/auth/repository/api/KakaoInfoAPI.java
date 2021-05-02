@@ -25,7 +25,6 @@ import java.util.List;
 @PropertySource("classpath:properties/application-kakao.properties")
 public class KakaoInfoAPI {
 
-
     private final HttpClient yirangHttpClient;
 
     private final String kakaoUserInfoUrl;

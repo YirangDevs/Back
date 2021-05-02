@@ -59,7 +59,7 @@ public class ActivityGuideMailContent {
 
 
         this.roadAddress = "대구시 " + region.getRegionName() + " " + roadAddress;
-        this.areaAddress = "대구시 " + region.getRegionName() + " " + areaAddress;
+        this.areaAddress = areaAddress;
         this.seniorName = seniorName;
         this.seniorPhone = seniorPhone;
         this.seniorSex = MailContentConverter.sexToMailContentString(seniorSex);
