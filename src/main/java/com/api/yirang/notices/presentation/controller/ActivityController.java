@@ -61,8 +61,6 @@ public class ActivityController {
     }
 
 
-
-
     /**
      * 목적: 액티비티의 갯수를 조회하는 API
      * 사용자: Admin, Super_Admin

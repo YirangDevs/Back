@@ -105,15 +105,19 @@ public class UserAdminActivityService {
         Collection<Apply> applies = applyBasicService.getAppliesFromActivity(activity);
 
         // 3. 바꿈
-        List<User> users = applies.stream().map(e -> e.getVolunteer().getUser()).collect(Collectors.toList());
-        List<ActivityApplyDto> activityApplyDtos = users.stream()
-                                                        .map(user ->ActivityApplyDto.builder()
-                                                                                    .userId(user.getUserId())
-                                                                                    .realname(user.getRealname())
-                                                                                    .email(user.getEmail())
-                                                                                    .sex(user.getSex()).phone(user.getPhone())
-                                                                                    .profileImg(imgService.getMyImgNullable(user.getUserId()))
-                                                                                    .build())
+        List<ActivityApplyDto> activityApplyDtos = applies.stream()
+                                                        .map(apply ->
+                                                             {
+                                                                 User user = apply.getVolunteer().getUser();
+                                                                 return ActivityApplyDto.builder()
+                                                                                 .userId(user.getUserId())
+                                                                                 .realname(user.getRealname())
+                                                                                 .email(user.getEmail())
+                                                                                 .sex(user.getSex()).phone(user.getPhone())
+                                                                                 .serviceType(apply.getServiceType())
+                                                                                 .profileImg(imgService.getMyImgNullable(user.getUserId()))
+                                                                                 .build();
+                                                             })
                                                         .collect(Collectors.toList());
 
         return ActivityAppliesDto.builder()
