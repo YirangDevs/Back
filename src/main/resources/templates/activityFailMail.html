@@ -6,8 +6,47 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
 </head>
-<body>
- <p> YOU ARE FAIL</p>
- <p th:text = "'안녕하세요~ ' + ${name} + ''"></p>님
+
+<body style="margin:0;">
+<div style="width: 100%; height: 1030px; background-color:rgb(236, 236, 236); display: flex; justify-content: center;">
+    <div style="background-color: white; width: 640px; font-family: Noto Sans KR, sans-serif; overflow: hidden; position : relative;">
+        <div style="z-index: 1; position: relative; width: 900px; height: 1000px; margin-left: -500px; margin-top: -1130px;">
+            <img src="https://yirang-springboot-img.s3.ap-northeast-2.amazonaws.com/yirang-logo/logosquare.png"/>
+        </div>
+
+        <div  style="position: relative; height: 170px; z-index:999; top: 160px; left: 90px; line-height: 45px;"> <!-- header -->
+            <span style="font-size: 23px; font-weight: 700;" th:text="${name} + '님'"/>
+            <span style="font-size: 23px;">안타깝지만,</span><br/>
+            <span style="font-size: 23px;">신청하신 봉사의 매칭이 <span style="color: white; font-size: 38px; text-decoration: underline; font-weight: 700;">실패</span> 하였습니다.</span>
+        </div>
+
+        <div style="z-index: 1; position: relative; width: 100px; height: 100px;">
+            <img src="https://yirang-springboot-img.s3.ap-northeast-2.amazonaws.com/yirang-logo/logoheart.png" style="width: 200px; height: 200px; margin-top: 270px;"/>
+        </div>
+        <div style="position: relative; height: 500px; z-index: 999; text-align: center; padding-top: 50px; z-index: 2;"> <!-- main -->
+            <img src="https://yirang-springboot-img.s3.ap-northeast-2.amazonaws.com/yirang-logo/Landscape.png" style="width: 600px; margin-left: 15px;"/>
+            <div style="margin-top: -50px; line-height: 40px;">
+                <span style="font-size: 21px; font-weight: 700;">새로운 매칭</span><span style="font-size: 21px; font-weight: 500;">을 원하시면</span><br/>
+                <span style="font-size: 21px; font-family: Helvetica Neue;">Greensignal </span><span style="font-size: 21px; font-weight: 500;"> 홈페이지를 이용해주세요.</span>
+            </div>
+        </div>
+
+        <div style="z-index: 1; position: relative; width: 30px; height: 30px;">
+            <img src="https://yirang-springboot-img.s3.ap-northeast-2.amazonaws.com/yirang-logo/logoflower.png" style="width: 200px; height: 200px; margin-left: 430px; margin-top: -30px;"/>
+        </div>
+        <div style="z-index: 999; font-size: 12px; height: 80px; padding-bottom: 20px;"> <!-- footer -->
+            <div style="text-align: center; line-height: 25px;">
+                <img src="https://yirang-springboot-img.s3.ap-northeast-2.amazonaws.com/yirang-logo/head_logo.png" style="width: 30%; margin-bottom: 30px;" /><br/>
+                <span>메일의 수신을 원치 않으시면 </span><a href="http://ec2-3-35-99-114.ap-northeast-2.compute.amazonaws.com/" style="color:#00b700">[이메일 수신거부하기]</a><span>를 클릭 해 주세요.</span><br/>
+                <span>문의사항은 공식 Yirang 홈페이지를 이용하시기 바랍니다.</span><br/>
+                <a href="http://ec2-3-35-99-114.ap-northeast-2.compute.amazonaws.com/" style="text-decoration: none; color:rgb(145, 145, 145);">http://ec2-3-35-99-114.ap-northeast-2.compute.amazonaws.com/</a>
+            </div>
+            <div style="margin-top: 39px; font-size: 5px; background-color: rgb(206, 206, 206); padding: 8px;">
+                <span>Copyright 2020</span>
+                <span>TEAM:YIRANG, all right reserved</span>
+            </div>
+        </div>
+    </div>
+</div>
 </body>
 </html>

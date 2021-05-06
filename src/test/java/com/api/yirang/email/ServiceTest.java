@@ -109,13 +109,15 @@ public class ServiceTest {
 
     @Test
     public void 매칭실패_이메일(){
-
+        emailService.sendFailEmail(1468416139L);
+        emailService.sendFailEmail(1469036167L);
+        emailService.sendFailEmail(1645684109L);
 
     }
 
     @Test
     public void 지역추천_이메일(){
-        Notice notice = noticeDao.findById(624L).orElse(null);
+        Notice notice = noticeDao.findById(339L).orElse(null);
         emailAdvancedService.sendEmailToVolunteerAboutRecommendedActivity(notice);
     }
 

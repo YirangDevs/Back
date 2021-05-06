@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.mail.internet.MimeMessage;
+import java.io.File;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 
