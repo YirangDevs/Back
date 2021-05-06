@@ -32,7 +32,7 @@ public class ActivityController {
 
     /**
      * 목적: 액티비티 페이징 조회하는 API
-     * 사용자: Admin, Super_Admin
+     * 사용자: Admin, Super_Admin, Volunteer
      */
     @GetMapping(produces = "application/json")
     @ResponseStatus(HttpStatus.OK)
@@ -48,7 +48,7 @@ public class ActivityController {
     }
     /**
      * 목적: 액티비티 하나를 조회하는 API
-     * 사용자: Admin, Super_Admin
+     * 사용자: Admin, Super_Admin, Volunteer
      */
 
     @GetMapping(value = "/{activity_id}",produces = "application/json")
@@ -63,7 +63,7 @@ public class ActivityController {
 
     /**
      * 목적: 액티비티의 갯수를 조회하는 API
-     * 사용자: Admin, Super_Admin
+     * 사용자: Admin, Super_Admin, Volunteer
      */
     @GetMapping(value = "/nums", produces="application/json")
     @ResponseStatus(HttpStatus.OK)
@@ -77,7 +77,7 @@ public class ActivityController {
 
     /**
      * 목적: 엑티티비에 누가 신청했는 지 조회하는 API
-     * 사용자: Admin, Super_Admin
+     * 사용자: Admin, Super_Admin, Volunteer
      */
     @GetMapping(value = "/applies/{activity_id}", produces = "application/json")
     @ResponseStatus(HttpStatus.OK)

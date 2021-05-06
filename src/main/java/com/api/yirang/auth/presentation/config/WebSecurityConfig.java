@@ -117,7 +117,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             // Img 관련은 Anonymous가 아니면 다 가능하다.
             .antMatchers("/v1/apis/imgs/**").hasAnyAuthority("VOLUNTEER", "ADMIN", "SUPER_ADMIN")
             /** Activity **/
-            .antMatchers("/v1/apis/manage/activities/**", "/v1/apis/manage/activities").hasAnyAuthority("ADMIN", "SUPER_ADMIN")
+            .antMatchers("/v1/apis/manage/activities/**", "/v1/apis/manage/activities").hasAnyAuthority("ADMIN", "SUPER_ADMIN", "VOLUNTEER")
             /** Matching **/
             // 자신의 이전 매칭 기록 보는건 Volunteer이 가능하다.
             .antMatchers("/v1/apis/matchings/mymatching").hasAnyAuthority("VOLUNTEER")
