@@ -121,6 +121,4 @@ public class ServiceTest {
         emailAdvancedService.sendEmailToVolunteerAboutRecommendedActivity(notice);
     }
 
-
-
 }
