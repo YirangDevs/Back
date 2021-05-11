@@ -28,13 +28,13 @@ public class AutomaticMatchingService {
     @Scheduled(cron = "0 0 15 * * *" )
     public void checkTomorrowAfterTomorrowActivityAndExecuteMatching(){
         LocalDateTime now = LocalDateTime.now();
-        List<Activity> activities = matchingService.findAllActivityTomorrow(now);
+        List<Activity> activities = activityBasicService.findAllActivityTomorrowAfterTomorrow(now);
 
         // 해당하는Activites가 없으면 그냥 넘김
         if (activities.isEmpty()){
             return;
         }
-        // 진행하가
+        // 진행하기
         activities.forEach(matchingLogicService::executeMatchingSteps);
         //매칭 완료 페이지 보내기
         activities.forEach(emailAdvancedService::sendEmailToAdminAboutMatching);

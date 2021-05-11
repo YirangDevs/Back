@@ -6,8 +6,14 @@ import com.api.yirang.common.support.type.Region;
 import com.api.yirang.common.support.type.Sex;
 import com.api.yirang.email.application.EmailAdvancedService;
 import com.api.yirang.email.application.EmailService;
+import com.api.yirang.email.dto.ActivityGuideMailContent;
 import com.api.yirang.email.dto.MatchingMailContent;
 import com.api.yirang.email.dto.UserWithdrawMailContent;
+import com.api.yirang.matching.application.MatchingService;
+import com.api.yirang.matching.model.maria.Matching;
+import com.api.yirang.matching.repository.maria.MatchingRepository;
+import com.api.yirang.notices.domain.notice.model.Notice;
+import com.api.yirang.notices.repository.persistence.maria.NoticeDao;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +35,15 @@ public class ServiceTest {
 
     @Autowired
     EmailAdvancedService emailAdvancedService;
+
+    @Autowired
+    MatchingService matchingService;
+
+    @Autowired
+    MatchingRepository matchingRepository;
+
+    @Autowired
+    NoticeDao noticeDao;
 
     @Test
     public void 인증_이메일_보내기() throws UnsupportedEncodingException, MessagingException {
@@ -86,6 +101,24 @@ public class ServiceTest {
         emailService.sendWithdrawEmail(1468416139L, userWithdrawMailContent, matchingMailContentList);
     }
 
+    @Test
+    public void 가이드_이메일_보내기(){
+        Matching matching = matchingRepository.findById(616L).orElse(null);
+        emailAdvancedService.sendEmailToVolunteerAboutSuccessEmail(matching);
+    }
 
+    @Test
+    public void 매칭실패_이메일(){
+        emailService.sendFailEmail(1468416139L);
+        emailService.sendFailEmail(1469036167L);
+        emailService.sendFailEmail(1645684109L);
+
+    }
+
+    @Test
+    public void 지역추천_이메일(){
+        Notice notice = noticeDao.findById(339L).orElse(null);
+        emailAdvancedService.sendEmailToVolunteerAboutRecommendedActivity(notice);
+    }
 
 }

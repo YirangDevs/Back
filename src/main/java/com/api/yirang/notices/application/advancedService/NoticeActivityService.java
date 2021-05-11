@@ -4,6 +4,7 @@ import com.api.yirang.auth.application.basicService.AdminService;
 import com.api.yirang.auth.domain.jwt.components.JwtParser;
 import com.api.yirang.auth.domain.user.model.Admin;
 import com.api.yirang.auth.support.utils.ParsingHelper;
+import com.api.yirang.email.application.EmailAdvancedService;
 import com.api.yirang.notices.application.basicService.ActivityBasicService;
 import com.api.yirang.notices.application.basicService.NoticeBasicService;
 import com.api.yirang.notices.domain.activity.converter.ActivityConverter;
@@ -39,6 +40,9 @@ public class NoticeActivityService {
     // DI user Service
     private final AdminService adminService;
 
+    // DI advanced Service
+    private final EmailAdvancedService emailAdvancedService;
+
     // DI JwtParser
     private final JwtParser jwtParser;
 
@@ -64,6 +68,7 @@ public class NoticeActivityService {
         // Notice 받아서, DB에 저장
         String title = noticeRequestDto.getTitle();
         Notice notice = NoticeConverter.convertFromDtoToModel(title, admin, activity);
+        emailAdvancedService.sendEmailToVolunteerAboutRecommendedActivity(notice);
         noticeBasicService.save(notice);
 
         System.out.println("[NoticeActivityService]: Notice를 저장했습니다. ");
@@ -135,6 +140,7 @@ public class NoticeActivityService {
 
         // 새로운 Notice를 만들고 저장
         Notice newUrgentNotice = NoticeConverter.convertFromDtoToModel(title, admin, activity);
+        emailAdvancedService.sendEmailToVolunteerAboutRecommendedActivity(newUrgentNotice);
         noticeBasicService.save(newUrgentNotice);
 
         System.out.println("[NoticeActivityService]: notice를 저장했습니다.");

@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html xmlns:th ="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
+</head>
+
+<body style="margin:0;">
+    <div style="width: 100%; height: 2059px; background-color:rgb(236, 236, 236); display: flex; justify-content: center;">
+        <div style="background-color:white; width: 640px; font-family: Noto Sans KR, sans-serif;">
+            <div style="z-index: 999; position: relative; width: 1px; height: 1px;">
+                <img src="https://yirang-springboot-img.s3.ap-northeast-2.amazonaws.com/yirang-logo/mail.png" style="width: 300px; margin-left: 350px; margin-top: -60px;"/>
+                <img src="https://yirang-springboot-img.s3.ap-northeast-2.amazonaws.com/yirang-logo/logo1.png" style="width: 230px; margin-top: 70px; margin-left: 440px;"/>
+                <img src="https://yirang-springboot-img.s3.ap-northeast-2.amazonaws.com/yirang-logo/logo2.png" style="width: 180px; margin-top: -60px; margin-left: -10px;"/>
+                <img src="https://yirang-springboot-img.s3.ap-northeast-2.amazonaws.com/yirang-logo/logo3.png" style="width: 180px; margin-top: 155px; margin-left: 440px;"/>
+            </div>
+
+            <div style="height: auto; margin: 50px; line-height: 30px;"> <!-- header -->
+                <span style="font-weight: bold;">신청한 봉사의 관리자로부터</span><br/>
+                <span>메일이 도착했습니다 :)</span><br/><br/>
+                <span style="font-size: 25px; font-weight: 900; color: #00b700;">봉사 1일 전</span><span style="font-size: 25px; font-weight: bold;">입니다.</span>
+            </div>
+            <img src="https://yirang-springboot-img.s3.ap-northeast-2.amazonaws.com/yirang-logo/senior.jpeg" style="width: 100%;" /> <!-- 어르신 이미지 -->
+
+            <div style="height: auto; margin: 40px; text-align: center"> <!-- main -->
+                <span style="font-size: 20px; font-weight: bold; color:#00b700;" th:text="'안녕하십니까? ' + ${guideContent.getVolunteerName()} + '님'"/><br/><br/>
+                <span style="font-size: 13px; line-height: 30px;">
+                            봉사 준비는 잘 하고 계신가요?<br/>
+                            봉사 하루 전, 확인해야 할 사항들을 놓치지 않도록 메일을 잘 확인해주세요!<br/>
+                            <span style="font-family: Helvetica Neue;">GreenSignal</span>이 여러분을 응원합니다.<br/>
+                        </span>
+
+                <div style="display: flex; margin-top: 30px; margin-bottom: 50px; padding: 25px; background-color:#f7f7f7; border-radius: 10px;">
+                    <span style="font-weight:bolder; color:#00b700; margin-top:10px;">봉사신청서</span>
+                    <table style="margin-left: 70px; width: 65%; border-collapse: collapse;">
+                        <tr style="height: 45px;">
+                            <td style="border-bottom: 1px solid rgb(145, 145, 145); width: 20%; font-weight: bold;">성명</td>
+                            <td style="border-bottom: 1px solid rgb(145, 145, 145); width: 40%;" th:text="${guideContent.getSeniorName()}"/>
+                        </tr>
+                        <tr style="height: 45px;">
+                            <td style="border-bottom: 1px solid rgb(145, 145, 145); font-weight: bold;">봉사일시</td>
+                            <td style="border-bottom: 1px solid rgb(145, 145, 145); width: 40%;" th:text="${guideContent.getYearOfActivity()} + '.' + ${guideContent.getMonthOfActivity()} + '.' + ${guideContent.getDayOfActivity()}"/>
+                        </tr>
+                        <tr style="height: 45px;">
+                            <td style="border-bottom: 1px solid rgb(145, 145, 145); font-weight: bold;">장소</td>
+                            <td style="border-bottom: 1px solid rgb(145, 145, 145); width: 40%;" th:text="${guideContent.getRoadAddress()}"/>
+                        </tr>
+                        <tr style="height: 45px;">
+                            <td style="border-bottom: 1px solid rgb(145, 145, 145); font-weight: bold;">전화번호</td>
+                            <td style="border-bottom: 1px solid rgb(145, 145, 145); width: 40%;" th:text="${guideContent.getSeniorPhone()}"/>
+                        </tr>
+                        <tr style="height: 45px;">
+                            <td style="border-bottom: 1px solid rgb(145, 145, 145); font-weight: bold;">성별</td>
+                            <td style="border-bottom: 1px solid rgb(145, 145, 145); width: 40%;" th:text="${guideContent.getSeniorSex()}"/>
+                        </tr>
+                        <tr style="height: 45px;">
+                            <td style="font-weight: bold;">봉사분야</td>
+                            <td style="border-bottom: 1px solid rgb(145, 145, 145); width: 40%;" th:text="${guideContent.getServiceType()}"/>
+                        </tr>
+                    </table>
+                </div>
+
+                <hr style="border: 1px solid rgb(209, 209, 209);"/>
+                <div style="display: flex; margin-top: 50px;">
+                    <div style="width: 45%; text-align: left; padding: 20px;">
+                        <span style="font-weight: bold; font-size: 20px;" >찾아오시는 길</span><br/>
+                        <br/>
+                        <span th:text="${guideContent.getRoadAddress()}"/><br/>
+                        <span style="color:rgb(145, 145, 145)">지번: </span><span th:text="${guideContent.getAreaAddress()}"/><br/>
+
+                        <button style="margin-top: 30px; padding-top: 15px; padding-bottom: 36px; font-size: 18px; font-weight: bold; color: white; background-color: #00b700; border: none; border-radius: 5px; padding-left: 25px; padding-right: 25px;">약도 바로가기 &nbsp;&nbsp;&nbsp;&nbsp;&gt;</button>
+                    </div>
+                    <div style="width: 50%;">
+                        <img src="https://yirang-springboot-img.s3.ap-northeast-2.amazonaws.com/yirang-logo/map_test.png" style="width: 100%;"/>
+                    </div>
+                </div>
+
+                <div style="margin-top: 30px; text-align: left; margin-bottom: 30px; font-weight: bold; font-size: 20px; border-radius: 10px; padding: 16px; padding-left: 40px; background-color:#f7f7f7;">
+                    다음 일정에 초대되었습니다.
+                </div>
+
+                <div style="display: inline;">
+                    <span style="font-weight: bold; font-size: 18px; float: left; margin-left: 50px;font-family: Helvetica Neue;">Greensignal 재가봉사</span>
+                    <span style="color:#00b700; font-weight: bold; float: right;">추가 세부정보 &nbsp;&gt;</span>
+                </div>
+
+                <div style="background-color:rgba(0,183,0, 0.19); padding: 15px; border-radius: 10px; margin-top: 80px; text-align: left;">
+                    <span style="color:rgb(165, 165, 165);">시간</span>
+                    <span th:text="${guideContent.getYearOfActivity()} + '.' + ${guideContent.getMonthOfActivity()} + '.' + ${guideContent.getDayOfActivity()}
+                                    + ' (' + ${guideContent.getDayOfWeekOfActivity()} +') '
+                                    + ${guideContent.getPaOfStartTime()} + ' ' + ${guideContent.getStartHourOfActivity()} + ':' + ${guideContent.getMinutesOfActivity()} + ' ~ '
+                                    + ${guideContent.getPaOfEndTime()} + ' ' + ${guideContent.getEndHourOfActivity()} + ':' + ${guideContent.getMinutesOfActivity()}"/>
+                    <span style="color:rgb(165, 165, 165);">한국 표준시 - 서울</span><br/><br/>
+                    <span style="color:rgb(165, 165, 165);">참여</span>
+                    <span>다음을 사용하여 참여 : </span>
+                    <a href="/" style="text-decoration: none; color: black; font-family: Helvetica Neue; font-weight: bold;">Google Calender</a>
+                </div>
+
+            </div>
+
+            <div style="font-size: 12px; height: 80px; padding-bottom: 20px;"> <!-- footer -->
+                <div style="text-align: center; line-height: 25px;">
+                    <img src="https://yirang-springboot-img.s3.ap-northeast-2.amazonaws.com/yirang-logo/head_logo.png" style="width: 35%;" /><br/>
+                    <span>메일의 수신을 원치 않으시면 </span><a href="http://ec2-3-35-99-114.ap-northeast-2.compute.amazonaws.com/" style="color:#00b700">[이메일 수신거부하기]</a><span>를 클릭 해 주세요.</span><br/>
+                    <span>문의사항은 공식 Yirang 홈페이지를 이용하시기 바랍니다.</span><br/>
+                    <a href="http://ec2-3-35-99-114.ap-northeast-2.compute.amazonaws.com/" style="text-decoration: none; color:rgb(145, 145, 145);">http://ec2-3-35-99-114.ap-northeast-2.compute.amazonaws.com/</a>
+                </div>
+                <div style="margin-top: 39px; font-size: 5px; background-color: rgb(206, 206, 206); padding: 8px;">
+                    <span>Copyright 2020</span>
+                    <span>TEAM:YIRANG, all right reserved</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

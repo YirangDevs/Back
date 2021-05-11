@@ -14,3 +14,20 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6IuycoOygleuvvCIsImltZ
   }
 
 }
+###
+PUT http://ec2-3-35-99-114.ap-northeast-2.compute.amazonaws.com:8080/v1/apis/manage/notices/624
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOiIxNDY4NDE2MTM5IiwiaWF0IjoxNjE4NDEwMzA2LCJleHAiOjE2MTg0OTY3MDZ9.emyi7WUYmgINJ8vjnLRXcUp8EVhMPRQ3rF_hhNPkYTU
+
+{
+  "title": "백 테스트",
+  "activityRegisterRequestDto": {
+    "content": "테스트",
+    "nor": 2,
+    "dov": "2020-11-12",
+    "tov": "11:22:33:00",
+    "dod": "2020-11-11",
+    "region": "중구"
+  }
+
+}

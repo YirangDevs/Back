@@ -37,6 +37,11 @@ public class VolunteerGenerator {
         User user = UserGenerator.createRandomUser(Authority.ROLE_VOLUNTEER, sex);
         return createRandomVolunteer(user);
     }
+    public static Volunteer createRandomVolunteer(Sex sex, String email){
+        User user = UserGenerator.createRandomUser(Authority.ROLE_VOLUNTEER, sex, email);
+        return createRandomVolunteer(user);
+    }
+
 
     public static Volunteer createAndRandomVolunteer(VolunteerDao volunteerDao){
         return volunteerDao.save(createRandomVolunteer());
@@ -44,6 +49,10 @@ public class VolunteerGenerator {
 
     public static Volunteer createAndRandomVolunteer(VolunteerDao volunteerDao, Sex sex){
         return volunteerDao.save(createRandomVolunteer(sex));
+    }
+
+    public static Volunteer createAndRandomVolunteer(VolunteerDao volunteerDao, Sex sex, String email){
+        return volunteerDao.save(createRandomVolunteer(sex, email));
     }
 
 

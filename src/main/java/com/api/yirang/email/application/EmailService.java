@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.mail.internet.MimeMessage;
+import java.io.File;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 
@@ -38,6 +39,10 @@ public class EmailService {
     private static final String MATCHING_MAIL_TITLE = "[Yirang 재가봉사] 매칭완료 안내 메일입니다.";
     private static final String VERIFY_MAIL_TITLE = "[Yirang 재가봉사] 본인 이메일을 인증해주세요";
     private static final String WITHDRAW_MAIL_TITLE = "[Yirang 재가봉사] 회원탈퇴 안내 메일입니다.";
+
+    // Volunteer Email
+    private static final String ACTIVITY_GUIDE_TITLE = "[Greensignal 재가봉사] 봉사 안내 메일입니다.";
+    private static final String ACTIVITY_RECOMMEND_TITLE = "[Greesignal 재가봉사] 선호지역의 추천 봉사 메일입니다.";
 
 
     // Privates
@@ -79,6 +84,46 @@ public class EmailService {
         final String toEmail = user.getEmail();
         final String subject = WITHDRAW_MAIL_TITLE;
         final String content = mailContentHelper.generateWithdrawMailContent(userWithdrawMailContent, matchingMailContentList);
+
+        sendEmail(toEmail, subject, content);
+    }
+
+    public void sendGuideEmail(
+            Long userId,
+            ActivityGuideMailContent activityGuideMailContent
+       )
+    {
+        User user = userService.findUserByUserId(userId);
+
+        final String toEmail = user.getEmail();
+        final String subject = ACTIVITY_GUIDE_TITLE;
+        final String content = mailContentHelper.generateGuideEmailContent(activityGuideMailContent);
+
+        sendEmail(toEmail, subject, content);
+    }
+
+    public void sendFailEmail(
+            Long userId
+       )
+    {
+        User user = userService.findUserByUserId(userId);
+
+        final String toEmail = user.getEmail();
+        final String subject = ACTIVITY_GUIDE_TITLE;
+        final String content = mailContentHelper.generateFailEmailContent(user.getRealname());
+
+        sendEmail(toEmail, subject, content);
+    }
+    public void sendRegionRecommendEmail(
+            Long userId,
+            NoticeRecommendMailContent noticeRecommendMailContent
+       )
+    {
+        User user = userService.findUserByUserId(userId);
+
+        final String toEmail = user.getEmail();
+        final String subject = ACTIVITY_RECOMMEND_TITLE;
+        final String content = mailContentHelper.generateNoticeRecommendEmailContent(user.getRealname(), noticeRecommendMailContent);
 
         sendEmail(toEmail, subject, content);
     }

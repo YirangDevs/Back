@@ -20,7 +20,7 @@ public interface MatchingRepository extends JpaRepository<Matching, Long> {
 
     @Query("SELECT (COUNT (M) > 0) " +
            "FROM Matching M " +
-           "WHERE M.volunteer.user.userId =:userId " +
+           "WHERE M.volunteer.user.userId  =:userId " +
            "     AND M.activity.dtov > :now ")
     @Transactional
     boolean existsMatchingByVolunteer_User_UserIdAndActivity_DtovAfterNow(Long userId, LocalDateTime now);

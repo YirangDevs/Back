@@ -34,6 +34,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -66,6 +68,13 @@ public class UserService {
 
     public User findUserByUserId(Long userId) {
         return userDao.findByUserId(userId).orElseThrow(UserNullException::new);
+    }
+
+    public List<User> findUserWhoAreVolunteerAndLoveRegion(Region region) {
+        return userDao.findAllByAuthority(Authority.ROLE_VOLUNTEER).stream()
+                      .filter(user -> (user.getFirstRegion() != null && user.getFirstRegion().equals(region) ) ||
+                                      (user.getSecondRegion() != null && user.getSecondRegion().equals(region)) )
+                      .collect(Collectors.toList());
     }
 
     public UserInfoResponseDto findUserInfoByUserId(Long userId) {

@@ -31,4 +31,10 @@ public class EmailMigration {
 
         users.forEach(e->{emailRepository.save(Email.builder().user(e).build());});
     }
+
+    @Test
+    public void 이메일_생성(){
+        User user = userDao.findByUserId(1645684109L).orElse(null);
+        emailRepository.save(Email.builder().user(user).build());
+    }
 }

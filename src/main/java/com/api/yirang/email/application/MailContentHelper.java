@@ -1,7 +1,9 @@
 package com.api.yirang.email.application;
 
 import com.api.yirang.auth.domain.user.model.User;
+import com.api.yirang.email.dto.ActivityGuideMailContent;
 import com.api.yirang.email.dto.MatchingMailContent;
+import com.api.yirang.email.dto.NoticeRecommendMailContent;
 import com.api.yirang.email.dto.UserWithdrawMailContent;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -46,4 +48,26 @@ public class MailContentHelper {
         return templateEngine.process("userWithdrawMail", context);
     }
 
+    public String generateGuideEmailContent(ActivityGuideMailContent activityGuideMailContent) {
+
+        Context context = new Context();
+        context.setVariable("guideContent", activityGuideMailContent);
+
+        return templateEngine.process("activityGuideMail", context);
+    }
+
+    public String generateFailEmailContent(String realname) {
+        Context context = new Context();
+        context.setVariable("name", realname);
+
+        return templateEngine.process("activityFailMail", context);
+    }
+
+    public String generateNoticeRecommendEmailContent(String realname, NoticeRecommendMailContent noticeRecommendMailContent) {
+        Context context = new Context();
+        context.setVariable("name", realname);
+        context.setVariable("noticeRecommendContent", noticeRecommendMailContent);
+
+        return templateEngine.process("noticeRecommendMail", context);
+    }
 }
