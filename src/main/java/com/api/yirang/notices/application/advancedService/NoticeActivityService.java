@@ -63,7 +63,7 @@ public class NoticeActivityService {
         ActivityRegisterRequestDto activityRegisterRequestDto = noticeRequestDto.getActivityRegisterRequestDto();
 
         // 만약 Activity 날짜가 오늘 이후의 날짜이면 Error
-        if(TimeConverter.StringToLocalDateTime(activityRegisterRequestDto.getDov() + " " + activityRegisterRequestDto.getTov() ).isAfter(LocalDateTime.now())){
+        if(TimeConverter.StringToLocalDateTime(activityRegisterRequestDto.getDov() + " " + activityRegisterRequestDto.getTov() ).isBefore(LocalDateTime.now())){
             throw new UtilException("Activity DTOV is too late");
         }
         // Activity 받아서 DB에 저장
@@ -143,7 +143,7 @@ public class NoticeActivityService {
         // noticeId를 이용해서 Activity를 가져옴
         Activity activity = noticeBasicService.findActivityNoticeId(noticeId);
 
-        if(activity.getDtov().isAfter(LocalDateTime.now())){
+        if(activity.getDtov().isBefore(LocalDateTime.now())){
             throw new UtilException("Activity DTOV is too late");
         }
 
