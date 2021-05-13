@@ -4,6 +4,8 @@ import com.api.yirang.auth.application.basicService.AdminService;
 import com.api.yirang.auth.domain.jwt.components.JwtParser;
 import com.api.yirang.auth.domain.user.model.Admin;
 import com.api.yirang.auth.support.utils.ParsingHelper;
+import com.api.yirang.common.exceptions.UtilException;
+import com.api.yirang.common.support.time.TimeConverter;
 import com.api.yirang.email.application.EmailAdvancedService;
 import com.api.yirang.notices.application.basicService.ActivityBasicService;
 import com.api.yirang.notices.application.basicService.NoticeBasicService;
@@ -25,6 +27,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.validation.constraints.NotBlank;
+import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.stream.Collectors;
 
@@ -59,6 +62,10 @@ public class NoticeActivityService {
         // DTO를 받아서 뜯어서 -> Notice랑 Activity로 나누어야 함
         ActivityRegisterRequestDto activityRegisterRequestDto = noticeRequestDto.getActivityRegisterRequestDto();
 
+        // 만약 Activity 날짜가 오늘 이후의 날짜이면 Error
+        if(TimeConverter.StringToLocalDateTime(activityRegisterRequestDto.getDov() + " " + activityRegisterRequestDto.getTov() ).isAfter(LocalDateTime.now())){
+            throw new UtilException("Activity DTOV is too late");
+        }
         // Activity 받아서 DB에 저장
         Activity activity = ActivityConverter.ConvertFromDtoToModel(activityRegisterRequestDto);
         activityBasicService.save(activity);
@@ -135,6 +142,10 @@ public class NoticeActivityService {
         Admin admin = adminService.findAdminByUserId(userId);
         // noticeId를 이용해서 Activity를 가져옴
         Activity activity = noticeBasicService.findActivityNoticeId(noticeId);
+
+        if(activity.getDtov().isAfter(LocalDateTime.now())){
+            throw new UtilException("Activity DTOV is too late");
+        }
 
         System.out.println("[NoticeActivityService]: Admin과 Activity을 구했습니다.");
 
