@@ -6,17 +6,14 @@ import com.api.yirang.auth.domain.user.model.User;
 import com.api.yirang.img.component.S3Uploader;
 import com.api.yirang.img.dto.ImgTypeRequestDto;
 import com.api.yirang.img.exception.ImageNullException;
-import com.api.yirang.img.exception.ImgTypeDuplicatedException;
 import com.api.yirang.img.exception.ImgTypeInvalidException;
-import com.api.yirang.img.model.Img;
-import com.api.yirang.img.repository.ImgRepository;
+import com.api.yirang.img.model.maria.Img;
+import com.api.yirang.img.repository.maria.ImgRepository;
 import com.api.yirang.img.util.ImgType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
-
-import javax.validation.constraints.Null;
 
 @Service
 @RequiredArgsConstructor
@@ -55,7 +52,7 @@ public class ImgService {
         }
 
         // 1. File Upload
-        String fileUrl = s3Uploader.upload(userId, file);
+        String fileUrl = s3Uploader.uploadImg(userId, file);
         imgRepository.updateCustomImg(userId, fileUrl);
     }
 

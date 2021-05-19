@@ -35,12 +35,14 @@ public class ActivityGuideMailContent {
 
     private final String serviceType;
 
+    private final String staticMapUrl;
+
     @Builder
     public ActivityGuideMailContent(String volunteerName,
                                     LocalDateTime activityTime, Region region,
                                     String roadAddress, String areaAddress,
                                     String seniorName, String seniorPhone, Sex seniorSex,
-                                    ServiceType serviceType) {
+                                    ServiceType serviceType, String staticMapUrl) {
 
         Map<String, String> timeMap =  MailContentConverter.localDateTimeToMailContent(activityTime);
 
@@ -64,5 +66,6 @@ public class ActivityGuideMailContent {
         this.seniorPhone = seniorPhone;
         this.seniorSex = MailContentConverter.sexToMailContentString(seniorSex);
         this.serviceType = MailContentConverter.serviceTypeToEmailContentString(serviceType);
+        this.staticMapUrl = staticMapUrl;
     }
 }

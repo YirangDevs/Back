@@ -3,8 +3,8 @@ package com.api.yirang.img;
 
 import com.api.yirang.auth.domain.user.model.User;
 import com.api.yirang.auth.repository.persistence.maria.UserDao;
-import com.api.yirang.img.model.Img;
-import com.api.yirang.img.repository.ImgRepository;
+import com.api.yirang.img.model.maria.Img;
+import com.api.yirang.img.repository.maria.ImgRepository;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;

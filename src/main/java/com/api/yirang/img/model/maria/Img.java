@@ -1,4 +1,4 @@
-package com.api.yirang.img.model;
+package com.api.yirang.img.model.maria;
 
 import com.api.yirang.auth.domain.user.model.User;
 import com.api.yirang.img.util.ImgType;

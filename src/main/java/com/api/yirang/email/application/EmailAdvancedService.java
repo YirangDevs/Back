@@ -16,6 +16,7 @@ import com.api.yirang.email.dto.MatchingMailContent;
 import com.api.yirang.email.dto.NoticeRecommendMailContent;
 import com.api.yirang.email.dto.UserWithdrawMailContent;
 import com.api.yirang.email.repository.APIrepository;
+import com.api.yirang.img.application.StaticMapService;
 import com.api.yirang.matching.application.MatchingCrudService;
 import com.api.yirang.matching.model.maria.Matching;
 import com.api.yirang.matching.model.mongo.UnMatchingList;
@@ -50,6 +51,7 @@ public class EmailAdvancedService {
     private final MatchingCrudService matchingCrudService;
     private final VolunteerBasicService volunteerBasicService;
     private final UserService userService;
+    private final StaticMapService staticMapService;
 
     public void sendEmailToAdminAboutMatching(Activity activity) {
         // 1. activity의 지역 알아내기
@@ -188,8 +190,7 @@ public class EmailAdvancedService {
         String roadAddress = senior.getAddress();
         String areaAddress = apIrepository.getJibunFromAPI(roadAddress);
 
-        //TODO: 네이버 지도를 위한 1. GeoCoding으로 위도 경도 구하기 + 2. Mongo DB로 지도 넣기
-        //TODO: 네이버 캘린더 연동하기.
+        //네이버 지도를 위한 1. GeoCoding으로 위도 경도 구하기 + 2. Mongo DB로 지도 넣기
         ActivityGuideMailContent activityGuideMailContent = ActivityGuideMailContent.builder()
                                                                                     .volunteerName(volunteer.getUser().getRealname())
                                                                                     .activityTime(activity.getDtov())
@@ -200,6 +201,7 @@ public class EmailAdvancedService {
                                                                                     .seniorSex(senior.getSex())
                                                                                     .seniorPhone(senior.getPhone())
                                                                                     .seniorName(senior.getSeniorName())
+                                                                                    .staticMapUrl(staticMapService.findOrPullStaticMap(roadAddress))
                                                                                     .build();
 
 

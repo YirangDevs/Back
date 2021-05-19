@@ -5,7 +5,6 @@ import com.api.yirang.auth.domain.kakaoToken.exceptions.AlreadyExpiredKakaoAcces
 import com.api.yirang.auth.domain.kakaoToken.exceptions.InvalidKakaoAccessTokenException;
 import com.api.yirang.auth.domain.kakaoToken.exceptions.KakaoServerException;
 import com.google.gson.Gson;
-import lombok.RequiredArgsConstructor;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;

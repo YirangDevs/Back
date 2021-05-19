@@ -18,7 +18,8 @@ import java.util.List;
 @Configuration
 @EnableMongoRepositories(
         basePackages = {
-            "com.api.yirang.matching.repository.mongo"
+            "com.api.yirang.matching.repository.mongo",
+            "com.api.yirang.img.repository.mongo"
         }
 )
 @PropertySource("classpath:properties/application-db.properties")

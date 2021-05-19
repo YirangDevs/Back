@@ -1,6 +1,6 @@
-package com.api.yirang.img.repository;
+package com.api.yirang.img.repository.maria;
 
-import com.api.yirang.img.model.Img;
+import com.api.yirang.img.model.maria.Img;
 import com.api.yirang.img.util.ImgType;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
