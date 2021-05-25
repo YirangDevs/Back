@@ -59,7 +59,6 @@ public class MailContentHelper {
     public String generateFailEmailContent(String realname) {
         Context context = new Context();
         context.setVariable("name", realname);
-
         return templateEngine.process("activityFailMail", context);
     }
 

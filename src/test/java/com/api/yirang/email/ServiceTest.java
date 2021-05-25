@@ -117,7 +117,7 @@ public class ServiceTest {
 
     @Test
     public void 지역추천_이메일(){
-        Notice notice = noticeDao.findById(339L).orElse(null);
+        Notice notice = noticeDao.findById(719L).orElse(null);
         emailAdvancedService.sendEmailToVolunteerAboutRecommendedActivity(notice);
     }
 

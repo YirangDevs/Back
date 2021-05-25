@@ -56,7 +56,7 @@
                             <td style="border-bottom: 1px solid rgb(145, 145, 145); width: 40%;" th:text="${guideContent.getSeniorSex()}"/>
                         </tr>
                         <tr style="height: 45px;">
-                            <td style="font-weight: bold;">봉사분야</td>
+                            <td style="border-bottom: 1px solid rgb(145, 145, 145); font-weight: bold;">봉사분야</td>
                             <td style="border-bottom: 1px solid rgb(145, 145, 145); width: 40%;" th:text="${guideContent.getServiceType()}"/>
                         </tr>
                     </table>
@@ -70,7 +70,8 @@
                         <span th:text="${guideContent.getRoadAddress()}"/><br/>
                         <span style="color:rgb(145, 145, 145)">지번: </span><span th:text="${guideContent.getAreaAddress()}"/><br/>
 
-                        <button style="margin-top: 30px; padding-top: 15px; padding-bottom: 36px; font-size: 18px; font-weight: bold; color: white; background-color: #00b700; border: none; border-radius: 5px; padding-left: 25px; padding-right: 25px;">약도 바로가기 &nbsp;&nbsp;&nbsp;&nbsp;&gt;</button>
+                        <a th:href="'http://maps.naver.com/?menu=location&mapMode=0&lat=' + ${guideContent.getLatitude()} + '&lng=' + ${guideContent.getLongitude()} + '&dlevel=14&enc=b64mapMode'"
+                                style="display: inline-block; text-decoration: none; margin-top: 5px; padding-top: 15px; padding-bottom: 18px; font-size: 18px; font-weight: bold; color: white; background-color: #00b700; border: none; border-radius: 5px; padding-left: 25px; padding-right: 25px;">약도 바로가기 &nbsp;&nbsp;&nbsp;&nbsp;&gt;</a>
                     </div>
                     <div style="width: 50%;">
                         <img th:src="${guideContent.getStaticMapUrl()}" style="width: 100%;"/>

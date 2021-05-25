@@ -17,6 +17,7 @@ import com.api.yirang.email.dto.NoticeRecommendMailContent;
 import com.api.yirang.email.dto.UserWithdrawMailContent;
 import com.api.yirang.email.repository.APIrepository;
 import com.api.yirang.img.application.StaticMapService;
+import com.api.yirang.matching.application.GeoCodeService;
 import com.api.yirang.matching.application.MatchingCrudService;
 import com.api.yirang.matching.model.maria.Matching;
 import com.api.yirang.matching.model.mongo.UnMatchingList;
@@ -52,6 +53,8 @@ public class EmailAdvancedService {
     private final VolunteerBasicService volunteerBasicService;
     private final UserService userService;
     private final StaticMapService staticMapService;
+    private final GeoCodeService geoCodeService;
+
 
     public void sendEmailToAdminAboutMatching(Activity activity) {
         // 1. activity의 지역 알아내기
@@ -201,6 +204,7 @@ public class EmailAdvancedService {
                                                                                     .seniorSex(senior.getSex())
                                                                                     .seniorPhone(senior.getPhone())
                                                                                     .seniorName(senior.getSeniorName())
+                                                                                    .geoCode(geoCodeService.getGeoCode(roadAddress))
                                                                                     .staticMapUrl(staticMapService.findOrPullStaticMap(roadAddress))
                                                                                     .build();
 

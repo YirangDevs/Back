@@ -3,6 +3,7 @@ package com.api.yirang.email.dto;
 import com.api.yirang.common.support.type.Region;
 import com.api.yirang.common.support.type.Sex;
 import com.api.yirang.email.util.MailContentConverter;
+import com.api.yirang.img.model.GeoCode;
 import com.api.yirang.seniors.support.custom.ServiceType;
 import lombok.Builder;
 import lombok.Data;
@@ -35,6 +36,9 @@ public class ActivityGuideMailContent {
 
     private final String serviceType;
 
+    // map
+    private final String latitude;
+    private final String longitude;
     private final String staticMapUrl;
 
     @Builder
@@ -42,7 +46,7 @@ public class ActivityGuideMailContent {
                                     LocalDateTime activityTime, Region region,
                                     String roadAddress, String areaAddress,
                                     String seniorName, String seniorPhone, Sex seniorSex,
-                                    ServiceType serviceType, String staticMapUrl) {
+                                    ServiceType serviceType, String staticMapUrl, GeoCode geoCode) {
 
         Map<String, String> timeMap =  MailContentConverter.localDateTimeToMailContent(activityTime);
 
@@ -66,6 +70,9 @@ public class ActivityGuideMailContent {
         this.seniorPhone = seniorPhone;
         this.seniorSex = MailContentConverter.sexToMailContentString(seniorSex);
         this.serviceType = MailContentConverter.serviceTypeToEmailContentString(serviceType);
+
+        this.latitude = geoCode.getYCode();
+        this.longitude = geoCode.getXCode();
         this.staticMapUrl = staticMapUrl;
     }
 }

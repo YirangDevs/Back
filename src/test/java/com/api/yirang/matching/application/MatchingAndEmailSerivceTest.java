@@ -6,6 +6,7 @@ import com.api.yirang.apply.repository.persistence.maria.ApplyDao;
 import com.api.yirang.auth.domain.user.model.Volunteer;
 import com.api.yirang.auth.generator.VolunteerGenerator;
 import com.api.yirang.auth.repository.persistence.maria.VolunteerDao;
+import com.api.yirang.common.support.type.Region;
 import com.api.yirang.common.support.type.Sex;
 import com.api.yirang.email.application.EmailAdvancedService;
 import com.api.yirang.matching.repository.maria.MatchingRepository;
@@ -71,7 +72,7 @@ public class MatchingAndEmailSerivceTest {
     }
 
     private void makeSeniorAndServiceActivity(Sex sex, ServiceType serviceType){
-        Senior senior = SeniorGenerator.createAndSaveRandomSenior(seniorDao, sex);
+        Senior senior = SeniorGenerator.createAndSaveRandomSenior(seniorDao, sex, Region.SOOSEONG_DISTRICT, "욱수천로 55");
         System.out.println("Senior: " + senior);
         VolunteerService volunteerService = VolunteerServiceGenerator.createAndStoreRandomVolunteerService(volunteerServiceDao,
                                                                                                            senior, activity,

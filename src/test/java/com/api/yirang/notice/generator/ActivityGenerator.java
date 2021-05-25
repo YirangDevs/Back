@@ -52,7 +52,8 @@ public class ActivityGenerator {
     }
 
     public static Activity createAndStoreRandomActivity(ActivityDao activityDao){
-        return activityDao.save(createRandomActivity());
+        return activityDao.save(createRandomActivity(Region.CENTRAL_DISTRICT));
     }
+
 
 }
