@@ -29,13 +29,13 @@ public class MailContentConverter {
     }
 
     public static String dayOfWeeksToKoreanContentString(Integer intValueOfDayOfWeeks){
-        return  intValueOfDayOfWeeks.equals(0) ? "일" :
-                intValueOfDayOfWeeks.equals(1) ? "월" :
+        return  intValueOfDayOfWeeks.equals(1) ? "월" :
                 intValueOfDayOfWeeks.equals(2) ? "화" :
                 intValueOfDayOfWeeks.equals(3) ? "수" :
                 intValueOfDayOfWeeks.equals(4) ? "목" :
                 intValueOfDayOfWeeks.equals(5) ? "금" :
-                intValueOfDayOfWeeks.equals(6) ? "토" : null;
+                intValueOfDayOfWeeks.equals(6) ? "토" :
+                intValueOfDayOfWeeks.equals(7) ? "일" : null;
     }
 
 
