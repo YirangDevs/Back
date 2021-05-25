@@ -1,6 +1,7 @@
 package com.api.yirang.img.application;
 
 import com.api.yirang.img.component.S3Uploader;
+import com.api.yirang.img.model.GeoCode;
 import com.api.yirang.img.model.mongo.MapImg;
 import com.api.yirang.img.repository.API.NaverStaticMapAPI;
 import com.api.yirang.img.repository.mongo.MapImgRepository;
@@ -44,6 +45,9 @@ public class StaticMapService {
         //  1-1. Naver API로 Static Map 이미지 얻기
         MultipartFile file = naverStaticMapAPI.getStaticMapImg(mapName);
 
+        // 1-2 Xcode, yCode 얻기
+        GeoCode geoCode = naverStaticMapAPI.getGeoCode(mapName);
+
         if (file == null){
             return DEFAULT_MAP_IMG_URL;
         }
@@ -52,7 +56,9 @@ public class StaticMapService {
         //  1-3. mapImg Repository로 저장하기
         mapImgRepository.save(
                                 MapImg.builder()
-                                .mapName(mapName).mapImgUrl(mapImgUrl)
+                                      .mapName(mapName)
+                                      .xCode(geoCode.getXCode()).yCode(geoCode.getYCode())
+                                      .mapImgUrl(mapImgUrl)
                                 .build()
         );
         // 2. 만약 위 과정에서도 찾을 수 없다면, ~~을 찾을 수 없습니다 라는 이미지가 뜹니다.

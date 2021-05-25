@@ -19,9 +19,14 @@ public class MapImg {
 
     private String mapImgUrl;
 
+    private String xCode;
+    private String yCode;
+
     @Builder
-    public MapImg(String mapName, String mapImgUrl) {
+    public MapImg(String mapName, String mapImgUrl, String xCode, String yCode) {
         this.mapName = mapName;
         this.mapImgUrl = mapImgUrl;
+        this.xCode = xCode;
+        this.yCode = yCode;
     }
 }
