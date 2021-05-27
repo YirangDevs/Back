@@ -1,15 +1,15 @@
-POST http://ec2-3-35-99-114.ap-northeast-2.compute.amazonaws.com:8080/v1/apis/manage/notices
+POST http://localhost:8080/v1/apis/manage/notices
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6IuycoOygleuvvCIsImltZ1VybCI6Imh0dHA6Ly9rLmtha2FvY2RuLm5ldC9kbi9oQTFWdS9idHFGS1h4ZlFzWC95MGhIalpsNlhaVWVScFdPa3lrTGtLL2ltZ182NDB4NjQwLmpwZyIsInVzZXJJZCI6IjE0Njg0MTYxMzkiLCJyb2xlIjoiQURNSU4iLCJpYXQiOjE2MDg1NDg1NjUsImV4cCI6MTYwODYzNDk2NX0.IY4FVEfaw9c4zfgmMyx615IEm3K56WqsWu6TmX9HClI
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOiIxNzU3NiIsImlhdCI6MTYyMjExNjM4MSwiZXhwIjoxNjIyMjAyNzgxfQ.SLNf4l44_1g7YiUUcy3fuYG3jfOn-Xbz7BwVWC-gIuQ
 
 {
- "title": "백 테스트",
+ "title": "백 테스트7",
   "activityRegisterRequestDto": {
    "content": "테스트",
     "nor": 2,
-    "dov": "2020-11-12",
+    "dov": "2021-06-01",
     "tov": "11:22:33",
-    "dod": "2020-11-11",
+    "dod": "2021-05-26",
     "region": "중구"
   }
 
