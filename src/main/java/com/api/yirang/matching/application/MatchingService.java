@@ -17,6 +17,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -111,8 +112,9 @@ public class MatchingService {
 
         return MatchingRecordsDto.builder()
                                  .matchingRecordDtoList(matchingList.stream()
+                                                                .filter(matching -> matching.getActivity().getDtov().isBefore(LocalDateTime.now()))
                                                                 .map(m -> MatchingRecordDto.builder()
-                                                                                           .dtom(TimeConverter.LocalDateTimeToString(m.getDtom()))
+                                                                                            .dtom(TimeConverter.LocalDateTimeToString(m.getDtom()))
                                                                                            .dtov(TimeConverter.LocalDateTimeToString(m.getActivity().getDtov()))
                                                                                            .serviceType(m.getServiceType())
                                                                                            .region(m.getActivity().getRegion())
