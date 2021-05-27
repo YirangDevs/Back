@@ -62,10 +62,16 @@ public class NoticeActivityService {
         // DTO를 받아서 뜯어서 -> Notice랑 Activity로 나누어야 함
         ActivityRegisterRequestDto activityRegisterRequestDto = noticeRequestDto.getActivityRegisterRequestDto();
 
-        // 만약 Activity 날짜가 오늘 이후의 날짜이면 Error
-        if(TimeConverter.StringToLocalDateTime(activityRegisterRequestDto.getDov() + " " + activityRegisterRequestDto.getTov() ).isBefore(LocalDateTime.now())){
+        // 1. 만약 Activity 날짜가 오늘 이후의 날짜이면 Error
+        // 2. 만약 봉사날짜가 마감날짜 이전이면 error
+        // 3. 만약 마감날짜가 현재 날짜 이전이면 error
+        if(TimeConverter.StringToLocalDateTime(activityRegisterRequestDto.getDov() + " " + activityRegisterRequestDto.getTov() ).isBefore(LocalDateTime.now()) ||
+           TimeConverter.StringToLocalDateTime(activityRegisterRequestDto.getDov() + " " + activityRegisterRequestDto.getTov() ).isBefore( TimeConverter.StringToLocalDateTime(activityRegisterRequestDto.getDod() + " " + "00:00:00") ) ||
+           TimeConverter.StringToLocalDateTime(activityRegisterRequestDto.getDod() + " " + "00:00:00").isBefore(LocalDateTime.now())
+        ){
             throw new UtilException("Activity DTOV is too late");
         }
+
         // Activity 받아서 DB에 저장
         Activity activity = ActivityConverter.ConvertFromDtoToModel(activityRegisterRequestDto);
         activityBasicService.save(activity);
