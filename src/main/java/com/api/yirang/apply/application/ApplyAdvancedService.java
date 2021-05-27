@@ -113,7 +113,8 @@ public class ApplyAdvancedService {
         // 1. Volunteer에 해당하는 applies 들 찾기
         Collection<Apply> applies = applyBasicService.getAppliesFromVolunteer(volunteer);
         // 2. 각 Applies로 ApplyResponseDTO 만들기
-        Collection<ApplyResponseDto> applyResponseDtos = applies.stream().map(ApplyDtoConverter::makeApplyResponseFromApply)
+        Collection<ApplyResponseDto> applyResponseDtos = applies.stream()
+                                                                .map(ApplyDtoConverter::makeApplyResponseFromApply)
                                                                 .collect(Collectors.toList());
         return applyResponseDtos;
     }
