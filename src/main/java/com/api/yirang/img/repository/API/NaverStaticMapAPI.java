@@ -79,7 +79,9 @@ public class NaverStaticMapAPI {
         try{
             GeoCode geoCode = getGeoCode(mapName);
 
-            if (geoCode == null){
+            if (geoCode.getXCode().equals("없음") ||
+                geoCode.getYCode().equals("없음"))
+            {
                 return null;
             }
 
@@ -127,7 +129,9 @@ public class NaverStaticMapAPI {
             System.out.println("ADDRESSES: " + geocodeDto.getAddresses());
 
             if (geocodeDto.getAddresses().isEmpty()){
-                return null;
+                return GeoCode.builder()
+                              .xCode("없음").yCode("없음")
+                              .build();
             }
 
             String xCode = (String) geocodeDto.getAddresses().get(0).get("x");

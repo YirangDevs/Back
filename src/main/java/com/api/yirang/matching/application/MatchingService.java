@@ -112,7 +112,7 @@ public class MatchingService {
 
         return MatchingRecordsDto.builder()
                                  .matchingRecordDtoList(matchingList.stream()
-                                                                .filter(matching -> matching.getActivity().getDtov().isBefore(LocalDateTime.now()))
+                                                                .filter(m -> m.getActivity().getDtov().isBefore(LocalDateTime.now()))
                                                                 .map(m -> MatchingRecordDto.builder()
                                                                                             .dtom(TimeConverter.LocalDateTimeToString(m.getDtom()))
                                                                                            .dtov(TimeConverter.LocalDateTimeToString(m.getActivity().getDtov()))

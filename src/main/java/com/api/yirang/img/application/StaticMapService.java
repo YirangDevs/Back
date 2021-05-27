@@ -37,6 +37,7 @@ public class StaticMapService {
     public String findOrPullStaticMap(String mapName){
 
         // 0. 이미 같은 맵 이름으로 저장된 이미지가 있다면, 그걸 준다
+        String mapImgUrl = DEFAULT_MAP_IMG_URL;
         MapImg mapImg = mapImgRepository.findMapImgByMapName(mapName).orElse(null);
         if (mapImg != null){
             return mapImg.getMapImgUrl();
@@ -48,11 +49,10 @@ public class StaticMapService {
         // 1-2 Xcode, yCode 얻기
         GeoCode geoCode = naverStaticMapAPI.getGeoCode(mapName);
 
-        if (file == null){
-            return DEFAULT_MAP_IMG_URL;
-        }
         //  1-2. s3Uploader로 이미지를 업로드하고, 이미지 URL 받아오기
-        String mapImgUrl = s3Uploader.uploadMap(file);
+        if (file != null){
+            mapImgUrl = s3Uploader.uploadMap(file);
+        }
         //  1-3. mapImg Repository로 저장하기
         mapImgRepository.save(
                                 MapImg.builder()
