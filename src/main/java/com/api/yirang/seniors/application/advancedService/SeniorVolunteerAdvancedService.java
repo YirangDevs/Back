@@ -25,6 +25,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -134,8 +135,14 @@ public class SeniorVolunteerAdvancedService {
 
         Collection<Region> myAreas = adminService.findAreasByUserId(userId);
 
-        Boolean result = registerTotalSeniorRequestDtos.getCollection().stream().map(e -> myAreas.contains(e.getRegion())).reduce(true, (a,b) -> a&b);
-        return result;
+        return registerTotalSeniorRequestDtos.getCollection().stream().map(e -> myAreas.contains(e.getRegion())).reduce(true, (a,b) -> a&b);
+    }
+
+
+    public boolean checkActivityDateIsAfterNow(ValidCollection<RegisterTotalSeniorRequestDto> registerTotalSeniorRequestDtos) {
+        System.out.println("[SeniorVolunteerAdvancedService]: CheckAcitivtyDatisAfterNow를 실행합니다.");
+
+        return TimeConverter.StringToLocalDateTime(registerTotalSeniorRequestDtos.getCollection().stream().findFirst().orElseGet(null).getDate() ).isAfter(LocalDateTime.now());
     }
     // Find methods
     public Collection<SeniorResponseDto> findSeniorsByRegion(Region region, Long userId) {

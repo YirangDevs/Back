@@ -78,6 +78,11 @@ public class SeniorController {
                                    .errorCode("099").errorName("Does not have Same data and region")
                                    .build());
         }
+        else if (!seniorVolunteerAdvancedService.checkActivityDateIsAfterNow(registerTotalSeniorRequestDtos)){
+            errorDtos.add( ErrorDto.builder()
+                                   .errorCode("117").errorName("Activity is Before now")
+                                   .build());
+        }
         // 관리자의 관할 구역 인지 체크
         else if (!seniorVolunteerAdvancedService.checkMyArea(userId, registerTotalSeniorRequestDtos)){
             errorDtos.add( ErrorDto.builder()
@@ -106,6 +111,7 @@ public class SeniorController {
                 lineNumber++;
             }
         }
+
         errorMap.put("Errors", errorDtos);
 
         return errorDtos.size() == 0 ? new ResponseEntity(HttpStatus.OK) : new ResponseEntity(errorMap, HttpStatus.BAD_REQUEST);
