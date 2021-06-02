@@ -33,6 +33,7 @@ public class UserGenerator {
                    .userId(userId).username(username)
                    .realname(realname).phone(phone)
                    .sex(sex).email(email).authority(authority)
+                   .firstRegion(EnumGenerator.generateRandomRegion()).secondRegion(EnumGenerator.generateRandomRegion())
                    .build();
     }
 

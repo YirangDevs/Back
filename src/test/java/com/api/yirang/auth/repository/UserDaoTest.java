@@ -1,6 +1,8 @@
 package com.api.yirang.auth.repository;
 
+import com.api.yirang.auth.application.intermediateService.UserService;
 import com.api.yirang.auth.domain.user.model.User;
+import com.api.yirang.auth.generator.UserGenerator;
 import com.api.yirang.auth.repository.persistence.maria.UserDao;
 import com.api.yirang.auth.support.type.Authority;
 import com.api.yirang.common.support.type.Sex;
@@ -9,20 +11,31 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
+@ActiveProfiles("dev")
 public class UserDaoTest {
 
     @Autowired
     UserDao userDao;
 
-    @After
-    public void cleanUp(){
-        userDao.deleteAll();
+    @Autowired
+    UserService userService;
+
+    @Test
+    public void 가짜_유저_저장(){
+        userService.saveUser(UserGenerator.createRandomUser(Authority.ROLE_VOLUNTEER, Sex.SEX_MALE));
+        userService.saveUser(UserGenerator.createRandomUser(Authority.ROLE_VOLUNTEER, Sex.SEX_MALE));
+
+        userService.saveUser(UserGenerator.createRandomUser(Authority.ROLE_VOLUNTEER, Sex.SEX_FEMALE));
+        userService.saveUser(UserGenerator.createRandomUser(Authority.ROLE_VOLUNTEER, Sex.SEX_FEMALE));
+
+
     }
 
     @Test

@@ -241,8 +241,8 @@ public class MatchingLogicServiceTest {
         makeVolunteerAndApplyActivity(Sex.SEX_MALE, ServiceType.SERVICE_WORK);
 
 
-        makeSeniorAndServiceActivity(Sex.SEX_FEMALE, ServiceType.SERVICE_WORK, 1L);
-        makeSeniorAndServiceActivity(Sex.SEX_FEMALE, ServiceType.SERVICE_WORK, 2L);
+        makeSeniorAndServiceActivity(Sex.SEX_MALE, ServiceType.SERVICE_TALK, 1L);
+        makeSeniorAndServiceActivity(Sex.SEX_MALE, ServiceType.SERVICE_TALK, 2L);
         makeSeniorAndServiceActivity(Sex.SEX_MALE, ServiceType.SERVICE_WORK, 3L);
         makeSeniorAndServiceActivity(Sex.SEX_MALE, ServiceType.SERVICE_WORK, 4L);
 
@@ -256,26 +256,44 @@ public class MatchingLogicServiceTest {
     public void case8_테스트(){
         // 남자-말벗-봉사자: 1, 여자-노력-봉사자: 1
         // 남자-노력-피봉사자: 4
-        makeVolunteerAndApplyActivity(Sex.SEX_MALE, ServiceType.SERVICE_TALK);
+        makeVolunteerAndApplyActivity(Sex.SEX_FEMALE, ServiceType.SERVICE_WORK);
+        makeVolunteerAndApplyActivity(Sex.SEX_FEMALE, ServiceType.SERVICE_TALK);
         makeVolunteerAndApplyActivity(Sex.SEX_FEMALE, ServiceType.SERVICE_WORK);
 
-        makeSeniorAndServiceActivity(Sex.SEX_MALE, ServiceType.SERVICE_WORK);
+        makeVolunteerAndApplyActivity(Sex.SEX_MALE, ServiceType.SERVICE_WORK);
+        makeVolunteerAndApplyActivity(Sex.SEX_FEMALE, ServiceType.SERVICE_TALK);
+
+        makeVolunteerAndApplyActivity(Sex.SEX_MALE, ServiceType.SERVICE_WORK);
+        makeVolunteerAndApplyActivity(Sex.SEX_MALE, ServiceType.SERVICE_TALK);
+        makeVolunteerAndApplyActivity(Sex.SEX_MALE, ServiceType.SERVICE_TALK);
+
+        makeSeniorAndServiceActivity(Sex.SEX_FEMALE, ServiceType.SERVICE_WORK, 1L);
+        makeSeniorAndServiceActivity(Sex.SEX_FEMALE, ServiceType.SERVICE_WORK, 2L);
+
+        makeSeniorAndServiceActivity(Sex.SEX_MALE, ServiceType.SERVICE_WORK, 3L);
+        makeSeniorAndServiceActivity(Sex.SEX_MALE, ServiceType.SERVICE_WORK, 4L);
+
+        makeSeniorAndServiceActivity(Sex.SEX_FEMALE, ServiceType.SERVICE_TALK, 5L);
+        makeSeniorAndServiceActivity(Sex.SEX_FEMALE, ServiceType.SERVICE_TALK, 6L);
+        makeSeniorAndServiceActivity(Sex.SEX_MALE, ServiceType.SERVICE_TALK, 7L);
+        makeSeniorAndServiceActivity(Sex.SEX_MALE, ServiceType.SERVICE_TALK, 8L);
 
         matchingLogicService.executeMatchingSteps(activity);
 
-        System.out.println(matchingService.findUnMatchingByActivityId(activity.getActivityId()) );
+        System.out.println(matchingService.findUnMatchingByActivityId(activity.getActivityId() ));
         System.out.println(matchingService.findMatchingByActivityId(activity.getActivityId()) );
     }
 
     @Test
     public void case9_테스트(){
         //
-        makeVolunteerAndApplyActivity(Sex.SEX_FEMALE, ServiceType.SERVICE_WORK);
-        makeVolunteerAndApplyActivity(Sex.SEX_FEMALE, ServiceType.SERVICE_WORK);
+        makeVolunteerAndApplyActivity(Sex.SEX_MALE, ServiceType.SERVICE_WORK);
+        makeVolunteerAndApplyActivity(Sex.SEX_MALE, ServiceType.SERVICE_WORK);
 
         makeVolunteerAndApplyActivity(Sex.SEX_MALE, ServiceType.SERVICE_TALK);
         makeVolunteerAndApplyActivity(Sex.SEX_MALE, ServiceType.SERVICE_TALK);
 
+        makeSeniorAndServiceActivity(Sex.SEX_MALE, ServiceType.SERVICE_WORK);
         makeSeniorAndServiceActivity(Sex.SEX_MALE, ServiceType.SERVICE_WORK);
 
         matchingLogicService.executeMatchingSteps(activity);
