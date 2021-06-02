@@ -38,6 +38,14 @@ public class VolunteerServiceGenerator {
                                .numsOfRequiredVolunteers(2L)
                                .build();
     }
+    public static VolunteerService createRandomVolunteerService(Senior senior, Activity activity, ServiceType serviceType, Long priority){
+
+        return VolunteerService.builder()
+                               .serviceType(serviceType).priority(priority)
+                               .senior(senior).activity(activity)
+                               .numsOfRequiredVolunteers(2L)
+                               .build();
+    }
 
     public static VolunteerService createRandomVolunteerService(Activity activity){
         Senior senior = SeniorGenerator.createRandomSenior();
@@ -62,5 +70,8 @@ public class VolunteerServiceGenerator {
     }
 
 
-
+    public static VolunteerService createAndStoreRandomVolunteerService(VolunteerServiceDao volunteerServiceDao, Senior senior,
+                                                                        Activity activity, ServiceType serviceType, Long priority) {
+        return volunteerServiceDao.save(createRandomVolunteerService(senior, activity, serviceType, priority) );
+    }
 }

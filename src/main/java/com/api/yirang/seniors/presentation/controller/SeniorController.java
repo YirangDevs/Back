@@ -78,6 +78,7 @@ public class SeniorController {
                                    .errorCode("099").errorName("Does not have Same data and region")
                                    .build());
         }
+        // 해당하는 Activity가 오늘 날짜 이후여야 함.
         else if (!seniorVolunteerAdvancedService.checkActivityDateIsAfterNow(registerTotalSeniorRequestDtos)){
             errorDtos.add( ErrorDto.builder()
                                    .errorCode("117").errorName("Activity is Before now")

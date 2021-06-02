@@ -142,7 +142,7 @@ public class SeniorVolunteerAdvancedService {
     public boolean checkActivityDateIsAfterNow(ValidCollection<RegisterTotalSeniorRequestDto> registerTotalSeniorRequestDtos) {
         System.out.println("[SeniorVolunteerAdvancedService]: CheckAcitivtyDatisAfterNow를 실행합니다.");
 
-        return TimeConverter.StringToLocalDateTime(registerTotalSeniorRequestDtos.getCollection().stream().findFirst().orElseGet(null).getDate() ).isAfter(LocalDateTime.now());
+        return TimeConverter.StringToLocalDateTime(registerTotalSeniorRequestDtos.getCollection().stream().findFirst().orElseGet(null).getDate() + " 11:59:00" ).isAfter(LocalDateTime.now());
     }
     // Find methods
     public Collection<SeniorResponseDto> findSeniorsByRegion(Region region, Long userId) {
