@@ -72,7 +72,7 @@ public class MatchingAndEmailSerivceTest {
     }
 
     private void makeSeniorAndServiceActivity(Sex sex, ServiceType serviceType){
-        Senior senior = SeniorGenerator.createAndSaveRandomSenior(seniorDao, sex, Region.DALSEO_DISTRICT, "이곡공원로 49");
+        Senior senior = SeniorGenerator.createAndSaveRandomSenior(seniorDao, sex, Region.DALSEO_DISTRICT, "이상한 곳");
         System.out.println("Senior: " + senior);
         VolunteerService volunteerService = VolunteerServiceGenerator.createAndStoreRandomVolunteerService(volunteerServiceDao,
                                                                                                            senior, activity,
