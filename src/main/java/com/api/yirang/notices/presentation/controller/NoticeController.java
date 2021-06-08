@@ -1,7 +1,9 @@
 package com.api.yirang.notices.presentation.controller;
 
 
+import com.api.yirang.email.application.EmailAdvancedService;
 import com.api.yirang.notices.application.advancedService.NoticeActivityService;
+import com.api.yirang.notices.domain.notice.model.Notice;
 import com.api.yirang.notices.presentation.dto.NoticeOneResponseDto;
 import com.api.yirang.notices.presentation.dto.NoticeRegisterRequestDto;
 import lombok.RequiredArgsConstructor;
@@ -22,6 +24,7 @@ public class NoticeController {
 
     // DI 할 필드
     private final NoticeActivityService noticeActivityService;
+    private final EmailAdvancedService emailAdvancedService;
 
     /** POST methods **/
     // 공고 등록
@@ -31,7 +34,8 @@ public class NoticeController {
                                   @RequestBody @Valid NoticeRegisterRequestDto noticeRequestDto){
         System.out.println("[NoticeController] 공고 등록 요청이 왔습니다.");
         System.out.println("[NoticeController] 요청: " + noticeRequestDto);
-        noticeActivityService.registerNew(header, noticeRequestDto);
+        Notice notice = noticeActivityService.registerNew(header, noticeRequestDto);
+        emailAdvancedService.sendEmailToVolunteerAboutRecommendedActivity(notice);
     }
     // 긴급 공고 등록
     @PostMapping(value = "/{notice_id}/urgent", consumes = "application/json")
@@ -41,7 +45,8 @@ public class NoticeController {
                                      @RequestBody Map<String, String> param){
         System.out.println("[NoticeController] 공고 긴급 등록 요청이 왔습니다.");
         String title = param.get("title");
-        noticeActivityService.registerUrgent(header,noticeId, title);
+        Notice notice = noticeActivityService.registerUrgent(header, noticeId, title);
+        emailAdvancedService.sendEmailToVolunteerAboutRecommendedActivity(notice);
     }
 
     /** Get methods **/

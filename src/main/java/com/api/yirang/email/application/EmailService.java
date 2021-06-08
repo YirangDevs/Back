@@ -15,6 +15,7 @@ import com.google.common.hash.Hashing;
 import lombok.RequiredArgsConstructor;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -46,7 +47,7 @@ public class EmailService {
 
 
     // Privates
-    private void sendEmail(String toEmail, String subject, String content){
+    void sendEmail(String toEmail, String subject, String content){
         MimeMessage message = javaMailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(message);
 

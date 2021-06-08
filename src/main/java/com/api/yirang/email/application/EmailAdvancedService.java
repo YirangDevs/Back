@@ -28,6 +28,7 @@ import com.api.yirang.seniors.application.basicService.VolunteerServiceBasicServ
 import com.api.yirang.seniors.domain.senior.model.Senior;
 import com.api.yirang.seniors.domain.volunteerService.model.VolunteerService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -56,6 +57,7 @@ public class EmailAdvancedService {
     private final GeoCodeService geoCodeService;
 
 
+    @Async("threadPoolTaskExecutor")
     public void sendEmailToAdminAboutMatching(Activity activity) {
         // 1. activity의 지역 알아내기
         Region region = activity.getRegion();
@@ -88,6 +90,7 @@ public class EmailAdvancedService {
                                                                        .getUserId(), matchingMailContentList));
     }
 
+    @Async("threadPoolTaskExecutor")
     public void sendEmailToAdminAboutUserWithdraw(Long requestId, Long userId) {
 
         // 0. 유저 찾기
@@ -145,6 +148,7 @@ public class EmailAdvancedService {
                                                                        .getUserId(), userWithdrawMailContent, matchingMailContentList));
     }
 
+    @Async("threadPoolTaskExecutor")
     public void sendEmailToVolunteerAboutTomorrowActivity(Activity activity) {
 
         //1. activity에 해당하는 MatchingList 찾기
@@ -162,6 +166,7 @@ public class EmailAdvancedService {
         unMatchedVolunteers.forEach(this::sendEmailToVolunteerAboutFailedEmail);
     }
 
+    @Async("threadPoolTaskExecutor")
     public void sendEmailToVolunteerAboutRecommendedActivity(Notice notice) {
 
         // 0. Region
@@ -214,6 +219,7 @@ public class EmailAdvancedService {
 
     }
 
+    @Async("threadPoolTaskExecutor")
     public void sendEmailToVolunteerAboutFailedEmail(Volunteer volunteer){
 
         //1. 유저 이름

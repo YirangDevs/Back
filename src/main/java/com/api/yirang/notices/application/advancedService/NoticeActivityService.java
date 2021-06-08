@@ -49,7 +49,7 @@ public class NoticeActivityService {
     // DI JwtParser
     private final JwtParser jwtParser;
 
-    public void registerNew(String header, NoticeRegisterRequestDto noticeRequestDto) {
+    public Notice registerNew(String header, NoticeRegisterRequestDto noticeRequestDto) {
 
         System.out.println("[NoticeActivityService]: registerNew를 실행하겠습니다.");
 
@@ -85,10 +85,11 @@ public class NoticeActivityService {
         // Notice 받아서, DB에 저장
         String title = noticeRequestDto.getTitle();
         Notice notice = NoticeConverter.convertFromDtoToModel(title, admin, activity);
-        emailAdvancedService.sendEmailToVolunteerAboutRecommendedActivity(notice);
         noticeBasicService.save(notice);
-
         System.out.println("[NoticeActivityService]: Notice를 저장했습니다. ");
+
+        return notice;
+
     }
 
     public NoticeOneResponseDto getOneNoticeById(Long noticeId) {
@@ -140,7 +141,7 @@ public class NoticeActivityService {
         return noticeBasicService.countNumsOfNotices();
     }
 
-    public void registerUrgent(String header, Long noticeId,
+    public Notice registerUrgent(String header, Long noticeId,
                                @NotBlank(message = "title is mandatory")
                                @Length(min=3, max= 100, message = "title should be between 5 ~ 100") String title) {
 
@@ -161,10 +162,10 @@ public class NoticeActivityService {
 
         // 새로운 Notice를 만들고 저장
         Notice newUrgentNotice = NoticeConverter.convertFromDtoToModel(title, admin, activity);
-        emailAdvancedService.sendEmailToVolunteerAboutRecommendedActivity(newUrgentNotice);
         noticeBasicService.save(newUrgentNotice);
-
         System.out.println("[NoticeActivityService]: notice를 저장했습니다.");
+
+        return newUrgentNotice;
     }
 
     public void updateOneNotice(String header, Long noticeId,
