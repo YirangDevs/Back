@@ -100,9 +100,8 @@ public class SeniorController {
 //        // 준 데이터 중에 기존의 것과 중복되는 거 없는 지 체크
         else {
             int lineNumber = 0;
-            Iterator<RegisterTotalSeniorRequestDto> itr = registerTotalSeniorRequestDtos.iterator();
-            while (itr.hasNext()) {
-                RegisterTotalSeniorRequestDto registerTotalSeniorRequestDto = itr.next();
+            System.out.println("[SeniorVolunteerAdvancedService]: checkNotDuplicateAmongExistedData을 실행하겠습니다.");
+            for (RegisterTotalSeniorRequestDto registerTotalSeniorRequestDto : registerTotalSeniorRequestDtos) {
                 if (!seniorVolunteerAdvancedService.checkNotDuplicateAmongExistedData(registerTotalSeniorRequestDto)) {
                     errorDtos.add(ErrorDto.builder()
                                           .errorCode("113")

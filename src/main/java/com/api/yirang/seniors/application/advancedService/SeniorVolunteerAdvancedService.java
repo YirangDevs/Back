@@ -72,6 +72,8 @@ public class SeniorVolunteerAdvancedService {
         }
         // phone으로 찾기
         Senior senior = seniorBasicService.findSeniorByPhone(phone);
+        // debug
+        System.out.println("senior: " + senior);
 
         // Senior와 Activity가 같으면 중복된 Service이다
         if( volunteerServiceBasicService.existsVolunteerServiceByActivityAndSenior(activity, senior)){
@@ -106,7 +108,6 @@ public class SeniorVolunteerAdvancedService {
         return registerTotalSeniorRequestDtos.size() == setRegisterTotalSeniorRequestDto.size();
     }
     public boolean checkNotDuplicateAmongExistedData(RegisterTotalSeniorRequestDto registerTotalSeniorRequestDto) {
-        System.out.println("[SeniorVolunteerAdvancedService]: checkNotDuplicateAmongExistedData을 실행하겠습니다.");
         final Region region = registerTotalSeniorRequestDto.getRegion();
         final String dov = registerTotalSeniorRequestDto.getDate();
         // Activity를 찾기, 없으면 True
@@ -122,6 +123,8 @@ public class SeniorVolunteerAdvancedService {
             return true;
         }
         final Senior senior = seniorBasicService.findSeniorByPhone(registerTotalSeniorRequestDto.getPhone() );
+
+
 
         // 없으면 True
         if(!volunteerServiceBasicService.existsVolunteerServiceByActivityAndSenior(activity, senior)){

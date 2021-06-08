@@ -13,7 +13,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created by JeongminYoo on 2020/12/30
@@ -46,7 +48,10 @@ public class ApplyBasicService {
         if (applies.size() == 0){
             throw new ApplyNullException();
         }
-        return applies;
+        return applies.stream()
+                      .sorted(Comparator.comparing(Apply::getDtoa))
+                      .collect(Collectors.toList());
+
     }
     public Collection<Apply> getAppliesFromActivity(Activity activity, ServiceType serviceType) {
         // null exception 제외

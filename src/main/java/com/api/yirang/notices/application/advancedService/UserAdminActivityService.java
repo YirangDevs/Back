@@ -103,6 +103,7 @@ public class UserAdminActivityService {
         Activity activity = activityDao.findById(activityId).orElseThrow(ActivityNullException::new);
         // 2. applies 얻음
         Collection<Apply> applies = applyBasicService.getAppliesFromActivity(activity);
+        System.out.println("Applies: " + applies);
 
         // 3. 바꿈
         List<ActivityApplyDto> activityApplyDtos = applies.stream()
