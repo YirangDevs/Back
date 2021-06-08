@@ -43,11 +43,6 @@ public class AuthService {
     private static final Map<String, Long> fakeUserMap = new HashMap<>();
 
     static {
-        fakeUserMap.put("volunteer_1", 25158L);
-        fakeUserMap.put("volunteer_2", 33419L);
-        fakeUserMap.put("volunteer_3", 15614L);
-        fakeUserMap.put("volunteer_4", 33286L);
-
         fakeUserMap.put("admin_1", 14378L);
         fakeUserMap.put("admin_2", 17576L);
         fakeUserMap.put("super_admin_1", 91621L);
