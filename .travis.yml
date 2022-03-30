@@ -30,7 +30,7 @@ deploy:
   - provider: s3
     access_key_id: $AWS_ACCESS_KEY # Travis repo setting
     secret_access_key: $AWS_SECRET_KEY # Travis repo setting
-    bucket: yirang-api-spring-boot
+    bucket: yirang-backend-build
     region: ap-northeast-2
     skip_cleanup: true
     acl: private
@@ -40,11 +40,11 @@ deploy:
   - provider: codedeploy
     access_key_id: $AWS_ACCESS_KEY
     secret_access_key: $AWS_SECRET_KEY
-    bucket: yirang-api-spring-boot
+    bucket: yirang-backend-build
     key: yirang-springboot-api.zip
     bundle_type: zip
-    application: yirang-springboot-api
-    deployment_group: yirang-springboot-api-group
+    application: yirang-backend
+    deployment_group: yirang-backend-group
     region: ap-northeast-2
     wait_until_deployed: true
 
